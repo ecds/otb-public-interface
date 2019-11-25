@@ -18,7 +18,7 @@ export default JSONAPIAdapter.extend({
 
   headers: computed('session.data.authenticated.access_token', function(){
     let headers = {};
-    let cookieService = this.get('cookies');
+    let cookieService = this.cookies;
     if (cookieService.exists('ember_simple_auth-session') == false) return;
     let cookies = cookieService.read();
     let access_token = JSON.parse(cookies['ember_simple_auth-session']).authenticated.access_token;
