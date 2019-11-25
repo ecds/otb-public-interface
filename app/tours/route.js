@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import ENV from '../config/environment';
+// import ENV from '../config/environment';
 
 /**
  * Route to display all pubic tours for a site.

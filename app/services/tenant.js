@@ -16,4 +16,8 @@ export default class TenantService extends Service {
     }
     return window.location.pathname.split('/')[1];
   }
+  
+  set currentTenant(path) {
+    return path;
+  }
 }
