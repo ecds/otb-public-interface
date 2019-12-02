@@ -63,6 +63,10 @@ $mobile-bottom-nav-height-landscape: 60px;
       }
     }
   }
+  .otb-common-gallery,
+  .otb-mobile-tour-content {
+    width: 100vw;
+  }
 }
 
 .landscape {
@@ -83,6 +87,11 @@ $mobile-bottom-nav-height-landscape: 60px;
     img {
       max-height: 20vh;
     }
+  }
+
+  .otb-common-gallery,
+  .otb-mobile-tour-content {
+    width: 50vw;
   }
 }
 
