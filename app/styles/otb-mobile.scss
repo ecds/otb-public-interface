@@ -63,9 +63,12 @@ $mobile-bottom-nav-height-landscape: 60px;
       }
     }
   }
-  .otb-common-gallery,
-  .otb-mobile-tour-content {
-    width: 100vw;
+
+  &.mobile {
+    .otb-common-gallery,
+    .otb-mobile-tour-content {
+      width: 100vw;
+    }
   }
 }
 
@@ -89,9 +92,11 @@ $mobile-bottom-nav-height-landscape: 60px;
     }
   }
 
-  .otb-common-gallery,
-  .otb-mobile-tour-content {
-    width: 50vw;
+  &.mobile {
+    .otb-common-gallery,
+    .otb-mobile-tour-content {
+      width: 50vw;
+    }
   }
 }
 
