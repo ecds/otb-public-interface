@@ -42,6 +42,12 @@ $mobile-bottom-nav-height-landscape: 60px;
 .otb-mobile-bottom-navbar {
   @include theme('background', 'primary');
 
+  li {
+    a {
+      @include theme('color', 'secondary');
+    }
+  }
+
   a,
   span {
     color: white;
@@ -137,6 +143,7 @@ $mobile-bottom-nav-height-landscape: 60px;
   span {
     &.active {
       @include theme('background', 'accent');
+      @include theme('color', 'accent-text')
     }
   }
 }

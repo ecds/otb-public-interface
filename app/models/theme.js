@@ -1,6 +1,6 @@
 import DS from 'ember-data';
-const { Model } = DS;
+const { Model, attr } = DS;
 
 export default class ThemeModel extends Model {
-
+  @attr('string') title;
 }

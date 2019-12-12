@@ -55,12 +55,12 @@
     <div class="uk-navbar-left">
       <ul class="uk-navbar-nav">
         <li class="otb-mobile-hamburger">
-          <a uk-toggle target="#flat-pages" class="uk-navbar-toggle">
+          <a uk-toggle target="#flat-pages" class="uk-navbar-toggle" data-theme={{this.theme.name}}>
             {{fa-icon "bars" aria-hidden="true"}}
           </a>
         </li>
         <li>
-          <LinkTo @route="tour" @model={{this.model}} class="uk-logo">{{this.model.title}}</LinkTo>
+          <LinkTo @route="tour" @model={{this.model}} class="uk-logo" data-theme={{this.theme.name}}>{{this.model.title}}</LinkTo>
         </li>
       </ul>
     </div>
