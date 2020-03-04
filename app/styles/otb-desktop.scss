@@ -105,3 +105,15 @@ body {
     opacity: 0;
   }
 }
+
+.otb-tour-cell {
+  .uk-grid-row-small {
+    h3 {
+      font-size: 1.25rem;
+    }
+
+    p {
+      font-size: .75rem;
+    }
+  }
+}

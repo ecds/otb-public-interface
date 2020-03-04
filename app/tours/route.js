@@ -11,6 +11,7 @@ import { inject as service } from '@ember/service';
  */
 export default class ToursRoute extends Route {
   @service fastboot;
+  @service tenant;
   /**
    * 
    *
@@ -19,6 +20,12 @@ export default class ToursRoute extends Route {
    */
   model() {
     return this.store.findAll('tour');
+  }
+
+  afterModel(model) {
+    if (model.length == 1) {
+      this.transitionTo('tour.overview', this.tenant.currentTenant, model.firstObject.slug);
+    }
   }
 
   // /**
