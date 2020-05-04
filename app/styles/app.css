@@ -1,0 +1,15 @@
+li.toursitename {
+    background: lightgray;
+}
+
+li.toursitename > a {
+    color: #222;
+}
+
+li.tourname {
+    background: white;
+}
+
+li.tourname > a {
+    color: #222;
+}
