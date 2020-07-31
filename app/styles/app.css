@@ -2,14 +2,16 @@ li.toursitename {
     background: lightgray;
 }
 
-li.toursitename > a {
+li.toursitename a {
     color: #222;
+    text-decoration: underline dotted;
 }
 
 li.tourname {
     background: white;
 }
 
-li.tourname > a {
+li.tourname a {
     color: #222;
+    text-decoration: underline dotted;
 }
