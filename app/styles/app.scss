@@ -4,3 +4,21 @@
 @import 'otb-common';
 @import 'otb-desktop';
 @import 'otb-mobile';
+
+li.toursitename {
+    background: lightgray;
+}
+
+li.toursitename a {
+    color: #222;
+    text-decoration: underline dotted;
+}
+
+li.tourname {
+    background: white;
+}
+
+li.tourname a {
+    color: #222;
+    text-decoration: underline dotted;
+}

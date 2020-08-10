@@ -1,9 +1,9 @@
 <nav class="uk-navbar uk-light uk-background-secondary" uk-navbar>
   <div class="uk-navbar-left">
-    <span class="uk-logo">
+    <h1 class="uk-logo" style="margin: unset;">
       <img src="/assets/images/otblogo.png" alt="Branding logo">
       OpenTourBuilder
-    </span>
+    </h1>
   </div>
   <div class="uk-navbar-right">
     <ul class="uk-navbar-nav">
@@ -24,10 +24,10 @@
 <section class="uk-container uk-margin-top">
   <ul class="uk-list">
     {{#each this.model as |tourSet|}}
-      <li class="toursitename">
+      <li class="toursitename"><h2 style="line-height: 1.5; font-size: 16px;">
         <a href="{{tourSet.subdir}}" aria-label="{{tourSet.name}}">
           {{tourSet.name}}
-        </a>
+        </a></h2>
       </li>
       <ul>
         {{#each tourSet.publishedTours as |tour|}}
