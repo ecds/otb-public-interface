@@ -14,7 +14,7 @@ export default class StopModel extends Model {
   @attr('string') sanitized_description;
   @attr('string') sanitized_direction_notes;
   @attr('string') description;
-  @attr('string') metadescription;
+  @attr('string') metaDescription;
   @attr('string') article_link;
   @attr('string') article_link;
   @attr('string') video_embed;

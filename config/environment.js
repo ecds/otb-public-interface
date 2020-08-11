@@ -22,8 +22,7 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
+      TENANT: 'opentourbuilder'
     },
 
     fastboot: {
@@ -50,13 +49,13 @@ module.exports = function(environment) {
       'media-src': "self"
     },
 
-    'ember-google-maps': {
-      region: 'US',
-      protocol: 'https',
-      version: '3.35',
-      libraries: ['places'],
-      client: ''
-    },
+    // 'ember-google-maps': {
+    //   region: 'US',
+    //   protocol: 'https',
+    //   version: '3.35',
+    //   libraries: ['places'],
+    //   client: ''
+    // },
 
     fontawesome: {
       icons: {
@@ -85,6 +84,7 @@ module.exports = function(environment) {
 
 
   if (environment === 'development') {
+    ENV.APP.TENANT = null;
     ENV.APP.API_HOST = 'https://api.opentour.emory.edu'
     // ENV.APP.API_HOST = 'https://otb.org:3000'
     ENV.fastboot.hostWhitelist.push('lvh.me:4200');

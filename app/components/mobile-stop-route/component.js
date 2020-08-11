@@ -12,16 +12,17 @@ export default class MobileStopRouteComponent extends Component {
   directionsService = this.mapUtil.directionsService();
   directionsDisplay = this.mapUtil.directionsDisplay();
 
-  @computed('location.clientLocation')
-  get calcRoute() {
-    this.directionsService.route(this.route, (response, status) => {
-      if (status == 'OK') {
-        return this.setDirections(response);
-      }
-      return false;
-    });
-    return true;
-  }
+  // @computed('location.clientLocation')
+  // get calcRoute() {
+  //   if (!this.directionsService) return null;
+  //   this.directionsService.route(this.route, (response, status) => {
+  //     if (status == 'OK') {
+  //       return this.setDirections(response);
+  //     }
+  //     return false;
+  //   });
+  //   return true;
+  // }
 
   setDirections(response) {
     this.directionsDisplay.setDirections(response);
@@ -29,21 +30,21 @@ export default class MobileStopRouteComponent extends Component {
     this.maps.set('route', this.directionsDisplay);
   }
 
-  @computed('location.clientLocation')
-  get route() {
-    const parking = {
-      location: {lat: this.args.stop.get('parking_lat'), lng: this.args.stop.get('parking_lng')},
-      stopover: true
-    };
+  // @computed('location.clientLocation')
+  // get route() {
+  //   const parking = {
+  //     location: {lat: this.args.stop.get('parking_lat'), lng: this.args.stop.get('parking_lng')},
+  //     stopover: true
+  //   };
 
-    return {
-      origin: this.location.clientLocation,
-      destination: {lat: this.args.stop.get('lat'), lng: this.args.stop.get('lng')},
-      travelMode: this.args.tour.mode.get('title'),
-      waypoints: [parking]
-    }
+  //   return {
+  //     origin: this.location.clientLocation,
+  //     destination: {lat: this.args.stop.get('lat'), lng: this.args.stop.get('lng')},
+  //     travelMode: this.args.tour.mode.get('title'),
+  //     waypoints: [parking]
+  //   }
 
-  }
+  // }
 
   @action
   drawRoute() {

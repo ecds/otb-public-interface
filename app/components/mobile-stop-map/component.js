@@ -3,14 +3,18 @@ import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import MapUtil from '../../utils/google-maps';
 
+const google = window.google;
+
 export default class MobileStopMapComponent extends Component {
   @service maps;
   @service location;
 
-  mapUtil = MapUtil.create();
+  mapUtil = google ? MapUtil.create() : false;
 
   @action
   createMap() {
+    if (!google) return;
+
     const center = this.args.stop.getProperties(['lat', 'lng']);
     const mapOptions = {
       center: {lat: this.args.stop.get('lat'), lng: this.args.stop.get('lng')},
@@ -23,7 +27,7 @@ export default class MobileStopMapComponent extends Component {
 
     map = this.mapUtil.createMap(mapOptions);
     this.maps.set('map', map);
-    
+
     const stopMarker = this.mapUtil.addMarker(map, center);
     this.maps.features.push(stopMarker);
 
@@ -45,5 +49,5 @@ export default class MobileStopMapComponent extends Component {
       this.maps.features.push(parkingMarker);
     }
   }
-  
+
 }

@@ -21,7 +21,7 @@ export default class TourRoute extends Route {
     tokens = A(tokens);
     const model = this.modelFor('tour');
     tokens.push(model.title);
-    return tokens.join(' - ');
+    return `${model.tenantTitle}: ${tokens.join(' - ')}`;
   }
 
   headTags() {
@@ -73,6 +73,14 @@ export default class TourRoute extends Route {
         attrs: {
           property: 'og:image:width',
           content: model.splashWidth
+        }
+      },
+      {
+        type: 'meta',
+        tagId: 'meta-og-site_name',
+        attrs: {
+          name: 'og:site_name',
+          content: model.tenantTitle
         }
       },
       {

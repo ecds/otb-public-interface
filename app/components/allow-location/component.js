@@ -9,13 +9,20 @@ export default class AllowLocationComponent extends Component {
   @service fastboot;
 
   @action
-  checkPermissions() {
+  checkPermissions(element) {
     if (this.fastboot.isFastBoot) return;
     if (this.locationPermissions.getLocationSet && this.locationPermissions.locationAllowed) {
       this.location.getLocation();
       this.checkLocationUpdatePermissions();
     } else if (!this.locationPermissions.getLocationSet) {
-      UIkit.modal(document.getElementById('set-loc-perms-modal')).show();
+      const modal = UIkit.modal(
+        document.getElementById('set-loc-perms-modal'),
+        {
+          container: element
+        }
+      );
+
+      if (modal) modal.show();
     }
   }
 

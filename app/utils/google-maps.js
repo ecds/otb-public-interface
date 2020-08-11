@@ -19,6 +19,7 @@ export default EmberObject.extend({
   },
 
   createMap(params) {
+    if (!google) return;
     let { element = document.getElementById('map-container'), center = {lat: 0, lng:0}, zoom = 17, mapTypeId = 'roadmap'} = params;
     let map = new google.maps.Map(
       element,
@@ -29,16 +30,12 @@ export default EmberObject.extend({
         mapTypeId
       }
     );
-    
+
     return map;
   },
 
-  // updateMap(params, map) {
-  //   let { center = {lat: 0, lng:0}, zoom = 17, type = 'roadmap'} = params;
-  //   map.setOptions
-  // },
-
   addMarker(map, cords, parking=false, animation=false) {
+    if (!google) return;
     if (animation) {
       animation = google.maps.Animation.DROP
     }
@@ -53,7 +50,7 @@ export default EmberObject.extend({
     } else {
       marker.setIcon(this.icon());
     }
-    
+
     marker.setMap(map);
     return marker
   },
@@ -122,10 +119,12 @@ export default EmberObject.extend({
   },
 
   directionsService() {
+    if (!google) return;
     return new google.maps.DirectionsService();
   },
 
   directionsDisplay() {
+    if (!google) return;
     return new google.maps.DirectionsRenderer();
   },
 

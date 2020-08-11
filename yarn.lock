@@ -10368,6 +10368,11 @@ simple-html-tokenizer@^0.5.9:
   resolved "https://registry.yarnpkg.com/simple-html-tokenizer/-/simple-html-tokenizer-0.5.9.tgz#1a83fe97f5a3e39b335fddf71cfe9b0263b581c2"
   integrity sha512-w/3FEDN94r4JQ9WoYrIr8RqDIPZdyNkdpbK9glFady1CAEyD97XWCv8HFetQO21w81e7h7Nh59iYTyG1mUJftg==
 
+sitemap-autogenerator@^1.2.3:
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/sitemap-autogenerator/-/sitemap-autogenerator-1.2.3.tgz#5e6719c3181df3e051ca09ab56d26986f216e5bf"
+  integrity sha512-0PolijpxIXLenjEr6suTJfhNHIGzFQjTqKzdXw9qgOl+Uwj8nto15O3BW8FlGM+DBhb3XPh3MMfF5IVG5W5CiA==
+
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"

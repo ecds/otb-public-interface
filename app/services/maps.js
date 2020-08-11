@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { computed } from '@ember/object';
-import { inject as service } from '@ember/service'; 
+import { inject as service } from '@ember/service';
 import MapUtil from '../utils/google-maps';
 
 // import MapUtil from '../utils/google-maps';
@@ -23,7 +23,7 @@ export default class ReaderService extends Service {
   controls = [];
   errorMessage = null;
 
-  @computed('destination', 'waypoints', 'origin', 'travelMode')
+  @computed('destination', 'waypoints', 'origin', 'travelMode', 'location.clientLocation')
   get route() {
     let { travelMode, destination, waypoints } = this;
     if (travelMode != 'DRIVING') {
@@ -38,6 +38,7 @@ export default class ReaderService extends Service {
   }
 
   calcRoute() {
+    if (!this.directionsService) return null;
     this.directionsService.route(this.route, (response, status) => {
       let errorMesg = null;
 

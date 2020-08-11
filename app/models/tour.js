@@ -18,6 +18,7 @@ export default class TourModel extends Model {
   @attr('number') stopCount;
   @attr('string') theme_title;
   @attr() splash;
+  @attr('string') insecureSplash;
   @attr('string') externalUrl;
   @hasMany('mode') modes;
   @belongsTo('mode', {

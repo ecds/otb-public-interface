@@ -82,7 +82,7 @@
         </li>
         {{#each this.model.sortedFlatPages as |page|}}
           <li>
-            <LinkTo @route="tour.flat-page" @model={{page.id}} class="otb-menu-link">
+            <LinkTo @route="tour.flat-page" @model={{page.flatPage.id}} class="otb-menu-link">
               {{page.flatPage.title}}
             </LinkTo>
           </li>

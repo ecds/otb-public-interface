@@ -234,7 +234,7 @@ $mobile-bottom-nav-height-landscape: 60px;
   .otb-mobile-directions-panel {
     bottom: $mobile-bottom-nav-height-landscape !important;
   }
-  
+
   .otb-mobile-stop-container {
     margin-top: $mobile-bottom-nav-height-landscape
   }
@@ -268,8 +268,12 @@ $mobile-bottom-nav-height-landscape: 60px;
 
 .otb-mobile-hamburger {
   padding-top: 1.5rem;
-  
+
   a {
     display: inline !important;
   }
+}
+
+.otb-mobile-modal {
+  top: 25vh;
 }

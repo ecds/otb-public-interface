@@ -26,8 +26,8 @@ export default class TourStopRoute extends Route {
 
   titleToken() {
     const model = this.modelFor('tour.stop').tourStop;
-    return model.stop.get('title');    
-  }  
+    return model.stop.get('title');
+  }
 
   headTags() {
     const model = this.modelFor('tour.stop').tourStop;
@@ -45,7 +45,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-og-description-tag',
         attrs: {
           property: 'og:description',
-          content: model.stop.get('metadescription')
+          content: model.stop.get('metaDescription')
         }
       },
       {

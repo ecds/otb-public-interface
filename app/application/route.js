@@ -7,7 +7,7 @@ export default class ApplicationRoute extends Route {
   @service metrics;
   @service fastboot;
   @service tenant;
-  
+
   /**
    * Redirect for sites that are hosted on an external address
    *
@@ -46,7 +46,7 @@ export default class ApplicationRoute extends Route {
         tagId: 'meta-og-url',
         attrs: {
           property: 'og:url',
-          content: `${ENV.APP.HOST}${this._router.currentURL}`
+          content: `${ENV.APP.API_HOST}${this._router.currentURL}`
         }
       },
       {
@@ -59,7 +59,7 @@ export default class ApplicationRoute extends Route {
           (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
           m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
           })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-          
+
           ga('create', '${ENV.APP.GA_ID}', 'auto');
           ga('send', 'pageview');`
       },

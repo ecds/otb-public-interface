@@ -16,27 +16,27 @@ export default class LocationPermissionsService extends Service {
   }
 
   tour = this.tour || null;
-  
+
   setTour(tour) {
     this.tour = tour;
   }
 
   @computed('tour')
   get getLocationCookie() {
-    return this.tour != null ? `${this.tour.get('slug')}-${this.tour.get('id')}-Location-Allowed` : null;
+    return this.tour != null ? `${this.tour.slug}-${this.tour.id}-Location-Allowed` : null;
   }
 
   @computed('tour')
   get updateLocationCookie() {
-    return this.tour != null ? `${this.tour.get('slug')}-${this.tour.get('id')}-Update-Location-Allowed` : null;
+    return this.tour != null ? `${this.tour.slug}-${this.tour.id}-Update-Location-Allowed` : null;
   }
 
   get getLocationSet() {
-    return this.cookies.read(this.getLocationCookie) ? true : false;
+    return this.cookies.exists(this.getLocationCookie) ? true : false;
   }
 
   get updateLocationSet() {
-    return this.cookies.read(this.updateLocationCookie) ? true : false;
+    return this.cookies.exists(this.updateLocationCookie) ? true : false;
   }
 
   setLocationAllowed(allow) {
@@ -47,7 +47,7 @@ export default class LocationPermissionsService extends Service {
       this.cookies.write(this.getLocationCookie, 'nope', { path: `/${this.tenant.currentTenant}` });
       this.location.clearLocation();
     }
-  } 
+  }
 
   setUpdateLocationAllowed(allow) {
     if (allow) {

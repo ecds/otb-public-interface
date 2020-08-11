@@ -1,15 +1,13 @@
-<section id={{concat "otb-gallery-" @sortedMedia.firstObject.stop.slug @sortedMedia.firstObject.stop.id}} class="uk-position-relative uk-visible-toggle otb-common-gallery" tabindex="-1" uk-slideshow animation="push">
-  <ul class="uk-slideshow-items">
+<section id={{concat "otb-gallery-" @sortedMedia.firstObject.stop.slug @sortedMedia.firstObject.stop.id}} class="uk-position-relative uk-visible-toggle otb-common-gallery" tabindex="-1" uk-slideshow max-height="600">
+  <ul class="uk-slideshow-items uk-child-width-1-1" uk-grid>
     {{#each @sortedMedia as |sortedMedium|}}
-      <li uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" onclick={{action this.showEmbed sortedMedium.medium}}>
+      <li class="uk-text-center" uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" onclick={{action this.showEmbed sortedMedium.medium}}>
         <img
           data-sizes={{sortedMedium.medium.srcset_sizes}}
           data-src={{concat this.imageBasePath sortedMedium.medium.mobile}}
           data-srcset={{sortedMedium.medium.srcset}}
           class="lazyload"
           alt={{sortedMedium.medium.caption}}
-          uk-cover
-
         >
         {{#if sortedMedium.medium.video}}
           <div class="uk-position-center uk-panel otb-common-playbutton-overlay">
@@ -48,7 +46,7 @@
             <p>{{sortedMedium.medium.caption}}</p>
             {{#if this.deviceContext.isDesktop}}
               <p>
-                <a href={{concat this.imageBasePath sortedMedium.medium.originalImage.url}} target="_blank" rel="noopener">See larger version</a>
+                <a href={{concat this.imageBasePath sortedMedium.medium.originalImage.url}} rel="noopener noreferrer" target="_blank">See larger version</a>
               </p>
             {{/if}}
           </figcaption>
