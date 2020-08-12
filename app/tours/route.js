@@ -93,7 +93,7 @@ export default class ToursRoute extends Route {
         tagId: 'meta-twitter-title',
         attrs: {
           name: 'twitter:title',
-          content: model.firstObject.get('title')
+          content: model.firstObject.get('tenantTitle')
         }
       },
       {

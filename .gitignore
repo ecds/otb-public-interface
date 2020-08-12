@@ -21,6 +21,7 @@ node_modules/
 */npm-debug.log*
 */testem.log
 */yarn-error.log
+*environment.js
 
 # ember-try
 */.node_modules.ember-try/
