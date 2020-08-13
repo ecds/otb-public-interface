@@ -94,6 +94,14 @@ export default class IndexRoute extends Route {
           name: 'twitter:image',
           content: 'https://api.opentour.emory.edu/uploads/logo.png'
         }
+      },
+      {
+        type: 'meta',
+        tagId: 'meta-twitter-card',
+        attrs: {
+          name: 'twitter:card',
+          content: 'summary_large_image'
+        }
       }
     ]
   }
