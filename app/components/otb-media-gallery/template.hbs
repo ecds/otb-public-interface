@@ -1,7 +1,7 @@
 <section id={{concat "otb-gallery-" @sortedMedia.firstObject.stop.slug @sortedMedia.firstObject.stop.id}} class="uk-position-relative uk-visible-toggle otb-common-gallery" tabindex="-1" uk-slider="center: true" max-height="600">
   <ul class="uk-slider-items uk-child-width-3-4 uk-margin-top" uk-grid>
     {{#each @sortedMedia as |sortedMedium|}}
-      <li class="uk-text-center uk-align-bottom uk-margin-remove" uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" onclick={{action this.showEmbed sortedMedium.medium}}>
+      <li class="uk-text-center uk-align-bottom uk-margin-remove" uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" onclick={{action this.showEmbed sortedMedium}}>
         <img
           data-sizes={{sortedMedium.medium.srcset_sizes}}
           data-src={{concat this.imageBasePath sortedMedium.medium.mobile}}
@@ -25,7 +25,12 @@
 </section>
 
 {{#each @sortedMedia as |sortedMedium|}}
-  <div id={{concat "modal-" sortedMedium.position sortedMedium.medium.id}} class="uk-flex-top {{this.deviceContext.deviceContextClass}}" uk-modal>
+  <div
+    id={{concat "modal-" sortedMedium.position sortedMedium.medium.id}}
+    class="uk-flex-top {{this.deviceContext.deviceContextClass}}"
+    {{did-insert this.initModal sortedMedium}}
+    {{on "beforehide" (fn this.pauseYouTube (concat "modal-" sortedMedium.position sortedMedium.medium.id) sortedMedium.medium.provider)}}
+  >
     <section class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
       <button class="uk-modal-close-outside" type="button" uk-close></button>
       {{#if sortedMedium.medium.loadEmbed}}
@@ -35,7 +40,7 @@
           <figure class="uk-card-media-top uk-text-center uk-margin-top">
             <img
               data-sizes={{sortedMedium.medium.srcset_sizes}}
-              data-src={{concat this.imageBasePath (if this.deviceContext.isDesktop sortedMedium.medium.desktop sortedMedium.medium.tablet)}}
+              data-src={{concat this.imageBasePath (if this.deviceContext.isDesktop sortedMedium.medium.originalImage sortedMedium.medium.desktop)}}
               data-srcset={{sortedMedium.medium.srcset}}
               class="lazyload"
               alt={{sortedMedium.medium.caption}}

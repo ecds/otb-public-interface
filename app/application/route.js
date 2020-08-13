@@ -46,7 +46,7 @@ export default class ApplicationRoute extends Route {
         tagId: 'meta-og-url',
         attrs: {
           property: 'og:url',
-          content: `${ENV.APP.API_HOST}${this._router.currentURL}`
+          content: `${ENV.APP.HOST}${this._router.currentURL}`
         }
       },
       {

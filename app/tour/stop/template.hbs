@@ -3,8 +3,6 @@
     {{liquid-outlet class="stop-content"}}
   {{/liquid-bind}}
 
-  {{log this.model.tourStop}}
-  
   <div class="uk-position-fixed otb-mobile-bottom-navbar" data-theme={{this.theme.name}}>
     <div class="uk-grid-collapse uk-child-width-1-4 uk-text-center" uk-grid>
       <span role="link" tabindex="0" onclick={{action this.gotToStop this.model.tourStop.previous_slug}} class="uk-padding-small {{unless this.model.tourStop.previous "otb-mobile-inactive"}}">
