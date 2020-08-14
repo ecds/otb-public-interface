@@ -44,7 +44,7 @@ export default class IndexRoute extends Route {
         tagId: 'meta-og-image-tag',
         attrs: {
           property: 'og:image',
-          content: 'http://otbimages.ecdsdev.org/uploads/logo.png'
+          content: 'http://otbimages.ecdsdev.org/uploads/logo_w_bg.png'
         }
       },
       {
@@ -68,7 +68,7 @@ export default class IndexRoute extends Route {
         tagId: 'meta-og-secure-image-tag',
         attrs: {
           property: 'og:image:secure_url',
-          content: 'https://api.opentour.emory.edu/uploads/logo.png'
+          content: 'https://api.opentour.emory.edu/uploads/logo_w_bg.png'
         }
       },
       {
@@ -92,7 +92,7 @@ export default class IndexRoute extends Route {
         tagId: 'meta-twitter-image',
         attrs: {
           name: 'twitter:image',
-          content: 'https://api.opentour.emory.edu/uploads/logo.png'
+          content: 'https://api.opentour.emory.edu/uploads/logo_w_bg.png'
         }
       },
       {

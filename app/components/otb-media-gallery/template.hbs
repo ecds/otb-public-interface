@@ -46,8 +46,11 @@
               alt={{sortedMedium.medium.caption}}
             >
           </figure>
-          <figcaption class="uk-card-body">
-            <h3 class="uk-card-title">{{sortedMedium.medium.title}}</h3>
+          <figcaption class="uk-card-body uk-padding-remove-top">
+            {{#if this.deviceContext.isMobile}}
+              <p class="uk-text-small uk-text-center">PINCH TO ZOOM IMAGE</p>
+            {{/if}}
+            <h3 class="uk-card-title uk-margin-remove-top">{{sortedMedium.medium.title}}</h3>
             <p>{{sortedMedium.medium.caption}}</p>
             {{#if this.deviceContext.isDesktop}}
               <p>
