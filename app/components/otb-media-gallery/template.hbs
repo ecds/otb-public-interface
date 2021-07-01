@@ -1,14 +1,12 @@
-<section id={{concat "otb-gallery-" @sortedMedia.firstObject.stop.slug @sortedMedia.firstObject.stop.id}} class="uk-position-relative uk-visible-toggle otb-common-gallery" tabindex="-1" uk-slider="center: true" max-height="600">
-  <ul class="uk-slider-items uk-child-width-3-4 uk-margin-top" uk-grid>
+<section class="uk-position-relative uk-visible-toggle" id={{concat "otb-gallery-" @sortedMedia.firstObject.stop.slug @sortedMedia.firstObject.stop.id}} tabindex="-1" uk-slideshow>
+  <ul class="uk-slideshow-items uk-margin-top">
     {{#each @sortedMedia as |sortedMedium|}}
-      <li class="uk-text-center uk-align-bottom uk-margin-remove" uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" onclick={{action this.showEmbed sortedMedium}}>
-        <img
-          data-sizes={{sortedMedium.medium.srcset_sizes}}
-          data-src={{concat this.imageBasePath sortedMedium.medium.mobile}}
-          data-srcset={{sortedMedium.medium.srcset}}
-          class="lazyload"
-          alt={{sortedMedium.medium.caption}}
-        >
+      <li class="uk-text-center" uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" onclick={{action this.showEmbed sortedMedium}}>
+        <picture class="uk-position-center {{if sortedMedium.loaded "" "otb-gallery-picture-loading"}}">
+          <source srcset={{sortedMedium.medium.files.desktop}} media="(min-width: 824px)">
+          <source srcset={{sortedMedium.medium.files.tablet}} media="(min-width: 450px)">
+          <img src={{sortedMedium.medium.files.mobile}} alt={{sortedMedium.medium.caption}} {{on "load" (toggle 'loaded' sortedMedium)}}>
+        </picture>
         {{#if sortedMedium.medium.video}}
           <div class="uk-position-center uk-panel otb-common-playbutton-overlay">
             <FaIcon @icon={{"play-circle"}} />
@@ -18,9 +16,9 @@
     {{/each}}
   </ul>
 
-  <a class="uk-position-center-left uk-position-small uk-light" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
-  <a class="uk-position-center-right uk-position-small uk-light" href="#" uk-slidenav-next uk-slider-item="next"></a>
-  <ul class="uk-slider-nav uk-dotnav uk-flex-center uk-margin"></ul>
+  <a class="uk-position-center-left uk-position-small uk-light" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+  <a class="uk-position-center-right uk-position-small uk-light" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+  <ul class="uk-slideshow-nav uk-dotnav uk-flex-center uk-margin"></ul>
 
 </section>
 
@@ -29,35 +27,37 @@
     id={{concat "modal-" sortedMedium.position sortedMedium.medium.id}}
     class="uk-flex-top {{this.deviceContext.deviceContextClass}}"
     {{did-insert this.initModal sortedMedium}}
-    {{on "beforehide" (fn this.pauseYouTube (concat "modal-" sortedMedium.position sortedMedium.medium.id) sortedMedium.medium.provider)}}
+    {{on "hidden" (toggle 'loadEmbed' sortedMedium)}}
+    {{on "beforeshow" (toggle 'loadEmbed' sortedMedium)}}
   >
     <section class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
       <button class="uk-modal-close-outside" type="button" uk-close></button>
-      {{#if sortedMedium.medium.loadEmbed}}
-        {{sortedMedium.medium.safeEmbed}}
+      {{#if sortedMedium.loadEmbed}}
+        <iframe width="1920" height="1080" frameborder="0" title={{sortedMedium.medium.title}} src={{sortedMedium.medium.safeEmbed}} uk-video uk-responsive></iframe>
+        {{#if sortedMedium.medium.caption}}
+          <p>{{sortedMedium.medium.caption}}</p>
+        {{/if}}
       {{else}}
         <div class="uk-card uk-card-default">
           <figure class="uk-card-media-top uk-text-center uk-margin-top">
-            <img
-              data-sizes={{sortedMedium.medium.srcset_sizes}}
-              data-src={{concat this.imageBasePath (if this.deviceContext.isDesktop sortedMedium.medium.originalImage sortedMedium.medium.desktop)}}
-              data-srcset={{sortedMedium.medium.srcset}}
-              class="lazyload"
-              alt={{sortedMedium.medium.caption}}
-            >
+            <picture>
+              <source srcset={{sortedMedium.medium.files.desktop}} media="(min-width: 824px)">
+              <source srcset={{sortedMedium.medium.files.tablet}} media="(min-width: 450px)">
+              <img src={{sortedMedium.medium.files.mobile}} alt={{sortedMedium.medium.caption}}>
+            </picture>
+            <figcaption class="uk-card-body uk-padding-remove-top">
+              {{#if this.deviceContext.isMobile}}
+                <p class="uk-text-small uk-text-center">PINCH TO ZOOM IMAGE</p>
+              {{/if}}
+              <h3 class="uk-card-title uk-margin-remove-top">{{sortedMedium.medium.title}}</h3>
+              <p>{{sortedMedium.medium.caption}}</p>
+              {{#if this.deviceContext.isDesktop}}
+                <p>
+                  <a href={{concat this.imageBasePath sortedMedium.medium.originalImage.url}} rel="noopener noreferrer" target="_blank">See larger version</a>
+                </p>
+              {{/if}}
+            </figcaption>
           </figure>
-          <figcaption class="uk-card-body uk-padding-remove-top">
-            {{#if this.deviceContext.isMobile}}
-              <p class="uk-text-small uk-text-center">PINCH TO ZOOM IMAGE</p>
-            {{/if}}
-            <h3 class="uk-card-title uk-margin-remove-top">{{sortedMedium.medium.title}}</h3>
-            <p>{{sortedMedium.medium.caption}}</p>
-            {{#if this.deviceContext.isDesktop}}
-              <p>
-                <a href={{concat this.imageBasePath sortedMedium.medium.originalImage.url}} rel="noopener noreferrer" target="_blank">See larger version</a>
-              </p>
-            {{/if}}
-          </figcaption>
         </div>
       {{/if}}
     </section>

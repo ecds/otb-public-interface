@@ -13,8 +13,6 @@ export default class MediumModel extends Model {
   @attr('string') desktop;
   @attr('string') tablet;
   @attr('string') mobile;
-  @attr('string') srcset;
-  @attr('string') srcset_sizes;
   @attr('string') insecure;
   @attr('string') provider;
   @attr('number') desktop_height;
@@ -22,6 +20,7 @@ export default class MediumModel extends Model {
   @hasMany('tour') tours;
   @hasMany('stop') stops;
   @attr('boolean', { defaultValue: false }) loadEmbed;
+  @attr() files;
 
   get baseUrl() {
     return `${ENV.APP.API_HOST}`;

@@ -24,13 +24,13 @@ $mobile-bottom-nav-height-landscape: 60px;
 }
 
 .mobile {
-  #map-container:first-child {
+  // #map-container:first-child {
+  //   width: 100vw;
+  // }
+  .ember-google-map {
+    height: calc(100vh - 160px);
+    top: 80px;
     width: 100vw;
-  }
-
-  iframe {
-    height: 33vmax;
-    width: 33vmax;
   }
 }
 
@@ -204,8 +204,9 @@ $mobile-bottom-nav-height-landscape: 60px;
   background: white;
   height: 0;
   position: absolute;
-  transition: height 500ms;
+  transition: height 500ms, z-index 500ms;
   width: 100vw;
+  z-index: -1;
 }
 
 .portrait {
@@ -221,7 +222,12 @@ $mobile-bottom-nav-height-landscape: 60px;
   .otb-mobile-directions-panel {
     &.otb-mobile-directions-panel-show {
       height: calc(100vh - (#{$mobile-top-nav-height-portrait} + #{$mobile-top-nav-height-portrait} + 5rem));
+      z-index: 1;
     }
+
+    // &.otb-mobile-directions-panel-hide {
+    //   opacity: 0;
+    // }
   }
 }
 
@@ -276,4 +282,8 @@ $mobile-bottom-nav-height-landscape: 60px;
 
 .otb-mobile-modal {
   top: 25vh;
+}
+
+.otb-mobile-footer {
+  min-height: 200px;
 }

@@ -30,7 +30,10 @@ export default class DeviceContextService extends Service {
   }
 
   setDeviceContext() {
-    if (this.fastboot.isFastBoot) return;
+    if (this.fastboot.isFastBoot) {
+      this.deviceContextClass = 'mobile';
+      return;
+    }
 
     this.set('windowWidth', window.innerWidth);
     if (window.innerWidth > this.maxMobileWidth) {
@@ -41,7 +44,10 @@ export default class DeviceContextService extends Service {
   }
 
   setWindowWidth() {
-    if (this.fastboot.isFastBoot) return;
-    this.set('windowWidth', window.innerWidth);
+    if (this.fastboot.isFastBoot) {
+      this.windowWidth = 400;
+    } else {
+      this.set('windowWidth', window.innerWidth);
+    }
   }
 }

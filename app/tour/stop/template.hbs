@@ -1,7 +1,9 @@
 {{#unless this.deviceContext.isDesktop}}
-  {{#liquid-bind this.model.tourStop.tourStop use="stop"}}
+  {{!-- {{#liquid-bind this.model.tourStop.tourStop use="stop"}}
     {{liquid-outlet class="stop-content"}}
-  {{/liquid-bind}}
+  {{/liquid-bind}} --}}
+
+  {{outlet}}
 
   <div class="uk-position-fixed otb-mobile-bottom-navbar" data-theme={{this.theme.name}}>
     <div class="uk-grid-collapse uk-child-width-1-4 uk-text-center" uk-grid>

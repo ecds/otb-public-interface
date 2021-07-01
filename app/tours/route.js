@@ -22,7 +22,7 @@ export default class ToursRoute extends Route {
     return this.store.findAll('tour');
   }
 
-  afterModel(model) {
+  async afterModel(model) {
     if (model.length == 1) {
       if (ENV.APP.TENANT) {
         this.transitionTo('tour.overview', model.firstObject.slug);
@@ -30,6 +30,7 @@ export default class ToursRoute extends Route {
         this.transitionTo('tour.overview', this.tenant.currentTenant, model.firstObject.slug);
       }
     }
+
   }
 
   title() {
@@ -109,10 +110,10 @@ export default class ToursRoute extends Route {
         tagId: 'meta-twitter-image',
         attrs: {
           name: 'twitter:image',
-          content: model.firstObject.get('splashUrl')
+          content: model.firstObject.splashUrl
         }
       }
-    ]
+    ];
   }
 
   // /**

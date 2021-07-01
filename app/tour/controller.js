@@ -7,6 +7,8 @@ import MapUtil from '../utils/google-maps';
 
 export default class TourController extends Controller {
   @service deviceContext;
+  @service store;
+  @service tenant;
   @service theme;
 
   showStopGrid = false;
@@ -19,33 +21,25 @@ export default class TourController extends Controller {
   }
 
   @restartableTask
-  setActiveStop = function*(stops, stop, scrollTo) {
+  setActiveStop = function*(stops, stop, scrollTo=false) {
+    if (stop.promise) {
+      stop = this.store.peekRecord('stop', stop.get('id'));
+    }
     yield timeout(500);
     if (!this.deviceContext.isDesktop) return;
-    stops.forEach(stop => {
-      stop.setProperties({
-        active: false
-      });
-      if (stop.marker) {
-        this.mapUtil.deactivateMarker(stop);
-      }
-    });
-    if (stop) {
-      stop.setProperties({
-        active: 'true'
-      });
-      if (stop.marker) {
-        this.mapUtil.activateMarker(stop);
-      }
-    }
+
     if (scrollTo) {
       const stopEl = document.getElementById(
         `${stop.get('stop.slug')}-${stop.get('stop.id')}`
       );
       stopEl.firstElementChild.scrollIntoView();
-      window.scrollBy(0, -80)
+      window.scrollBy(0, -80);
     }
-    this.transitionToRoute('tour.stop', stop.slug)
+    if (stop) {
+      this.transitionToRoute('tour.stop', stop.slug);
+    } else {
+      this.transitionToRoute('tour', this.model.slug);
+    }
     yield timeout(300);
   };
 }

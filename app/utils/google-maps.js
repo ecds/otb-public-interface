@@ -1,20 +1,35 @@
 import EmberObject from '@ember/object';
+import { icon as faIcon } from '@fortawesome/fontawesome-svg-core';
 
 const google = window.google;
 
 export default EmberObject.extend({
 
-  // init() {
-  //   this.set('geocoder', new google.maps.Geocoder());
-  // },
-
-  parkingIcon() {
+  parkingIconSVG() {
     return {
-      url: '/assets/icons/parking.svg',
-      size: new google.maps.Size(90, 90),
-      scaledSize: new google.maps.Size(40, 40),
-      anchor: new google.maps.Point(15, 15),
-      origin: new google.maps.Point(0, 0)
+      path: faIcon({ prefix: 'fas', iconName: 'map-marker' }).icon.lastObject,
+      fillColor: 'blue',
+      fillOpacity: 1,
+      scale: 0.075,
+      anchor: new google.maps.Point(200, 550),
+      labelOrigin: new google.maps.Point(200, 200)
+    };
+  },
+
+  iconSVG(fillColor='#D32F2F') {
+    return {
+      path: faIcon({ prefix: 'fas', iconName: 'map-marker' }).icon.lastObject,
+      fillColor,
+      fillOpacity: 1,
+      scale: 0.075,
+      anchor: new google.maps.Point(200, 550),
+      labelOrigin: new google.maps.Point(200, 200)
+    };
+  },
+
+  imageIcon(url) {
+    return {
+      url
     };
   },
 
@@ -34,10 +49,10 @@ export default EmberObject.extend({
     return map;
   },
 
-  addMarker(map, cords, parking=false, animation=false) {
+  addMarker(map, cords, parking=false, stop, animation=false) {
     if (!google) return;
     if (animation) {
-      animation = google.maps.Animation.DROP
+      animation = google.maps.Animation.DROP;
     }
     const marker = new google.maps.Marker({
       position: cords,
@@ -46,13 +61,18 @@ export default EmberObject.extend({
     });
 
     if (parking) {
-      marker.setIcon(this.parkingIcon());
+      marker.setIcon(this.parkingIconSVG());
+      marker.setLabel({ text: 'P', color: 'white' });
     } else {
-      marker.setIcon(this.icon());
+      if (stop.get('mapIcon.imageUrl')) {
+        marker.setIcon(this.imageIcon(stop.get('mapIcon.imageUrl')));
+      } else {
+        marker.setIcon(this.iconSVG(stop.get('iconColor')));
+      }
     }
 
     marker.setMap(map);
-    return marker
+    return marker;
   },
 
   activateMarker(stop) {
@@ -73,15 +93,15 @@ export default EmberObject.extend({
     });
   },
 
-  icon() {
-    return {
-      scaledSize: new google.maps.Size(35, 35),
-      anchor: new google.maps.Point(20, 40),
-      origin: new google.maps.Point(0, 0),
-      labelOrigin: new google.maps.Point(18, 14),
-      url: '/assets/icons/map-marker.svg'
-    };
-  },
+  // icon() {
+  //   return {
+  //     scaledSize: new google.maps.Size(35, 35),
+  //     anchor: new google.maps.Point(20, 40),
+  //     origin: new google.maps.Point(0, 0),
+  //     labelOrigin: new google.maps.Point(18, 14),
+  //     url: '/assets/icons/map-marker.svg'
+  //   };
+  // },
 
   activeIcon() {
     return {
@@ -104,7 +124,7 @@ export default EmberObject.extend({
   addInfoWindow(content, marker, map) {
     const infowindow = new google.maps.InfoWindow({ content });
     marker.addListener('click', () => {
-      infowindow.open(map, marker)
+      infowindow.open(map, marker);
     });
   },
 

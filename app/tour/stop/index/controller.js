@@ -5,4 +5,5 @@ export default class TourStopIndexController extends Controller {
   @service deviceOrientation;
   @service deviceContext;
   @service cookies;
+  @service tenant;
 }

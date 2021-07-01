@@ -4,7 +4,20 @@ import { hash } from 'rsvp';
 
 export default class TourStopRoute extends Route {
   @service deviceContext;
-  @service locationPermissions;
+  @service router;
+
+  constructor() {
+    super(...arguments);
+
+    this.router.on('routeDidChange', () => {
+      const { tour, tourStop } = this.modelFor('tour.stop');
+      const stop = this.store.peekRecord('stop', tourStop.get('stop.id'))
+      tour.get('stops').forEach(stop => {
+        stop.setProperties({ active: false });
+      });
+      stop.setProperties({ active: true });
+    });
+  }
 
   model(params) {
     return hash({
@@ -12,32 +25,32 @@ export default class TourStopRoute extends Route {
         slug: params.stop_slug,
         tour: this.modelFor('tour').id
       }),
-      tour: this.store.findRecord('tour', this.modelFor('tour').id)
+      tour: this.store.findRecord('tour', this.modelFor('tour').id),
+      modes: this.store.findAll('mode')
     });
   }
 
   afterModel(model) {
-    if (!this.deviceContext.isDesktop && this.locationPermissions.tour == null) {
-      this.locationPermissions.setTour(model.tour);
-    } else {
+    if (this.deviceContext.isDesktop) {
       this.controllerFor('tour').setActiveStop.perform(this.modelFor('tour').stops, model.tourStop, true);
     }
   }
 
   titleToken() {
     const model = this.modelFor('tour.stop').tourStop;
-    return model.stop.get('title');
+    return model.get('stop.title');
   }
 
   headTags() {
     const model = this.modelFor('tour.stop').tourStop;
+    const stop = this.store.peekRecord('stop', model.get('stop.id'));
     return [
       {
         type: 'meta',
         tagId: 'meta-og-title-tag',
         attrs: {
           property: 'og:title',
-          content: model.stop.get('title')
+          content: stop.title
         }
       },
       {
@@ -45,7 +58,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-og-description-tag',
         attrs: {
           property: 'og:description',
-          content: model.stop.get('metaDescription')
+          content: stop.metaDescription
         }
       },
       {
@@ -53,7 +66,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-og-image-tag',
         attrs: {
           property: 'og:image',
-          content: model.stop.get('insecureSplash')
+          content: stop.splashUrl
         }
       },
       {
@@ -61,7 +74,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-og-image-height',
         attrs: {
           property: 'og:image:height',
-          content: model.stop.get('splashHeight')
+          content: stop.splashHeight
         }
       },
       {
@@ -69,7 +82,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-og-width-tag',
         attrs: {
           property: 'og:image:width',
-          content: model.stop.get('splashWidth')
+          content: stop.splashWidth
         }
       },
       {
@@ -77,7 +90,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-og-secure-image-tag',
         attrs: {
           property: 'og:image:secure_url',
-          content: model.stop.get('splashUrl')
+          content: stop.splashUrl
         }
       },
       {
@@ -85,7 +98,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-twitter-title',
         attrs: {
           name: 'twitter:title',
-          content: model.stop.get('title')
+          content: stop.title
         }
       },
       {
@@ -93,7 +106,7 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-twitter-description',
         attrs: {
           name: 'twitter:description',
-          content: model.stop.get('metadescription')
+          content: stop.metadescription
         }
       },
       {
@@ -101,9 +114,9 @@ export default class TourStopRoute extends Route {
         tagId: 'meta-twitter-image',
         attrs: {
           name: 'twitter:image',
-          content: model.stop.get('splashUrl')
+          content: stop.splashUrl
         }
       }
-    ]
+    ];
   }
 }

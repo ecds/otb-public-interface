@@ -1,24 +1,16 @@
 import Service from '@ember/service';
-import { computed } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { timeout } from 'ember-concurrency';
-import { dropTask } from 'ember-concurrency-decorators';
+import { dropTask, timeout } from 'ember-concurrency';
 import { tracked } from '@glimmer/tracking';
-// import UIkit from 'uikit';
 
 export default class LocationService extends Service {
   @service fastboot;
-  @service cookies;
-  @service locationPermissions;
-  @service maps;
 
   @tracked clientLocation = null;
-  @tracked watcherId = null;
-  @tracked locationPermissionSet = false;
-  @tracked isFastBoot = this.fastboot.isFastBoot;
+  watcherId = null;
   @tracked errorMessage = null;
 
-  tour = this.tour || null;
+  notAllowed = true;
 
   get geoOptions() {
     return {
@@ -28,20 +20,9 @@ export default class LocationService extends Service {
     };
   }
 
-  @computed('clientLocation', 'errorMessage')
-  get status() {
-    if (this.errorMessage) {
-      return this.errorMessage;
-    }
-    else if (!this.clientLocation.lat) {
-      return 'Locating...';
-    }
-    return false;
-  }
-
   @dropTask
   updateLocation = function*(location) {
-    if (this.isFastBoot || !this.locationPermissions.locationAllowed) return false;
+    if (this.notAllowed || this.isFastBoot) return false;
     if (this.clientLocation && this.clientLocation.lat == location.coords.latitude && this.clientLocation.lng == location.coords.longitude) return;
     this.clientLocation = {
       lat: location.coords.latitude,
@@ -49,44 +30,48 @@ export default class LocationService extends Service {
     };
     this.errorMessage = null;
     yield timeout(5000);
-    this.maps.calcRoute();
   }
 
-  getLocation() {
-    if (this.fastboot.isFastBoot || !this.locationPermissions.locationAllowed) return;
+  // TODO: make this a task so we can let people know it is trying
+  @dropTask
+  *getLocation() {
+    if (this.notAllowed || this.fastboot.isFastBoot) return;
+    yield timeout(300);
     navigator.geolocation.getCurrentPosition(
       location => {
         this.updateLocation.perform(location, true);
+        this.cleared = false;
+        return location;
       }, error => {
         this.errorMessage = error.message;
+        this.getLocation.perform();
       },
       this.geoOptions
-    )
+    );
   }
 
-  startLocationWatcher() {
+  @dropTask
+  *startLocationWatcher() {
     // TODO handel notSupported
     if (this.fastboot.isFastBoot) return false;
+    yield timeout(300);
+    if (this.watcherId) return;
     if (!('geolocation' in navigator)) return this.notSupported();
     if (!this.watcherId) {
       this.watcherId = navigator.geolocation.watchPosition(
         location => {
           this.updateLocation.perform(location);
         }, error => {
-          this.errorMessage = error.message
+          this.errorMessage = error.message;
         },
         this.geoOptions
-      )
+      );
     }
   }
 
   stopLocationWatcher() {
+    if (!this.watcherId) return;
     navigator.geolocation.clearWatch(this.watcherId);
     this.watcherId = null;
-  }
-
-  clearLocation() {
-    if (this.watcherId) this.stopLocationWatcher();
-    this.clientLocation = null;
   }
 }

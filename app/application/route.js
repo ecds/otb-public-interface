@@ -19,13 +19,14 @@ export default class ApplicationRoute extends Route {
     // const currentLoc = `${window.location.hostname}:${window.location.port}`;
     // const externalUrl = model.firstObject.external_url;
     if (ENV.APP.TENANT) {
-      this.transitionTo('tours')
+      this.transitionTo('tours');
     }
   }
 
   @action
   didTransition() {
     if (this.fastboot.isFastBoot) return;
+    if (ENV.environment != 'production') return;
     const page = this._router.currentURL;
     const title = this._router.currentRouteName || 'unknown';
     this.metrics.trackPage({ page, title });
@@ -49,20 +50,20 @@ export default class ApplicationRoute extends Route {
           content: `${ENV.APP.HOST}${this._router.currentURL}`
         }
       },
-      {
-        type: 'script',
-        tagId: 'google-analytics',
-        attrs: {
-          type: 'text/javascript'
-        },
-        content: `(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-          (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      // {
+      //   type: 'script',
+      //   tagId: 'google-analytics',
+      //   attrs: {
+      //     type: 'text/javascript'
+      //   },
+      //   content: `(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      //     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      //     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      //     })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-          ga('create', '${ENV.APP.GA_ID}', 'auto');
-          ga('send', 'pageview');`
-      },
-    ]
+      //     ga('create', '${ENV.APP.GA_ID}', 'auto');
+      //     ga('send', 'pageview');`
+      // },
+    ];
   }
 }

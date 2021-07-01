@@ -72,6 +72,11 @@ body {
   position: fixed !important;
   right: 0;
   width: 50vw;
+
+  .ember-google-map {
+    height: 100vh;
+    width: 50vw;
+  }
 }
 
 .otb-desktop-main {
@@ -93,7 +98,7 @@ body {
   .uk-slideshow-items {
     padding-top: 80px;
     // min-height: 33vh !important;
-  
+
     // li {
     //   top: unset;
     // }
@@ -116,4 +121,8 @@ body {
       font-size: .75rem;
     }
   }
+}
+
+#otb-desktop-stop-list {
+  width: 50vw;
 }

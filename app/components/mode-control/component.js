@@ -1,48 +1,40 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+// import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+// import { tracked } from '@glimmer/tracking';
 import UIkit from 'uikit';
-import MapUtil from '../../utils/google-maps';
 
 export default class ModeControlComponent extends Component {
-  @service cookies;
-  @service store;
-  @service tenant;
-  @service maps;
+  // @service cookies;
+  // @service store;
+  // @service tenant;
+  // @service maps;
 
-  mapUtil = MapUtil.create();
+  // @tracked
+  // currentMode = null;
+
+  get dropDown() {
+    return document.getElementById('mode-options');
+  }
 
   @action
   setMode(mode) {
-    if (mode.constructor == HTMLButtonElement) {
-      mode = this.tourModeFromCookie;
-      if (this.args.parentId == 'map-mode-control') {
-        this.mapUtil.addControl(this.maps.map, 'map-mode-control', 'TOP_LEFT');
-        this.maps.controlElements.push(document.getElementById('map-mode-control'));
-        this.maps.set('modeControl', document.getElementById('map-mode-control'));
-      }
-    } else {
-      this.maps.set('travelMode', mode.get('title'));
-      UIkit.dropdown(document.getElementById('mode-options')).hide();
-      this.cookies.write(this.tourModeCookieName, mode.get('id'), { path: `/${this.tenant.currentTenant}/${this.args.tour.slug}` });
-      this.maps.calcRoute();
-    }
-    this.args.tour.set('mode', mode);
-    this.maps.set('travelMode', mode.get('title'));
+    this.args.tour.setProperties({ currentMode: mode });
+    if (this.dropDown) UIkit.dropdown(this.dropDown).hide();
   }
 
-  get tourModeFromCookie() {
-    const preferredMode = this.cookies.read(this.tourModeCookieName);
-    if (preferredMode) {
-      let modeFromCookie = this.store.peekRecord('mode', preferredMode);
-      return modeFromCookie;
-    }
-    // Fall back to default for Tour.
-    return this.args.tour.mode;
-  }
-  
-  get tourModeCookieName() {
-    const tour = this.args.tour;
-    return `${tour.slug}-${tour.id}-travel-mode`
-  }
+  // get tourModeFromCookie() {
+  //   const preferredMode = this.cookies.read(`${tour.slug}-${tour.id}-travel-mode`);
+  //   if (preferredMode) {
+  //     let modeFromCookie = this.store.peekRecord('mode', preferredMode);
+  //     return modeFromCookie;
+  //   }
+  //   // Fall back to default for Tour.
+  //   return this.args.tour.mode;
+  // }
+
+  // get tourModeCookieName() {
+  //   const tour = this.args.tour;
+  //   return `${tour.slug}-${tour.id}-travel-mode`
+  // }
 }

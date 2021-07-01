@@ -1,8 +1,8 @@
 <nav class="uk-navbar uk-light uk-background-secondary" uk-navbar>
   <div class="uk-navbar-left">
     <span class="uk-logo">
-      <img src="/assets/images/otblogo.png" alt="Branding">
-      {{this.this.sortedTours.firstObject.tenantTitle}}
+      <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
+      {{this.tenant.tenantModel.name}}
     </span>
   </div>
 </nav>
@@ -15,15 +15,7 @@
           <div class="uk-transition-toggle">
             <div class="uk-card uk-card-small uk-card-default uk-transition-scale-up uk-transition-opaque">
               <div class="uk-card-media-top uk-text-center">
-                {{!-- <object data={{concat "https://api.opentour.emory.edu" tour.splash.original_image.desktop.url}} type="image/png"> --}}
-                {{#if tour.splash}}
-                  <img
-                    src={{concat "https://api.opentour.emory.edu" tour.splash.original_image.desktop.url}}
-                    alt={{concat "Splash image for " tour.title}}>
-                {{else}}
-                  <img src="/assets/images/otb-bg.png" alt="Place holder for tour.">
-                {{/if}}
-                {{!-- </object> --}}
+                <img src={{tour.splashUrl}} alt={{concat "Splash image for " tour.title}}>
               </div>
               <div class="uk-card-body">
                 <h3 class="uk-card-title">{{tour.title}}</h3>
@@ -71,15 +63,11 @@
     <TenantLink @route="tour" @tenant={{tour.tenant}} @segment={{tour.slug}}>
       <div class="uk-card uk-card-default uk-card-small {{if tour.show "uk-animation-slide-bottom"}}">
         <div class="uk-card-media-top">
-          {{#if tour.splash}}
-            <img src="{{this.remoteHost}}/{{tour.splash.original_image.tablet.url}}" alt="Default image for {{tour.title}}. {{tour.splash.caption}}" class="otb-mobile-tour-list-splash">
-          {{else}}
-            <img src="/assets/images/otb-bg.png" alt="Open Tour logo as placeholder">
-          {{/if}}
+          <img src={{tour.splashUrl}} alt={{concat "Splash image for " tour.title}}>
         </div>
         <div class="uk-card-body">
           <h4 class="uk-card-title">{{tour.title}}</h4>
-          {{tour.stops.length}} Stops
+          {{tour.stopCount}} Stops
         </div>
       </div>
     </TenantLink>

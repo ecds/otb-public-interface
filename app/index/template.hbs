@@ -24,17 +24,22 @@
 <section class="uk-container uk-margin-top">
   <ul class="uk-list">
     {{#each this.model as |tourSet|}}
-      <li class="toursitename"><h2 style="line-height: 1.5; font-size: 16px;">
-        <a href="{{tourSet.subdir}}" aria-label="{{tourSet.name}}">
-          {{tourSet.name}}
-        </a></h2>
+      <li class="toursitename">
+        <h2 style="line-height: 1.5; font-size: 16px;">
+          {{!-- <a href="{{tourSet.subdir}}" aria-label="{{tourSet.name}}">
+            {{tourSet.name}}
+          </a> --}}
+          <LinkTo @route={{'tours'}} @model={{tourSet.subdir}}>
+            {{tourSet.name}}
+          </LinkTo>
+        </h2>
       </li>
       <ul>
         {{#each tourSet.publishedTours as |tour|}}
           <li class="tourname">
-            <a href="{{tourSet.subdir}}/{{tour.slug}}" aria-label="{{tour.title}}">
+            <LinkTo @route='tour' @models={{array tourSet.subdir tour.slug}}>
               {{tour.title}}
-            </a>
+            </LinkTo>
           </li>
         {{/each}}
       </ul>

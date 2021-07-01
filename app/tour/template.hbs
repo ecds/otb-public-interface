@@ -3,7 +3,7 @@
   <nav class="uk-navbar uk-light uk-background-secondary uk-margin uk-position-fixed otb-desktop-navbar" uk-navbar>
     <div class="uk-navbar-left">
       <LinkTo @route="tours">
-        <img src="/assets/images/otblogo.png" alt="Branding logo">
+        <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
       </LinkTo>
 
       <h1 class="uk-navbar-item uk-logo uk-margin-remove uk-padding-remove otb-desktop-tour-title">
@@ -12,7 +12,7 @@
       <div id="desktop-stop-grid" class="uk-navbar-dropdown otb-desktop-navbar-dropdown" uk-dropdown mode="hover" offset="0"
         animation="uk-animation-slide-top" boundary=".uk-navbar" boundary-align="true" align="center">
         <div uk-grid class="uk-child-width-1-6@l uk-child-width-1-4@m uk-child-width-1-1@s uk-dropdown-grid otb-desktop-dropdown-grid">
-          {{#each this.model.sortedStops as |tourStop|}}
+          {{#each this.model.sortedTourStops as |tourStop|}}
             <div onClick={{perform this.setActiveStop this.model.tourStops tourStop true}}>
               <a href="#">
                 <img src={{tourStop.stop.splashUrl}} alt="Image preview for stop.">
@@ -44,7 +44,7 @@
     </div>
   </nav>
   <div class="uk-grid-collapse uk-child-width-1-2 uk-position-absolute otb-desktop-main {{if this.showStopGrid "showing-stop-grid"}}" uk-grid>
-    <TourDesktopList @tourStops={{this.model.sortedStops}} @setActiveStop={{this.setActiveStop}} />
+    <TourDesktopList @tourStops={{this.model.sortedTourStops}} @setActiveStop={{this.setActiveStop}} />
     <div class="uk-position-fixed otb-desktop-map">
       <OverviewMap @tour={{this.model}} @setActiveStop={{this.setActiveStop}}></OverviewMap>
     </div>
@@ -54,19 +54,21 @@
   <nav class="uk-navbar uk-navbar-container otb-mobile-top-navbar" data-theme={{this.theme.name}}>
     <div class="uk-navbar-left">
       <ul class="uk-navbar-nav">
-        <li class="otb-mobile-hamburger">
+        <li>
           <a uk-toggle target="#flat-pages" class="uk-navbar-toggle" data-theme={{this.theme.name}}>
             {{fa-icon "bars" aria-hidden="true"}}
           </a>
         </li>
         <li>
+          {{log this.model}}
           <LinkTo @route="tour" @model={{this.model}} class="uk-logo" data-theme={{this.theme.name}}>{{this.model.title}}</LinkTo>
         </li>
       </ul>
     </div>
   </nav>
 
-  {{liquid-outlet class="uk-position-fixed"}}
+  {{!-- {{liquid-outlet class="uk-position-fixed"}} --}}
+  {{outlet}}
 
   {{!-- Offcanvas menu --}}
   <div id="flat-pages" uk-offcanvas overlay="true">

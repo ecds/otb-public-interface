@@ -103,6 +103,6 @@ export default class IndexRoute extends Route {
           content: 'summary_large_image'
         }
       }
-    ]
+    ];
   }
 }

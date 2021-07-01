@@ -15,4 +15,4 @@ module.exports = {
   "ssl": true,
   "ssl-key": "/Users/jay/data/certs/jay.lvh.me.key",
   "ssl-cert": "/Users/jay/data/certs/jay.lvh.me.crt"
-}
+};

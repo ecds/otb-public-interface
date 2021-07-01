@@ -1,14 +1,24 @@
-<button type="button" class="uk-button otb-mobile-map-control"  {{did-insert this.setMode}}>
-  <FaIcon @icon={{this.tourModeFromCookie.icon}} /> {{this.tourModeFromCookie.title}}
-</button>
-<div uk-dropdown class="uk-nav uk-dropdown-nav" id="mode-options" mode="click">
-  <ul class="uk-list">
-    {{#each @tour.modes as |mode|}}
-      {{#if (not-eq mode.title this.tourModeFromCookie.title)}}
-        <li role="button" onclick={{action this.setMode mode}}>
-          <FaIcon @icon={{mode.icon}} /> {{mode.title}}
-        </li>
-      {{/if}}
-    {{/each}}
-  </ul>
-</div>
+{{#if (has-block)}}
+  {{yield}}
+  {{#each @tour.modes as |mode|}}
+    <div>
+      <input disabled={{and @disableCurrent (eq mode.title @tour.currentMode.title)}} class="uk-radio" type="radio" name="travel-Mode" id={{concat mode.title "-" mode.id}} checked={{eq mode.title @tour.currentMode.title}} {{on "change" (fn this.setMode mode)}} />
+      <label for={{concat mode.title "-" mode.id}}><FaIcon @icon={{mode.icon}} /> {{mode.title}}</label>
+    </div>
+  {{/each}}
+{{else}}
+  <button type="button" class="uk-button otb-mobile-map-control">
+    <FaIcon @icon={{@tour.currentMode.icon}} /> {{@tour.currentMode.title}}
+  </button>
+  <div uk-dropdown class="uk-nav uk-dropdown-nav uk-padding-small" id="mode-options" mode="click">
+    <ul class="uk-list">
+      {{#each @tour.modes as |mode|}}
+        {{#if (not-eq mode.title @tour.currentMode.title)}}
+          <li role="button" {{on "click" (fn this.setMode mode)}}>
+            <FaIcon @icon={{mode.icon}} /> {{mode.title}}
+          </li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}

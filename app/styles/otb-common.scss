@@ -15,3 +15,11 @@ img.lazyloaded {
 #map-container:first-child {
   height: calc(100vh - 80px);
 }
+
+.otb-gallery-picture-loading {
+  background-image: url(/assets/images/loading.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 300px;
+  width: 300px;
+}

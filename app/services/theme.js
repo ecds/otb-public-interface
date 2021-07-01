@@ -16,7 +16,7 @@ export default class ThemeService extends Service {
 
   @computed('tour', 'base')
   get name() {
-    return `${this.base}-${this.theme}`
+    return `${this.base}-${this.theme}`;
   }
 
   setTour(tour) {

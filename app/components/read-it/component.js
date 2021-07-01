@@ -6,15 +6,13 @@ import { action } from '@ember/object';
 export default class ReadItComponent extends Component {
   @service fastboot;
 
-  @tracked speaking;
-  @tracked supported;
-  @tracked speechEnded;
-  @tracked synth;
-  @tracked utterance;
+  @tracked speaking = false;
+  @tracked supported = false;
+  @tracked synth = null;
+  @tracked utterance = null;
+  @tracked paused = false;
 
   read() {
-    this.utterance.text = this.args.content;
-    this.utterance.lang = navigator.language;
     this.synth.speak(this.utterance);
   }
 
@@ -24,8 +22,15 @@ export default class ReadItComponent extends Component {
     if ('speechSynthesis' in window) {
       this.supported = true;
       this.utterance = new SpeechSynthesisUtterance(this.args.content);
+      this.utterance.lang = this.args.lang || navigator.language;
+      this.utterance.text = this.args.content.substr(0, 250);
       this.utterance.onend = () => {
         this.speaking = false;
+        this.paused = false;
+      };
+      this.utterance.onstart = () => {
+        this.speaking = true;
+        this.paused = false;
       };
 
       this.synth = window.speechSynthesis;
@@ -45,16 +50,19 @@ export default class ReadItComponent extends Component {
   sayIt() {
     if (this.fastboot.isFastBoot) return;
     this.speaking = true;
-    if (this.synth.paused) {
+    if (this.paused) {
+      this.paused = false;
       this.synth.resume();
     } else {
-      this.read(this.args.content);
+      this.synth.cancel();
+      this.read();
     }
   }
 
   @action
   pause() {
     this.speaking = false;
+    this.paused = true;
     this.synth.pause();
   }
 }

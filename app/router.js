@@ -12,7 +12,7 @@ Router.map(function() {
   if (ENV.APP.TENANT) {
     this.route('tours', {
       path: '/'
-    })
+    });
     this.route('tour', {
      path: ':tour_slug'
     }, function() {
@@ -30,11 +30,11 @@ Router.map(function() {
         this.route('map');
         this.route('stops');
       });
-    })
+    });
   } else {
     this.route('tours', {
       path: ':tenant/'
-    })
+    });
     this.route('tour', {
      path: ':tenant/:tour_slug'
     }, function() {
@@ -52,7 +52,7 @@ Router.map(function() {
         this.route('map');
         this.route('stops');
       });
-    })
+    });
   }
 });
 

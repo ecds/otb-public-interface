@@ -9,7 +9,9 @@
       <StickyElement @top="80" @bottom="0">
         <h3>{{tourStop.position}}: {{tourStop.stop.title}}</h3>
       </StickyElement>
-      <OtbMediaGallery @sortedMedia={{tourStop.stop.sortedMedia}} />
+      {{#if tourStop.stop.hasMedia}}
+        <OtbMediaGallery @sortedMedia={{tourStop.stop.sortedMedia}} />
+      {{/if}}
       {{tourStop.stop.safeDescription}}
     </article>
   {{/each}}

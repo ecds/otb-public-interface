@@ -1,38 +1,27 @@
+import JSONAPIAdapter from '@ember-data/adapter/json-api';
 import { inject as service } from '@ember/service';
-import { computed } from '@ember/object';
-import DS from 'ember-data';
-// import DataAdapterMixin from 'ember-simple-auth/mixins/data-adapter-mixin';
 import ENV from '../config/environment';
 
-const { JSONAPIAdapter } = DS;
+export default class Application extends JSONAPIAdapter {
+  @service fastboot;
+  @service tenant;
 
-export default JSONAPIAdapter.extend({
-  fastboot: service(),
-  tenant: service(),
-  session: service(),
-  cookies: service(),
-
-  host: computed( function(){
+  get host() {
     return `${ENV.APP.API_HOST}/${this.tenant.currentTenant}`;
-  }),
+  }
 
-  headers: computed('session.data.authenticated.access_token', function(){
-    let headers = {};
-    let cookieService = this.cookies;
-    if (cookieService.exists('ember_simple_auth-session') == false) return;
-    let cookies = cookieService.read();
-    let access_token = JSON.parse(cookies['ember_simple_auth-session']).authenticated.access_token;
-    headers['Authorization'] = `Bearer ${access_token}`;
-    return headers;
-  })
+  ajaxOptions(/*defaultOptions, adapter*/) {
+    const options = super.ajaxOptions(...arguments);
 
-  // authorizer: 'authorizer:application'
+    if (!this.fastboot.isFastBoot) {
+      options.credentials = 'include';
+      // Because this app still has jQuery (required by liquid fire), the
+      // ajax requests are jQuery, not fetch :(
+      options.xhrFields = {
+        withCredentials: true
+     };
+    }
 
-  // authorize(xhr) {
-    // let cookieService = this.get('cookies');
-    // if (cookieService.exists('ember_simple_auth-session') == false) return;
-    // let cookies = cookieService.read();
-    // let access_token = JSON.parse(cookies['ember_simple_auth-session']).authenticated.access_token;
-  //   xhr.setRequestHeader('Authorization', `Bearer ${access_token}`);
-  // }
-});
+    return options;
+  }
+}

@@ -6,7 +6,7 @@
   @onLoad={{action this.fitBounds}}
   as |g|>
 
-  {{#each this.model.sortedStops as |tourStop|}}
+  {{#each this.model.sortedTourStops as |tourStop|}}
     <g.marker
       @lat={{tourStop.stop.lat}}
       @lng={{tourStop.stop.lng}}

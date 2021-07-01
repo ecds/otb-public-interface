@@ -4,5 +4,6 @@ const { Model, attr } = DS;
 export default class TourSetModel extends Model {
   @attr('string') name;
   @attr('string') subdir;
+  @attr('string') logoUrl;
   @attr() publishedTours;
 }

@@ -11,7 +11,7 @@ export default class OtbMediaGalleryComponent extends Component {
   @action
   showEmbed(medium) {
     if (!medium.get('medium.video')) return;
-    medium.medium.setProperties({ loadEmbed: true })
+    medium.medium.setProperties({ loadEmbed: true });
   }
 
   @action
@@ -20,14 +20,14 @@ export default class OtbMediaGalleryComponent extends Component {
     UIkit.modal(element, options);
   }
 
-  @action
-  pauseYouTube(elementId, provider) {
-    if (provider != 'youtube') return;
-    const iFrame = document.getElementById(elementId).querySelector('iFrame');
-    if (!iFrame) return;
-    iFrame.contentWindow.postMessage(
-      '{"event":"command","func":"' + 'pauseVideo' + '","args":""}',
-      '*'
-    );
-  }
+  // @action
+  // pauseYouTube(elementId, provider) {
+  //   if (provider != 'youtube') return;
+  //   const iFrame = document.getElementById(elementId).querySelector('iFrame');
+  //   if (!iFrame) return;
+  //   iFrame.contentWindow.postMessage(
+  //     '{"event":"command","func":"' + 'pauseVideo' + '","args":""}',
+  //     '*'
+  //   );
+  // }
 }

@@ -1,18 +1,24 @@
 import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
+import { tracked } from '@glimmer/tracking';
+import ENV from "../../config/environment";
 import 'intersection-observer';
 import scrollama from 'scrollama';
 
 
 export default class TourDesktopListComponent extends Component {
   @service fastboot;
-  
+  @service router;
+
   // https://www.youtube.com/watch?v=PFtHeo7oMSU
   redPajamas = scrollama();
 
+  @tracked
   scroller = null;
+  @tracked
   tourSlug = null;
+  @tracked
   pathBase = null;
 
   // Called on insert by the template.
@@ -25,7 +31,9 @@ export default class TourDesktopListComponent extends Component {
     const pathParts = window.location.pathname.split('/');
     this.scroller = this.redPajamas.setup({
       step: '.otb-desktop-stop',
-      container: '#otb-desktop-stop-list'
+      container: '#otb-desktop-stop-list',
+      debug: ENV.environment == 'development',
+      offset: `${window.innerHeight / 3}px`
     })
     .onStepEnter(event => {
       const stop = this.args.tourStops[event.index - 1];
@@ -37,6 +45,7 @@ export default class TourDesktopListComponent extends Component {
         } else {
           this._updateHistory(stop.slug);
         }
+        // this.router.transitionTo('tour.stop', stop.slug);
       }
     })
     .onStepExit(event => {

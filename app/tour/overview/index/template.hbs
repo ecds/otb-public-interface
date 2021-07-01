@@ -10,7 +10,7 @@
           {{this.model.safeDescription}}
         </article>
         <footer class="uk-footer uk-text-center uk-margin-xlarge-bottom">
-          <img class="uk-margin" src="/assets/images/otblogo.png" alt="Branding logo">
+          <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
         </footer>
       </div>
     </article>
@@ -24,7 +24,7 @@
           {{this.model.safeDescription}}
         </article>
         <footer class="uk-footer uk-text-center uk-margin-xlarge-bottom">
-          <img class="uk-margin" src="/assets/images/otblogo.png" alt="Branding logo">
+          <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
         </footer>
       </div>
     </div>

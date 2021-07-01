@@ -8,12 +8,10 @@
         {{/if}}
         <section class="uk-container uk-position-relative otb-mobile-tour-content">
           <h1 class="uk-article-title">{{this.model.tourStop.stop.title}}</h1>
-          <ReadIt @content={{this.model.tourStop.stop.sanitized_description}} />
+          <ReadIt @lang={{this.model.tour.defaultLng}} @content={{this.model.tourStop.stop.sanitizedDescription}} />
           {{this.model.tourStop.stop.safeDescription}}
         </section>
-        <footer class="uk-footer uk-text-center uk-margin-xlarge-bottom">
-          <img class="uk-margin-xlarge-bottom" src="/assets/images/otblogo.png" alt="Branding">
-        </footer>
+        <MobileFooter />
       </article>
     {{else}}
       <div class="otb-mobile-stop-container uk-child-width-1-2 uk-position-relative" uk-grid>
@@ -25,12 +23,10 @@
         <div class="uk-container uk-position-relative otb-mobile-tour-content">
           <article class="uk-article">
             <h1 class="uk-article-title">{{this.model.tourStop.stop.title}}</h1>
-            <ReadIt @content={{this.model.tourStop.stop.sanitized_description}} />
+            <ReadIt @content={{this.model.tourStop.stop.sanitizedDescription}} @lang={{this.model.tour.defaultLang}} />
             {{this.model.tourStop.stop.safeDescription}}
           </article>
-          <footer class="uk-footer uk-text-center uk-margin-xlarge-bottom">
-            <img src="/assets/images/otblogo.png" alt="Branding">
-          </footer>
+          <MobileFooter />
         </div>
       </div>
     {{/if}}
