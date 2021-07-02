@@ -1,5 +1,4 @@
 import Route from '@ember/routing/route';
-import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class TourOverviewStopsRoute extends Route {
@@ -15,35 +14,19 @@ export default class TourOverviewStopsRoute extends Route {
   //   yield timeout(300);
   // };
 
-  @action
-  goToStop(stop) {
-    this.transitionTo('tour.stop', stop);
-  }
+  // @action
+  // goToStop(stop) {
+  //   this.transitionTo('tour.stop', stop);
+  // }
 
   // @action
-  // didTransition() {
-  //   if (this.fastboot.isFastBoot) return;
-  //   console.log("🚀 ~ file: route.js ~ line 30 ~ TourOverviewStopsRoute ~ didTransition ~ this.modelFor('tour').sortedTourStops", this.modelFor('tour').sortedTourStops)
-  //   this.modelFor('tour').sortedTourStops.forEach((tourStop) => {
-  //     if (!tourStop.isDestroyed) {
-  //       this.stopEnter.perform(tourStop);
+  // willTransition() {
+  //   this.modelFor('tour').sortedTourStops.forEach((stop) => {
+  //     if (!stop.isDestroyed) {
+  //       stop.stop.setProperties({
+  //         show: false
+  //       });
   //     }
   //   });
   // }
-
-  @action
-  willTransition() {
-    this.modelFor('tour').sortedTourStops.forEach((stop) => {
-      if (!stop.isDestroyed) {
-        stop.stop.setProperties({
-          show: false
-        });
-      }
-    });
-  }
-
-  @action
-  gotToStop(stop) {
-    this.transitionToRoute('stop', stop);
-  }
 }

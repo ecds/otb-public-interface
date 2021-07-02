@@ -2,7 +2,7 @@
   {{!-- DESKTOP --}}
   <nav class="uk-navbar uk-light uk-background-secondary uk-margin uk-position-fixed otb-desktop-navbar" uk-navbar>
     <div class="uk-navbar-left">
-      <LinkTo @route="tours">
+      <LinkTo @route="tours" class="uk-padding-small uk-padding-remove-vertical">
         <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
       </LinkTo>
 

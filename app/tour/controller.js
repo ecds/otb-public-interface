@@ -35,11 +35,11 @@ export default class TourController extends Controller {
       stopEl.firstElementChild.scrollIntoView();
       window.scrollBy(0, -80);
     }
-    if (stop) {
-      this.transitionToRoute('tour.stop', stop.slug);
-    } else {
-      this.transitionToRoute('tour', this.model.slug);
-    }
+    // if (stop) {
+    //   this.transitionToRoute('tour.stop', stop.slug);
+    // } else {
+    //   this.transitionToRoute('tour', this.model.slug);
+    // }
     yield timeout(300);
   };
 }

@@ -16,30 +16,30 @@
         @image={{@tour.mapOverlay.imageUrl}}
       >
       </map.imageOverlay>
-
-      {{#each @tour.tourStops as |tourStop|}}
-        <map.marker
-          @onDragend={{this.reLocate}}
-          @lat={{tourStop.stop.lat}}
-          @lng={{tourStop.stop.lng}}
-          @icon={{tourStop.stop.icon}}
-          @label={{hash text=(concat tourStop.position) color="white" className="otb-marker-label"}}
-          @onClick={{fn this.markerClicked tourStop.stop}}
-          as |marker|>
-
-          <marker.infoWindow
-            @isOpen={{tourStop.stop.showOverviewInfoWindow}}>
-            <div>
-              <h3>
-                {{tourStop.stop.title}}
-              </h3>
-              <p>
-                <LinkTo @route="tour.stop" @model={{tourStop.stop.slug}}>Go To Stop</LinkTo>
-              </p>
-            </div>
-          </marker.infoWindow>
-        </map.marker>
-      {{/each}}
     {{/if}}
+
+    {{#each @tour.tourStops as |tourStop|}}
+      <map.marker
+        @onDragend={{this.reLocate}}
+        @lat={{tourStop.stop.lat}}
+        @lng={{tourStop.stop.lng}}
+        @icon={{tourStop.stop.icon}}
+        @label={{hash text=(concat tourStop.position) color="white" className="otb-marker-label"}}
+        @onClick={{fn this.markerClicked tourStop.stop}}
+        as |marker|>
+
+        <marker.infoWindow
+          @isOpen={{tourStop.stop.showOverviewInfoWindow}}>
+          <div>
+            <h3>
+              {{tourStop.stop.title}}
+            </h3>
+            <p>
+              <LinkTo @route="tour.stop" @model={{tourStop.stop.slug}}>Go To Stop</LinkTo>
+            </p>
+          </div>
+        </marker.infoWindow>
+      </map.marker>
+    {{/each}}
   </GMap>
 </div>
