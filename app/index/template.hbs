@@ -21,28 +21,52 @@
   </div>
 </nav>
 
+<section class="otb-all-tours-map">
+  <GMap
+    @lat={{32.6620411}}
+    @lng={{-83.4375901}}
+    @zoom={{6}}
+    @disableDefaultUI={{true}}
+    as |map|
+  >
+    {{#each this.model as |tourSet|}}
+      {{#if tourSet.mapableTours}}
+        {{#each tourSet.mapableTours as |tour|}}
+          <map.marker @lat={{tour.center.lat}} @lng={{tour.center.lng}} @onClick={{toggle 'showInfoWindow' tour}} as |marker|>
+            <marker.infoWindow @isOpen={{tour.showInfoWindow}}>
+              <h3>{{tour.title}}</h3>
+            </marker.infoWindow>
+          </map.marker>
+        {{/each}}
+      {{/if}}
+    {{/each}}
+  </GMap>
+</section>
+
 <section class="uk-container uk-margin-top">
   <ul class="uk-list">
     {{#each this.model as |tourSet|}}
+      {{#if tourSet.publishedTours}}
       <li class="toursitename">
         <h2 style="line-height: 1.5; font-size: 16px;">
           {{!-- <a href="{{tourSet.subdir}}" aria-label="{{tourSet.name}}">
             {{tourSet.name}}
           </a> --}}
-          <LinkTo @route={{'tours'}} @model={{tourSet.subdir}}>
+          <a href={{concat "/" tourSet.subdir}}>
             {{tourSet.name}}
-          </LinkTo>
+          </a>
         </h2>
       </li>
-      <ul>
-        {{#each tourSet.publishedTours as |tour|}}
-          <li class="tourname">
-            <LinkTo @route='tour' @models={{array tourSet.subdir tour.slug}}>
-              {{tour.title}}
-            </LinkTo>
-          </li>
-        {{/each}}
-      </ul>
+        <ul class="uk-list uk-list-bullet">
+          {{#each tourSet.publishedTours as |tour|}}
+            <li class="tourname">
+              <a href={{concat "/" tourSet.subdir "/" tour.slug}}>
+                {{tour.title}}
+              </a>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
     {{/each}}
   </ul>
 </section>

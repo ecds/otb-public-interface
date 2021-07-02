@@ -6,4 +6,5 @@ export default class TourSetModel extends Model {
   @attr('string') subdir;
   @attr('string') logoUrl;
   @attr() publishedTours;
+  @attr() mapableTours;
 }
