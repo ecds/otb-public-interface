@@ -2,7 +2,8 @@ import Model, { hasMany, belongsTo, attr } from '@ember-data/model';
 import { htmlSafe } from '@ember/string';
 // import ENV from '../config/environment';
 import { inject as service } from '@ember/service';
-import { task, timeout } from 'ember-concurrency';
+import { dropTask, timeout } from 'ember-concurrency';
+/* global google */
 
 export default class TourModel extends Model {
   @service cookies;
@@ -44,14 +45,22 @@ export default class TourModel extends Model {
   @hasMany('tour-medium') tourMedia;
   @attr('number') splashHeight;
   @attr('number') splashWidth;
-  @attr('string', {
-    defaultValue() { return 'hybrid'; }
-  }) mapType;
+  @attr('string', { defaultValue: 'hybrid' }) mapType;
 
+  @attr() gMap;
   @attr() bounds;
   @belongsTo('mapOverlay') mapOverlay;
 
-  @attr('string', { defaultValue: '/assets/images/otb-bg.png' }) splashUrl;
+  get oneYearFromNow() {
+    return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
+  }
+
+  get splashUrl() {
+    if (this.splash) {
+      return this.splash.url;
+    }
+    return '/assets/images/otblogo.png';
+  }
 
   get latLngBounds() {
     return {
@@ -61,7 +70,6 @@ export default class TourModel extends Model {
       east: this.bounds.east
     };
   }
-
 
   get splashBackground() {
     return new htmlSafe(
@@ -76,7 +84,7 @@ export default class TourModel extends Model {
   }
 
   get cookiePath() {
-    return `/${this.tenant}`;
+    return `/${this.tenant}/${this.slug}`;
   }
 
   get cookiesAllowedCookie() {
@@ -94,9 +102,10 @@ export default class TourModel extends Model {
 
   set cookiesAllowed(allowed) {
     if (allowed) {
-      this.cookies.write(this.cookiesAllowedCookie, 'yup');
+      this.cookies.write(this.cookiesAllowedCookie, 'yup', { expires: this.oneYearFromNow, path: this.cookiePath });
     } else {
-      this.cookies.clear(this.cookiesAllowedCookie);
+      this.cookies.write(this.cookiesAllowedCookie, 'nope', { expires: new Date(), path: this.cookiePath });
+      this.cookies.clear(this.cookiesAllowedCookie, { path: this.cookiePath });
       this.setProperties({ locationAllowed: false });
     }
     return allowed;
@@ -114,30 +123,32 @@ export default class TourModel extends Model {
     } else {
       this.location.notAllowed = true;
       this.location.clientLocation = null;
+      if (this.gMap) {
+        this.gMap.controls[google.maps.ControlPosition.TOP_LEFT].clear();
+        this.gMap.controls[google.maps.ControlPosition.TOP_RIGHT].clear();
+      }
       return false;
     }
   }
 
   set locationAllowed(allowed) {
-    // For some reason, the map controls do not go way when this is toggled.
-    // This forces the whole map to be removed and re-added.
-    this.redrawMap.perform();
     if (allowed) {
-      this.cookies.write(this.locationAllowedCookie, 'yup');
+      this.cookies.write(this.locationAllowedCookie, 'yup', { expires: this.oneYearFromNow, path: this.cookiePath });
     } else {
       this.location.locationAllowed = false;
-      this.cookies.clear(this.locationAllowedCookie);
+      this.cookies.write(this.locationAllowedCookie, 'nope', { expires: new Date(), path: this.cookiePath });
+      this.cookies.clear(this.locationAllowedCookie, { path: this.cookiePath });
       this.setProperties({ updateLocationAllowed: false });
     }
-    return allowed;
   }
 
-  @task
-  *redrawMap() {
-    this.setProperties({ redrawingMap: true });
-    yield timeout(300);
-    this.setProperties({ redrawingMap: false });
-  }
+  // @dropTask
+  // *redrawMap() {
+  //   if (this.redrawingMap) return;
+  //   this.setProperties({ redrawingMap: true });
+  //   yield timeout(300);
+  //   this.setProperties({ redrawingMap: false });
+  // }
 
   get updateLocationAllowedCookie() {
     return `${this.slug}-${this.id}-update-location-allowed`;
@@ -159,10 +170,11 @@ export default class TourModel extends Model {
 
   set updateLocationAllowed(allowed) {
     if (allowed) {
-      this.cookies.write(this.updateLocationAllowedCookie, 'yup');
+      this.cookies.write(this.updateLocationAllowedCookie, 'yup', { expires: this.oneYearFromNow, path: this.cookiePath });
       this.setProperties({ locationAllowed: true });
     } else {
-      this.cookies.clear(this.updateLocationAllowedCookie);
+      this.cookies.write(this.updateLocationAllowedCookie, 'nope', { expires: new Date(), path: this.cookiePath });
+      this.cookies.clear(this.updateLocationAllowedCookie, { path: this.cookiePath });
     }
     return allowed;
   }

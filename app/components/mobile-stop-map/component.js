@@ -1,7 +1,7 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
-import { icon as faIcon } from '@fortawesome/fontawesome-svg-core';
+// import { icon as faIcon } from '@fortawesome/fontawesome-svg-core';
 import { tracked } from '@glimmer/tracking';
 export default class MobileStopMapComponent extends Component {
   @service fastboot;
@@ -58,42 +58,17 @@ export default class MobileStopMapComponent extends Component {
   }
 
   @action
-  createMap() {
-  //   if (!google) return;
+  cancelDirections() {
+    this.args.tour.setProperties({ locationAllowed: false });
+  }
 
-  //   const center = this.args.stop.getProperties(['lat', 'lng']);
-  //   const mapOptions = {
-  //     center: {lat: this.args.stop.get('lat'), lng: this.args.stop.get('lng')},
-  //     mapTypeId: this.args.tour.mapType
-  //   }
-  //   let map = this.maps.map;
-  //   if (map) {
-  //     this.mapUtil.clearFeatures(this.maps.features, this.maps.map);
-  //   }
+  @action
+  mapLoaded(event) {
+    this.args.tour.setProperties({ gMap: event.map });
+  }
 
-  //   map = this.mapUtil.createMap(mapOptions);
-  //   this.maps.set('map', map);
-
-  //   const stopMarker = this.mapUtil.addMarker(map, center, false, this.args.stop);
-  //   this.maps.features.push(stopMarker);
-
-  //   if (this.args.stop.get('address')) {
-  //     this.mapUtil.addInfoWindow(this.args.stop.get('address'), stopMarker, map);
-  //   }
-
-
-  //   const parkingCords = this.args.stop.getProperties(['parkingLat', 'parkingLng']);
-  //   if (parkingCords.parkingLat && parkingCords.parkingLng) {
-  //     const parkingMarker = this.mapUtil.addMarker(
-  //       map,
-  //       {
-  //         lat: parkingCords.parkingLat,
-  //         lng: parkingCords.parkingLng
-  //       },
-  //       true
-  //     );
-  //     this.maps.features.push(parkingMarker);
-  //   }
+  willDestroy() {
+    this.args.tour.setProperties({ gMap: null });
   }
 
 }

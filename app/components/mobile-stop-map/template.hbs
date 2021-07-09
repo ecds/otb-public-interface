@@ -8,7 +8,7 @@
     @zoom={{16}}
     @lat={{@stop.lat}}
     @lng={{@stop.lng}}
-    @onLoad={{this.mapLoaded}}
+    @onceOnIdle={{this.mapLoaded}}
   as |map|>
     {{#if @tour.mapOverlay.imageUrl}}
       <map.imageOverlay
@@ -91,7 +91,6 @@
       {{/if}}
     {{/if}}
 
-{{log @tour.locationAllowed}}
     {{#if @tour.locationAllowed}}
       {{!-- {{#if @tour.useDirections}} --}}
         <map.control @position="TOP_LEFT">
@@ -147,15 +146,20 @@
   </ul>
   </div>
 
-  <UkModal @visible={{this.hasDirectionsError}} as |modal|>
-    <modal.body>
-      <p>{{this.directionsError}}</p>
-      {{#if (and this.directionsError (includes this.directionsError @tour.currentMode.title))}}
-        <ModeControl @tour={{@tour}} @disableCurrent={{true}}></ModeControl>
-      {{/if}}
-
-    </modal.body>
-  </UkModal>
-
+  {{#if this.directionsError}}
+    <DirectionsError>
+      <div class="uk-modal-dialog">
+        <div class="uk-modal-body">
+          <p>{{this.directionsError}}</p>
+          {{#if (and this.directionsError (includes this.directionsError @tour.currentMode.title))}}
+            <ModeControl @tour={{@tour}} @disableCurrent={{true}}></ModeControl>
+          {{/if}}
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <UkButton @color="primary" class="uk-modal-close" {{on "click" this.cancelDirections}}>cancel</UkButton>
+        </div>
+      </div>
+    </DirectionsError>
+  {{/if}}
 {{yield}}
 {{/unless}}

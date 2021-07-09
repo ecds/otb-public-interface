@@ -1,10 +1,10 @@
-<li class="uk-margin-small-bottom loc-on" role="button" {{on "click" (toggle 'cookiesAllowed' @tour)}}>
+<li class="uk-margin-small-bottom loc-on" role="button" {{on "click" (fn this.togglePermission "cookiesAllowed")}}>
   <span class="uk-text-middle uk-margin-right">Cookies {{if @tour.cookiesAllowed "ALLOWED" "BLOCKED"}}</span> <FaIcon @icon={{concat "toggle-" (if @tour.cookiesAllowed "on" "off")}} class="uk-text-middle" />
 </li>
-<li class="uk-margin-small-bottom loc-on" role="button" {{on "click" (toggle 'locationAllowed' @tour)}}>
+<li class="uk-margin-small-bottom loc-on" role="button" {{on "click" (fn this.togglePermission "locationAllowed")}}>
   <span class="uk-text-middle uk-margin-right">Current Location {{if @tour.locationAllowed "ON" "OFF"}}</span> <FaIcon @icon={{concat "toggle-" (if @tour.locationAllowed "on" "off")}} class="uk-text-middle" />
 </li>
-<li class="uk-margin-small-bottom loc-on" role="button" {{on "click" (toggle 'updateLocationAllowed' @tour)}}>
+<li class="uk-margin-small-bottom loc-on" role="button" {{on "click" (fn this.togglePermission "updateLocationAllowed")}}>
   <span class="uk-text-middle uk-margin-right">Update Location {{if @tour.updateLocationAllowed "ON" "OFF"}}</span> <FaIcon @icon={{concat "toggle-" (if @tour.updateLocationAllowed "on" "off")}} class="uk-text-middle" />
 </li>
 

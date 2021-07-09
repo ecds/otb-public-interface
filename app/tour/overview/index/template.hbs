@@ -2,11 +2,13 @@
 <div class="otb-mobile-tour-container">
   {{#if this.deviceOrientation.isPortrait}}
     <article class="uk-article">
-      <OtbMediaGallery @sortedMedia={{this.model.sortedMedia}} />
+      {{#if this.model.media}}
+        <OtbMediaGallery @sortedMedia={{this.model.sortedMedia}} />
+      {{/if}}
       <div class="uk-container uk-position-relative otb-mobile-tour-content">
         <article class="uk-article">
           <h1 class="uk-article-title">{{this.model.title}}</h1>
-          <ReadIt @content={{this.model.sanitizedDescription}} />
+          <ReadIt @lang={{this.model.defaultLng}} @content={{this.model.sanitizedDescription}} />
           {{this.model.safeDescription}}
         </article>
         <footer class="uk-footer uk-text-center uk-margin-xlarge-bottom">
@@ -20,7 +22,7 @@
       <div class="uk-container uk-position-relative otb-mobile-tour-content">
         <article class="uk-article">
           <h1 class="uk-article-title">{{this.model.title}}</h1>
-          <ReadIt @content={{this.model.sanitizedDescription}} />
+          <ReadIt @lang={{this.model.defaultLng}} @content={{this.model.sanitizedDescription}} />
           {{this.model.safeDescription}}
         </article>
         <footer class="uk-footer uk-text-center uk-margin-xlarge-bottom">

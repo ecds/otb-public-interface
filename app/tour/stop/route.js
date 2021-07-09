@@ -9,14 +9,14 @@ export default class TourStopRoute extends Route {
   constructor() {
     super(...arguments);
 
-    this.router.on('routeDidChange', () => {
-      const { tour, tourStop } = this.modelFor('tour.stop');
-      const stop = this.store.peekRecord('stop', tourStop.get('stop.id'))
-      tour.get('stops').forEach(stop => {
-        stop.setProperties({ active: false });
-      });
-      stop.setProperties({ active: true });
-    });
+    // this.router.on('routeDidChange', () => {
+    //   const { tour, tourStop } = this.modelFor('tour.stop');
+    //   const stop = this.store.peekRecord('stop', tourStop.get('stop.id'))
+    //   tour.get('stops').forEach(stop => {
+    //     stop.setProperties({ active: false });
+    //   });
+    //   stop.setProperties({ active: true });
+    // });
   }
 
   model(params) {
@@ -32,7 +32,6 @@ export default class TourStopRoute extends Route {
 
   afterModel(model) {
     if (this.deviceContext.isDesktop) {
-      console.log("🚀 ~ file: route.js ~ line 35 ~ TourStopRoute ~ afterModel ~ this.deviceContext.isDesktop", this.deviceContext.isDesktop)
       this.controllerFor('tour').setActiveStop.perform(this.modelFor('tour').stops, model.tourStop, true);
     }
   }

@@ -12,10 +12,6 @@ export default class TourRoute extends Route {
     if (!this.fastboot.isFastBoot) this.maps.setUpGoogle();
     const tour = await this.store.queryRecord('tour', { slug: params.tour_slug });
     await tour.get('tourStops').forEach(tourStop => this.store.findRecord('tourStop', tourStop.get('id')));
-    await tour.get('tourStops').forEach(tourStop => this.store.findRecord('tourStop', tourStop.get('id')));
-    // if (tour.mapOverlay.get('id')) {
-    //   await this.store.findRecord('mapOverlay', tour.mapOverlay.get('id'));
-    // }
     return tour;
   }
 

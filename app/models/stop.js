@@ -38,14 +38,13 @@ export default class StopModel extends Model {
   @hasMany('stop_medium', { async: true }) stopMedia;
   @hasMany('medium', { async: true }) media;
   @belongsTo('mapIcon') mapIcon;
-  @attr('string', { defaultValue: '/assets/images/otb-bg.png' }) splashUrl;
 
-  // get splashUrl() {
-  //   if (this.get('splash')) {
-  //     return `${ENV.APP.API_HOST}${this.get('splash.original_image.desktop.url')}`;
-  //   }
-  //   return ;
-  // }
+  get splashUrl() {
+    if (this.splash) {
+      return this.splash.url;
+    }
+    return '/assets/images/otblogo.png';
+  }
 
   get safeDescription() {
     return new htmlSafe(

@@ -56,27 +56,24 @@
       <ul class="uk-navbar-nav">
         <li>
           <a uk-toggle target="#flat-pages" class="uk-navbar-toggle" data-theme={{this.theme.name}}>
-            {{fa-icon "bars" aria-hidden="true"}}
+            <FaIcon @icon="bars" />
           </a>
         </li>
         <li>
-          {{log this.model}}
           <LinkTo @route="tour" @model={{this.model}} class="uk-logo" data-theme={{this.theme.name}}>{{this.model.title}}</LinkTo>
         </li>
       </ul>
     </div>
   </nav>
 
-  {{!-- {{liquid-outlet class="uk-position-fixed"}} --}}
   {{outlet}}
 
   {{!-- Offcanvas menu --}}
-  <div id="flat-pages" uk-offcanvas overlay="true">
+  <MobileMenu @isOpen={{this.menuOpen}} @onOpen={{toggle "menuOpen" this}}>
     <div class="uk-offcanvas-bar">
       <button class="uk-offcanvas-close" type="button" uk-close></button>
       <ul class="uk-nav uk-nav-default">
         <li>
-          {{!-- <LinkTo @route="tours" class="otb-menu-link">All Tours</LinkTo> --}}
           <a href={{concat "/" this.model.tenant}} class="otb-menu-link">All Tours</a>
         </li>
         <li>
@@ -90,15 +87,38 @@
           </li>
         {{/each}}
         <li class="uk-nav-divider"></li>
-        <li class="uk-nav-header">Location Controls</li>
-        <LocationSettings @tour={{this.model}} />
+        {{#if (or this.tenant.tenantModel.cookiesAcknowledged this.menuOpen)}}
+          <li class="uk-nav-header">Location Controls</li>
+          <LocationSettings @tour={{this.model}} />
+        {{/if}}
         {{!-- <li>
           TODO: Write something about location settings.
           About Location Settings
         </li> --}}
       </ul>
     </div>
-  </div>
+  </MobileMenu>
+  {{#unless this.tenant.tenantModel.cookiesAcknowledged}}
+    <DirectionsError @onClose={{toggle "tenant.tenantModel.cookiesAcknowledged" this}}>
+      <div class="uk-modal-dialog">
+        <div class="uk-modal-body"  uk-overflow-auto>
+          <p>
+            With your permission, this site uses cookies to give you directions from your current location and to save your preferred mode of travel.
+          </p>
+          <p>
+            You can set your preferences here. You will always be able to update your preferences by tapping the <FaIcon @icon="bars" /> icon at the top left of your screen.
+          </p>
+          <p>
+            By allowing cookies you agree to Emory Center for Digital Scholarship"s <a href="http://digitalscholarship.emory.edu/about/center/privacy-policy.html" target="_blank" rel="noopener noreferrer">Terms of Service and Privacy Policy</a>
+          </p>
+          <LocationSettings @tour={{this.model}} />
+        </div>
+        <div class="uk-modal-footer uk-text-right">
+          <UkButton @color="primary" class="uk-modal-close">OK</UkButton>
+        </div>
+      </div>
+    </DirectionsError>
+  {{/unless}}
 {{else}}
   <TourSplashBackground @tour={{this.model}} @full="true">
     <section class="uk-inline otb-tour-cell-overlay">

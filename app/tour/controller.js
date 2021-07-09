@@ -4,12 +4,16 @@ import { inject as service } from '@ember/service';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { timeout } from 'ember-concurrency';
 import MapUtil from '../utils/google-maps';
+import { tracked } from '@glimmer/tracking';
 
 export default class TourController extends Controller {
   @service deviceContext;
   @service store;
   @service tenant;
   @service theme;
+
+  @tracked
+  menuOpen = false;
 
   showStopGrid = false;
 

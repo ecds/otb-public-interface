@@ -8,8 +8,8 @@
           <img src={{sortedMedium.medium.files.mobile}} alt={{sortedMedium.medium.caption}} {{on "load" (toggle 'loaded' sortedMedium)}}>
         </picture>
         {{#if sortedMedium.medium.video}}
-          <div class="uk-position-center uk-panel otb-common-playbutton-overlay">
-            <FaIcon @icon={{"play-circle"}} />
+          <div id={{concat "play-button-" modelMedium.id}} class="uk-position-center uk-panel otb-common-playbutton-overlay">
+            <FaIcon @icon="play" />
           </div>
         {{/if}}
       </li>
