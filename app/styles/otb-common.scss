@@ -26,7 +26,8 @@ img.lazyloaded {
 
 .uk-modal-dialog {
   iframe {
-    // height: auto;
-    // width: 100%;
+    .youtube {
+      width: 100%;
+    }
   }
 }
