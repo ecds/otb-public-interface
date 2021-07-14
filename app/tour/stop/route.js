@@ -32,7 +32,7 @@ export default class TourStopRoute extends Route {
 
   afterModel(model) {
     if (this.deviceContext.isDesktop) {
-      this.controllerFor('tour').setActiveStop.perform(this.modelFor('tour').stops, model.tourStop, true);
+      this.controllerFor('tour').setActiveStop.perform(model.tourStop, true);
     }
   }
 

@@ -55,6 +55,10 @@ export default class TourModel extends Model {
     return new Date(new Date().setFullYear(new Date().getFullYear() + 1));
   }
 
+  get hasMedia() {
+    return this.sortedMedia.length > 0;
+  }
+
   get splashUrl() {
     if (this.splash) {
       return this.splash.url;

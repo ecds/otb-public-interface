@@ -25,7 +25,7 @@
         @lng={{tourStop.stop.lng}}
         @icon={{tourStop.stop.icon}}
         @label={{hash text=(concat tourStop.position) color="white" className="otb-marker-label"}}
-        @onClick={{fn this.markerClicked tourStop.stop}}
+        @onClick={{fn this.markerClicked tourStop}}
         as |marker|>
 
         <marker.infoWindow

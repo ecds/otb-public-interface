@@ -9,7 +9,6 @@ import scrollama from 'scrollama';
 
 export default class TourDesktopListComponent extends Component {
   @service fastboot;
-  @service router;
 
   // https://www.youtube.com/watch?v=PFtHeo7oMSU
   redPajamas = scrollama();
@@ -38,20 +37,19 @@ export default class TourDesktopListComponent extends Component {
     .onStepEnter(event => {
       const stop = this.args.tourStops[event.index - 1];
       if (stop) {
-        this.args.setActiveStop.perform(this.args.tourStops, stop, false);
+        this.args.setActiveStop.perform(stop, false);
         this.tourSlug = stop.tour.get('slug');
         if (pathParts.lastObject == stop.tour.get('slug')) {
           this._updateHistory(`${this.pathBase}/${stop.slug}`);
         } else {
           this._updateHistory(stop.slug);
         }
-        // this.router.transitionTo('tour.stop', stop.slug);
       }
     })
     .onStepExit(event => {
       if (event.index == 1 && event.direction == 'up') {
-        this.args.setActiveStop.perform(this.args.tourStops, null, false);
-        this._updateHistory(this.pathBase);
+        this._updateHistory(`/${this.args.tour.tenant}/${this.args.tour.slug}`);
+        this.args.setActiveStop.perform(null, false);
       }
     });
   }

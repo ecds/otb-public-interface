@@ -13,7 +13,7 @@
         animation="uk-animation-slide-top" boundary=".uk-navbar" boundary-align="true" align="center">
         <div uk-grid class="uk-child-width-1-6@l uk-child-width-1-4@m uk-child-width-1-1@s uk-dropdown-grid otb-desktop-dropdown-grid">
           {{#each this.model.sortedTourStops as |tourStop|}}
-            <div onClick={{perform this.setActiveStop this.model.tourStops tourStop true}}>
+            <div onClick={{perform this.setActiveStop tourStop true}}>
               <a href="#">
                 <img src={{tourStop.stop.splashUrl}} alt="Image preview for stop.">
                 <br>
@@ -44,7 +44,7 @@
     </div>
   </nav>
   <div class="uk-grid-collapse uk-child-width-1-2 uk-position-absolute otb-desktop-main {{if this.showStopGrid "showing-stop-grid"}}" uk-grid>
-    <TourDesktopList @tourStops={{this.model.sortedTourStops}} @setActiveStop={{this.setActiveStop}} />
+    <TourDesktopList @tour={{this.model}} @tourStops={{this.model.sortedTourStops}} @setActiveStop={{this.setActiveStop}} />
     <div class="uk-position-fixed otb-desktop-map">
       <OverviewMap @tour={{this.model}} @setActiveStop={{this.setActiveStop}}></OverviewMap>
     </div>

@@ -8,7 +8,7 @@ export default class OverviewMapComponent extends Component {
   @action
   markerClicked(stop) {
     if (this.deviceContext.isDesktop) {
-      this.args.setActiveStop.perform(null, stop, false);
+      this.args.setActiveStop.perform(stop, true);
     } else {
       this.args.tour.get('stops').forEach(stop => {
         stop.setProperties({ showOverviewInfoWindow: false });

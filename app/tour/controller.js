@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
-import { restartableTask } from 'ember-concurrency-decorators';
+import { dropTask } from 'ember-concurrency-decorators';
 import { timeout } from 'ember-concurrency';
 import MapUtil from '../utils/google-maps';
 import { tracked } from '@glimmer/tracking';
@@ -24,17 +24,31 @@ export default class TourController extends Controller {
     this.set('showStopGrid', value);
   }
 
-  @restartableTask
-  setActiveStop = function*(stops, stop, scrollTo=false) {
-    if (stop.promise) {
-      stop = this.store.peekRecord('stop', stop.get('id'));
+  @dropTask
+  setActiveStop = function*(tourStop, scrollTo=false) {
+    const stops = this.store.peekAll('stop');
+
+    yield stops.forEach(tourStop => {
+      tourStop.setProperties({ active: false });
+    });
+
+    if (!tourStop) return;
+
+    if (tourStop.promise) {
+      tourStop = this.store.peekRecord('tourStop', tourStop.get('id'));
     }
+
+    const stop = yield this.store.peekRecord('stop', tourStop.get('stop.id'));
+
+    stop.setProperties({ active: true });
+
     yield timeout(500);
+
     if (!this.deviceContext.isDesktop) return;
 
     if (scrollTo) {
       const stopEl = document.getElementById(
-        `${stop.get('stop.slug')}-${stop.get('stop.id')}`
+        `${stop.slug}-${stop.id}`
       );
       stopEl.firstElementChild.scrollIntoView();
       window.scrollBy(0, -80);

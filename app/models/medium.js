@@ -1,14 +1,16 @@
 import DS from 'ember-data';
 import ENV from '../config/environment';
-import { computed } from '@ember/object';
-import { htmlSafe } from '@ember/string';
+// import { computed } from '@ember/object';
+// import { htmlSafe } from '@ember/string';
 const { Model, attr, hasMany } = DS;
+import { inject as service } from '@ember/service';
 
 export default class MediumModel extends Model {
+  @service deviceContext;
+
   @attr('string') title;
   @attr('string') caption;
   @attr('string') video;
-  @attr() originalImage;
   @attr('string') embed;
   @attr('string') desktop;
   @attr('string') tablet;
@@ -26,8 +28,8 @@ export default class MediumModel extends Model {
     return `${ENV.APP.API_HOST}`;
   }
 
-  @computed('embed')
-  get safeEmbed() {
-    return htmlSafe(this.get('embed'));
-  }
+  // @computed('embed')
+  // get safeEmbed() {
+  //   return htmlSafe(this.get('embed'));
+  // }
 }
