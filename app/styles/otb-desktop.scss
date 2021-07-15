@@ -6,16 +6,18 @@ body {
   }
 }
 
-.desktop {
-  iframe {
-    // height: 66vmax;
-  }
-}
-
 .otb-desktop-navbar,
 .otb-desktop-navbar-dropdown {
   width: 100vw;
   z-index: 2;
+}
+
+.otb-desktop-tour-title {
+  cursor: pointer;
+}
+
+.otb-desktop-navbar-dropdown {
+  height: 100vh;
 }
 
 .otb-desktop-dropdown-grid {

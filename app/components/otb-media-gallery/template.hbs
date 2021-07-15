@@ -30,7 +30,7 @@
     {{on "hidden" (toggle 'loadEmbed' sortedMedium)}}
     {{on "beforeshow" (toggle 'loadEmbed' sortedMedium)}}
   >
-    <section class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical">
+    <section class="uk-modal-dialog uk-width-auto uk-margin-auto-vertical uk-text-center">
       <button class="uk-modal-close-outside" type="button" uk-close></button>
       {{#if sortedMedium.medium.loadEmbed}}
         <iframe class={{sortedMedium.medium.provider}} frameborder="0" width="1280" height="720" title={{sortedMedium.medium.title}} src={{sortedMedium.medium.embed}} uk-video uk-responsive></iframe>

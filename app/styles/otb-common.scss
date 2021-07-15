@@ -24,10 +24,8 @@ img.lazyloaded {
   width: 300px;
 }
 
-.uk-modal-dialog {
-  iframe {
-    .youtube {
-      width: 100%;
-    }
+.uk-modal {
+  .youtube {
+    width: 100%;
   }
 }

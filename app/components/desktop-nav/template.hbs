@@ -1,0 +1,16 @@
+<h1 class="uk-navbar-item uk-logo uk-margin-remove uk-padding-remove otb-desktop-tour-title">
+  {{@tour.title}} <span class="uk-margin-small-left"><FaIcon @icon="angle-down" @rotation={{if this.open 180}} /></span>
+</h1>
+<div id="desktop-stop-grid" class="uk-navbar-dropdown otb-desktop-navbar-dropdown uk-panel-scrollable" {{did-insert initDropdown}}>
+  <div uk-grid class="uk-child-width-1-6@l uk-child-width-1-4@m uk-child-width-1-1@s uk-padding uk-dropdown-grid otb-desktop-dropdown-grid">
+    {{#each @tour.sortedTourStops as |tourStop|}}
+      <div>
+        <a href="#" {{on "click" (fn this.onClick tourStop)}}>
+          <img src={{tourStop.stop.splashUrl}} alt="Image preview for stop.">
+          <br>
+          <span class="uk-text-large">{{tourStop.position}}: {{tourStop.stop.title}}</span>
+        </a>
+      </div>
+    {{/each}}
+  </div>
+</div>
