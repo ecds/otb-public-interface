@@ -4,6 +4,7 @@ import { hash } from 'rsvp';
 
 export default class TourStopRoute extends Route {
   @service deviceContext;
+  @service fastboot;
   @service router;
 
   constructor() {
@@ -23,7 +24,8 @@ export default class TourStopRoute extends Route {
     return hash({
       tourStop: this.store.queryRecord('tour-stop', {
         slug: params.stop_slug,
-        tour: this.modelFor('tour').id
+        tour: this.modelFor('tour').id,
+        fastboot: this.fastboot.isFastBoot
       }),
       tour: this.store.findRecord('tour', this.modelFor('tour').id),
       modes: this.store.findAll('mode')

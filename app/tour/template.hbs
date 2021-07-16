@@ -2,9 +2,9 @@
   {{!-- DESKTOP --}}
   <nav class="uk-navbar uk-light uk-background-secondary uk-margin uk-position-fixed otb-desktop-navbar" uk-navbar>
     <div class="uk-navbar-left">
-      <LinkTo @route="tours" class="uk-padding-small uk-padding-remove-vertical">
+      <a href={{concat "/" this.this.model.tenant}} class="uk-padding-small uk-padding-remove-vertical">
         <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
-      </LinkTo>
+      </a>
 
       <DesktopNav @tour={{this.model}} @navigateTo={{this.setActiveStop}} />
 
@@ -105,14 +105,14 @@
     </DirectionsError>
   {{/unless}}
 {{else}}
-  <TourSplashBackground @tour={{this.model}} @full="true">
-    <section class="uk-inline otb-tour-cell-overlay">
+  <section class="uk-inline otb-tour-cell-overlay">
+    <TourSplashBackground @tour={{this.model}} @full="true">
       <div class="uk-overlay uk-overlay-primary uk-dark uk-text-center uk-padding-remove otb-mobile-full-viewport">
         <section class="uk-position-center">
           <h3 class="uk-heading">Loading...</h3>
           <h1 class="uk-heading">{{this.model.title}}</h1>
         </section>
       </div>
-    </section>
-  </TourSplashBackground>
+    </TourSplashBackground>
+  </section>
 {{/if}}

@@ -1,8 +1,6 @@
 import Model, { hasMany, belongsTo, attr } from '@ember-data/model';
 import { htmlSafe } from '@ember/string';
-// import ENV from '../config/environment';
 import { inject as service } from '@ember/service';
-import { dropTask, timeout } from 'ember-concurrency';
 /* global google */
 
 export default class TourModel extends Model {
@@ -145,14 +143,6 @@ export default class TourModel extends Model {
       this.setProperties({ updateLocationAllowed: false });
     }
   }
-
-  // @dropTask
-  // *redrawMap() {
-  //   if (this.redrawingMap) return;
-  //   this.setProperties({ redrawingMap: true });
-  //   yield timeout(300);
-  //   this.setProperties({ redrawingMap: false });
-  // }
 
   get updateLocationAllowedCookie() {
     return `${this.slug}-${this.id}-update-location-allowed`;
