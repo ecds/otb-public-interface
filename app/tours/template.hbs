@@ -18,8 +18,13 @@
                 <img src={{tour.splashUrl}} alt={{concat "Splash image for " tour.title}}>
               </div>
               <div class="uk-card-body">
-                <h3 class="uk-card-title">{{tour.title}}</h3>
-                <p>{{tour.stopCount}} Stops</p>
+                <h3 class="uk-comment-title">{{tour.title}}</h3>
+                <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+                  <li>{{tour.stopCount}} Stops</li>
+                  {{#if tour.estTime}}
+                    <li>{{tour.estTime}}</li>
+                  {{/if}}
+                </ul>
               </div>
             </div>
           </div>
@@ -27,51 +32,27 @@
       {{/each}}
     </div>
   </div>
-  {{!-- {{#if (eq this.this.sortedTours.length 1)}}
-    <div class="uk-child-width-1-1 uk-light uk-grid-collapse" uk-grid>
-      {{#each this.sortedTours as |tour|}}
-        <TenantLink @route="tour" @tenant={{tour.tenant}} @segment={{tour.slug}}>
-          <TourSplashBackground @tour={{tour}} @full="true">
-            <TourCell @tour={{tour}}></TourCell>
-          </TourSplashBackground>
-        </TenantLink>
-      {{/each}}
-    </div>
-  {{else if (lt this.sortedTours.length 4)}}
-    <div class="{{concat "uk-child-width-1-" this.sortedTours.length}} uk-grid-collapse uk-text-center otb-desktop-full-height" uk-grid>
-      {{#each this.sortedTours as |tour|}}
-        <TenantLink @route="tour" @tenant={{tour.tenant}} @segment={{tour.slug}}>
-          <TourSplashBackground @tour={{tour}}>
-            <TourCell @tour={{tour}}></TourCell>
-          </TourSplashBackground>
-        </TenantLink>
-      {{/each}}
-    </div>
-  {{else}}
-    <div class="uk-child-width-1-1@s uk-child-width-1-2@m uk-child-width-1-3@l uk-grid-small uk-flex-center uk-text-center" uk-grid masonry="true">
-      {{#each this.sortedTours as |tour|}}
-        <TenantLink @route="tour" @tenant={{tour.tenant}} @segment={{tour.slug}}>
-          <TourSplashBackground @tour={{tour}}>
-            <TourCell @tour={{tour}}></TourCell>
-          </TourSplashBackground>
-        </TenantLink>
-      {{/each}}
-    </div>
-  {{/if}} --}}
 {{else if this.deviceContext.isMobile}}
+<div class="uk-child-width-1-1" uk-grid>
   {{#each this.sortedTours as |tour|}}
     <TenantLink @route="tour" @tenant={{tour.tenant}} @segment={{tour.slug}}>
       <div class="uk-card uk-card-default uk-card-small {{if tour.show "uk-animation-slide-bottom"}}">
-        <div class="uk-card-media-top">
+        <div class="uk-card-media-top uk-text-center">
           <img src={{tour.splashUrl}} alt={{concat "Splash image for " tour.title}}>
         </div>
         <div class="uk-card-body">
-          <h4 class="uk-card-title">{{tour.title}}</h4>
-          {{tour.stopCount}} Stops
+          <h3 class="uk-comment-title">{{tour.title}}</h3>
+          <ul class="uk-comment-meta uk-subnav uk-subnav-divider uk-margin-remove-top">
+            <li>{{tour.stopCount}} Stops</li>
+            {{#if tour.estTime}}
+              <li>{{tour.estTime}}</li>
+            {{/if}}
+          </ul>
         </div>
       </div>
     </TenantLink>
   {{/each}}
+</div>
 {{else}}
   <section class="uk-background-cover otb-tour-cell otb-common-loading">
     <section class="uk-inline otb-tour-cell-overlay">

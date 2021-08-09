@@ -11,6 +11,7 @@ export default class TourModel extends Model {
 
   @attr('string') title;
   @attr('string') slug;
+  @attr('string') estTime;
   @attr('string', {
     defaultValue() { return ''; }
   }) description;
