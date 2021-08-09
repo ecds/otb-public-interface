@@ -16,15 +16,17 @@ export default class MobileStopListComponent extends Component {
   @action
   showStops() {
     this.args.sortedTourStops.forEach(sortedStop => {
-      this.showStop.perform(this.store.peekRecord('stop', sortedStop.get('stop.id')));
+      const stopId = sortedStop.get('stop.id');
+      this.showStop.perform(this.store.peekRecord('stop', stopId), stopId);
     });
   }
 
   @enqueueTask
-  *showStop(stop) {
+  *showStop(stop, stopId) {
+    if (!stop) {
+      stop = yield this.store.findRecord('stop', stopId);
+    }
     stop.setProperties({ show: true });
     yield timeout(300);
   }
-
-
 }
