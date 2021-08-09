@@ -42,7 +42,7 @@ export default class TourDesktopListComponent extends Component {
         if (pathParts.lastObject == stop.tour.get('slug')) {
           this._updateHistory(`${this.pathBase}/${stop.slug}`);
         } else {
-          this._updateHistory(stop.slug);
+          this._updateHistory(`/${this.args.tour.tenant}/${this.args.tour.slug}/${stop.slug}`);
         }
       }
     })

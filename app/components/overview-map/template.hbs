@@ -19,11 +19,12 @@
     {{/if}}
 
     {{#each @tour.tourStops as |tourStop|}}
+    {{#if (and tourStop.stop.lat tourStop.stop.lng)}}
       <map.marker
         @onDragend={{this.reLocate}}
         @lat={{tourStop.stop.lat}}
         @lng={{tourStop.stop.lng}}
-        @label={{hash text=(concat tourStop.position) color="white" className="otb-marker-label"}}
+        @label={{hash text=(concat tourStop.position) color="white" className=(if tourStop.stop.active "otb-marker-label-active" "otb-marker-label")}}
         @icon={{tourStop.stop.icon}}
         @onClick={{fn this.markerClicked tourStop}}
         as |marker|>
@@ -40,6 +41,7 @@
           </div>
         </marker.infoWindow>
       </map.marker>
+    {{/if}}
     {{/each}}
   </GMap>
 </div>

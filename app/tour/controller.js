@@ -29,7 +29,9 @@ export default class TourController extends Controller {
     const stops = this.store.peekAll('stop');
 
     yield stops.forEach(tourStop => {
-      tourStop.setProperties({ active: false });
+      if (tourStop && !tourStop._internalModel.currentState.isLoading) {
+        tourStop.setProperties({ active: false });
+      }
     });
 
     if (!tourStop) return;
@@ -53,11 +55,6 @@ export default class TourController extends Controller {
       stopEl.firstElementChild.scrollIntoView();
       window.scrollBy(0, -80);
     }
-    // if (stop) {
-    //   this.transitionToRoute('tour.stop', stop.slug);
-    // } else {
-    //   this.transitionToRoute('tour', this.model.slug);
-    // }
     yield timeout(300);
   };
 }

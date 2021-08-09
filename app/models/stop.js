@@ -10,8 +10,8 @@ export default class StopModel extends Model {
   @service maps;
   @attr('string') title;
   @attr('string') slug;
-  @attr('number', { defaultValue: 0.0 }) lat;
-  @attr('number', { defaultValue: 0.0 }) lng;
+  @attr('number') lat;
+  @attr('number') lng;
   @attr('number') parkingLat;
   @attr('number') parkingLng;
   @attr('string') sanitizedDescription;
