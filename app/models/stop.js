@@ -29,6 +29,7 @@ export default class StopModel extends Model {
   @attr('number') splashHeight;
   @attr('number') splashWidth;
   @attr('boolean' , { defaultValue: false }) active;
+  @attr('boolean', { defaultValue: false }) show;
   @attr('boolean' , { defaultValue: false }) showOverviewInfoWindow;
   @attr('boolean' , { defaultValue: true }) showInfoWindow;
   @attr('boolean' , { defaultValue: false }) showParkingInfoWindow;
