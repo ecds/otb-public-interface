@@ -6,7 +6,16 @@ import ENV from '../config/environment';
 export default class ApplicationRoute extends Route {
   @service metrics;
   @service fastboot;
+  @service router;
   @service tenant;
+
+  constructor() {
+    super(...arguments);
+
+    this.router.on('routeWillChange', () => {
+      this.tenant.currentTenant;
+    });
+  }
 
   /**
    * Redirect for sites that are hosted on an external address
@@ -47,7 +56,7 @@ export default class ApplicationRoute extends Route {
         tagId: 'meta-og-url',
         attrs: {
           property: 'og:url',
-          content: `${ENV.APP.HOST}${this._router.currentURL}`
+          content: `https://${ENV.APP.HOST}${this._router.currentURL}`
         }
       },
       // {

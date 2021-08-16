@@ -9,7 +9,7 @@ export default class IndexRoute extends Route {
     if (ENV.APP.TENANT) {
       this.transitionTo('tours');
     } else {
-      this.tenant.set('currentTenant', 'public');
+      // this.tenant.set('currentTenant', 'public');
     }
   }
 

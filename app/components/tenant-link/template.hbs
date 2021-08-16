@@ -2,8 +2,15 @@
   <LinkTo @route={{@route}} @model={{@segment}}>
     {{yield}}
   </LinkTo>
-{{else}}
-  <LinkTo @route={{@route}} @models={{array @tenant @segment}}>
+{{else if this.tenant.isSubDomain}}
+  <LinkTo @route={{@route}} @model={{@segment}}>
     {{yield}}
   </LinkTo>
+{{else}}
+  <a href={{concat "/" this.tenant.tenantPath "/" @segment}}>
+    {{yield}}
+  </a>
+  {{!-- <LinkTo @route={{@route}} @models={{array @tenant @segment}}>
+    {{yield}}
+  </LinkTo> --}}
 {{/if}}

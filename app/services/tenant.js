@@ -11,18 +11,35 @@ export default class TenantService extends Service {
   @tracked
   tenantModel = null;
 
+  @tracked
+  isSubDomain = true;
+
   tenantPath = 'public'
+
+  constructor() {
+    super(...arguments);
+    this.currentTenant;
+  }
 
   get currentTenant() {
     if (ENV.APP.TENANT) {
       this.tenantPath = ENV.APP.TENANT;
     }
     else if (this.fastboot.isFastBoot) {
-      this.tenantPath = this.fastboot.request.path.split('/')[1];
+      if (this.fastboot.request.host == ENV.APP.HOST) {
+        this.isSubDomain = false;
+        this.tenantPath = this.fastboot.request.path.split('/')[1];
+      } else {
+        this.tenantPath = this.fastboot.request.host.split('.')[0];
+      }
     } else {
-      this.tenantPath = window.location.pathname.split('/')[1];
+      if (window.location.host == ENV.APP.HOST) {
+        this.isSubDomain = false;
+        this.tenantPath = window.location.pathname.split('/')[1];
+      } else {
+        this.tenantPath = window.location.host.split('.')[0];
+      }
     }
-
     this.setTenantModel.perform();
 
     return this.tenantPath;
