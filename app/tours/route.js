@@ -27,7 +27,7 @@ export default class ToursRoute extends Route {
       if (ENV.APP.TENANT) {
         this.transitionTo('tour.overview', model.firstObject.slug);
       } else {
-        this.transitionTo('tour.overview', this.tenant.currentTenant, model.firstObject.slug);
+        this.transitionTo('tour.overview', this.tenant.tenantPath, model.firstObject.slug);
       }
     }
 

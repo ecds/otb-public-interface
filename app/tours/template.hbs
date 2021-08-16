@@ -32,6 +32,14 @@
       {{/each}}
     </div>
   </div>
+  <footer class="uk-child-width-1-1 uk-margin-auto" uk-grid>
+    <p class="uk-position-center-left uk-text-left">
+      OpenTours.org is developed and hosted by the <a href="https://digitalscholarship.emory.edu/">Emory Center for Digital Scholarship</a>. A division of Emory University's Office of Information and Technology.
+    </p>
+    {{!-- <p class="uk-text-right uk-padding uk-position-center-right">
+      <img src="https://it.emory.edu/_includes/images/system/lits_signature.png" />
+    </p> --}}
+  </footer>
 {{else if this.deviceContext.isMobile}}
 <div class="uk-child-width-1-1" uk-grid>
   {{#each this.sortedTours as |tour|}}

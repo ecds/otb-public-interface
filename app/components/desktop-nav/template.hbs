@@ -4,7 +4,7 @@
 <div id="desktop-stop-grid" class="uk-navbar-dropdown otb-desktop-navbar-dropdown uk-panel-scrollable" {{did-insert initDropdown}}>
   <div uk-grid class="uk-child-width-1-6@l uk-child-width-1-4@m uk-child-width-1-1@s uk-padding uk-dropdown-grid otb-desktop-dropdown-grid">
     {{#each @tour.sortedTourStops as |tourStop|}}
-      <div>
+      <div class="uk-text-center">
         <a href="#" {{on "click" (fn this.onClick tourStop)}}>
           <img src={{tourStop.stop.splashUrl}} alt="Image preview for stop.">
           <br>

@@ -11,6 +11,13 @@
     </div>
     <div class="uk-navbar-right">
       <ul class="uk-navbar-nav">
+        {{#if this.model.linkAddress}}
+          <li>
+            <a href={{this.model.linkAddress}} targe="_blank">
+              {{if this.model.linkText this.model.linkText this.model.linkAddress}} <FaIcon @icon="external-link-alt" @prefix="fas" />
+            </a>
+          </li>
+        {{/if}}
         {{#each this.model.sortedFlatPages as |page|}}
           <li>
             <a uk-toggle target={{concat "#flat-page-" page.id}}>
@@ -25,6 +32,16 @@
             </div>
           </li>
         {{/each}}
+        <li>
+          <a uk-toggle target="#about-open-tour">About OpenTour</a>
+          <div uk-offcanvas flip="true" id="about-open-tour" container=".otb-desktop-main">
+            <div class="uk-offcanvas-bar otb-desktop-offcanvas-bar">
+              <button class="uk-offcanvas-close" type="button" uk-close></button>
+              <h3>About OpenTour</h3>
+              <p>Some text about OpenTour</p>
+            </div>
+          </div>
+        </li>
       </ul>
     </div>
   </nav>
@@ -64,6 +81,13 @@
         <li>
           <LinkTo @route="tour" @model={{this.model}} class="otb-menu-link">Tour Home</LinkTo>
         </li>
+        {{#if this.model.linkAddress}}
+          <li>
+            <a href={{this.model.linkAddress}} targe="_blank">
+              {{if this.model.linkText this.model.linkText this.model.linkAddress}} <FaIcon @icon="external-link-alt" @prefix="fas" />
+            </a>
+          </li>
+        {{/if}}
         {{#each this.model.sortedFlatPages as |page|}}
           <li>
             <LinkTo @route="tour.flat-page" @model={{page.flatPage.id}} class="otb-menu-link">

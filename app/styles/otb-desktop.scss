@@ -22,7 +22,7 @@ body {
 
 .otb-desktop-dropdown-grid {
   img {
-    height: 150px;
+    max-height: 150px;
   }
 
   a {
@@ -113,6 +113,7 @@ body {
 }
 
 .otb-tour-cell {
+  margin-top: 80px;
   .uk-grid-row-small {
     h3 {
       font-size: 1.25rem;
@@ -133,6 +134,26 @@ body {
     .ember-google-map {
       height: 33vh;
       width: 100%;
+    }
+  }
+
+  nav {
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    z-index: 1;
+  }
+
+  footer {
+    background-color: #212121;
+    bottom: 0;
+    color: white;
+    height: 5rem;
+    position: fixed;
+    width: 100vw;
+
+    img {
+      max-height: 2rem;
     }
   }
 }

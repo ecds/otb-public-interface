@@ -25,6 +25,8 @@ export default class TourModel extends Model {
   @attr() splash;
   @attr('string') insecureSplash;
   @attr('string') externalUrl;
+  @attr('string') linkAddress;
+  @attr('string') linkText;
   @hasMany('mode') modes;
   @belongsTo('mode', {
     async: true,
