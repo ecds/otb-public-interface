@@ -2,9 +2,15 @@
   {{!-- DESKTOP --}}
   <nav class="uk-navbar uk-light uk-background-secondary uk-margin uk-position-fixed otb-desktop-navbar" uk-navbar>
     <div class="uk-navbar-left">
-      <a href={{concat "/" this.this.model.tenant}} class="uk-padding-small uk-padding-remove-vertical">
-        <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
-      </a>
+      {{#if this.tenant.isSubDomain}}
+        <a href={{concat "//" this.tenant.currentTenant "." this.env.APP.HOST "/tours"}} class="uk-padding-small uk-padding-remove-vertical">
+          <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
+        </a>
+      {{else}}
+        <a href={{concat "/" this.tenant.currentTenant}}>
+          <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
+        </a>
+      {{/if}}
 
       <DesktopNav @tour={{this.model}} @navigateTo={{this.setActiveStop}} />
 

@@ -5,9 +5,10 @@ import { dropTask } from 'ember-concurrency-decorators';
 import { timeout } from 'ember-concurrency';
 import MapUtil from '../utils/google-maps';
 import { tracked } from '@glimmer/tracking';
-
+import ENV from '../config/environment';
 export default class TourController extends Controller {
   @service deviceContext;
+  @service router;
   @service store;
   @service tenant;
   @service theme;
@@ -19,13 +20,15 @@ export default class TourController extends Controller {
 
   mapUtil = MapUtil.create();
 
+  env = ENV;
+
   @action
   toggleStopGrid(value) {
     this.set('showStopGrid', value);
   }
 
   @dropTask
-  setActiveStop = function*(tourStop, scrollTo=false) {
+  *setActiveStop(tourStop, scrollTo=false) {
     const stops = this.store.peekAll('stop');
 
     yield stops.forEach(tourStop => {
@@ -34,7 +37,9 @@ export default class TourController extends Controller {
       }
     });
 
-    if (!tourStop) return;
+    if (!tourStop) {
+      return this.router.transitionTo('tour.overview', this.model.slug);
+    }
 
     if (tourStop.promise) {
       tourStop = this.store.peekRecord('tourStop', tourStop.get('id'));
@@ -44,7 +49,11 @@ export default class TourController extends Controller {
 
     stop.setProperties({ active: true });
 
-    yield timeout(500);
+    if (tourStop) {
+      this.router.transitionTo('tour.stop.index', stop.slug);
+    }
+
+    yield timeout(1500);
 
     if (!this.deviceContext.isDesktop) return;
 
@@ -56,5 +65,5 @@ export default class TourController extends Controller {
       window.scrollBy(0, -80);
     }
     yield timeout(300);
-  };
+  }
 }

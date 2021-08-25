@@ -9,7 +9,10 @@ $base-em-color: #222;
 
 
 li.toursitename {
-    background: lightgray;
+    h2 {
+        background: lightgray;
+        font-size: 1.25rem;
+    }
 }
 
 li.toursitename a {

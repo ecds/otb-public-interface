@@ -6,17 +6,19 @@ import ENV from "../../config/environment";
 import 'intersection-observer';
 import scrollama from 'scrollama';
 
-
 export default class TourDesktopListComponent extends Component {
   @service fastboot;
+  @service tenant;
 
   // https://www.youtube.com/watch?v=PFtHeo7oMSU
   redPajamas = scrollama();
 
   @tracked
   scroller = null;
+
   @tracked
   tourSlug = null;
+
   @tracked
   pathBase = null;
 
@@ -39,16 +41,16 @@ export default class TourDesktopListComponent extends Component {
       if (stop) {
         this.args.setActiveStop.perform(stop, false);
         this.tourSlug = stop.tour.get('slug');
-        if (pathParts.lastObject == stop.tour.get('slug')) {
+        if (pathParts.lastObject == this.tourSlug) {
           this._updateHistory(`${this.pathBase}/${stop.slug}`);
         } else {
-          this._updateHistory(`/${this.args.tour.tenant}/${this.args.tour.slug}/${stop.slug}`);
+          this._updateHistory(this._buildPath(stop));
         }
       }
     })
     .onStepExit(event => {
       if (event.index == 1 && event.direction == 'up') {
-        this._updateHistory(`/${this.args.tour.tenant}/${this.args.tour.slug}`);
+        this._updateHistory(this._buildPath(null));
         this.args.setActiveStop.perform(null, false);
       }
     });
@@ -56,6 +58,17 @@ export default class TourDesktopListComponent extends Component {
 
   _updateHistory(path) {
     history.replaceState({}, '', path);
+  }
+
+  _buildPath(stop) {
+    if (this.tenant.isSubDomain) {
+      if (stop) {
+        return `/${this.args.tour.slug}/${stop.slug}`;
+      }
+      return `/${this.args.tour.slug}`;
+    }
+
+    return `/${this.args.tour.tenant}/${this.args.tour.slug}/${stop.slug}`;
   }
 
   @action

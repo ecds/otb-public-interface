@@ -1,9 +1,13 @@
 import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
 export default class OverviewMapComponent extends Component {
   @service deviceContext;
+
+  @tracked
+  zoomLevel = 16;
 
   @action
   markerClicked(stop) {
@@ -20,5 +24,6 @@ export default class OverviewMapComponent extends Component {
   @action
   fitBounds(event){
     event.map.fitBounds(this.args.tour.latLngBounds);
+    this.zoomLevel = event.map.getZoom();
   }
 }

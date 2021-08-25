@@ -2,7 +2,7 @@
   <GMap
     @mapTypeId={{@tour.mapType}}
     @disableDefaultUI={{true}}
-    @zoom={{16}}
+    @zoom={{this.zoomLevel}}
     @lat={{@tour.bounds.centerLat}}
     @lng={{@tour.bounds.centerLng}}
     @onLoad={{this.fitBounds}}

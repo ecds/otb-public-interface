@@ -18,7 +18,7 @@ export default class TourSetModel extends Model {
   cookiesAcknowledged = this.cookies.read('openTour') == 'yup';
 
   set cookiesAcknowledged(value) {
-    console.log("🚀 ~ file: tour-set.js ~ line 23 ~ TourSetModel ~ setcookiesAcknowledged ~ value", value)
+    console.log("🚀 ~ file: tour-set.js ~ line 23 ~ TourSetModel ~ setcookiesAcknowledged ~ value", value);
     return value;
   }
 }

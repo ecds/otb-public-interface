@@ -7,9 +7,9 @@ export default class AcknowledgedCookiesComponent extends Component {
   @action
   initModal() {
     UIkit.modal.confirm('UIkit confirm!').then(function () {
-      console.log('Confirmed.')
+      console.log('Confirmed.');
   }, function () {
-      console.log('Rejected.')
-  })
+      console.log('Rejected.');
+  });
   }
 }

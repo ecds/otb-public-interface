@@ -21,51 +21,48 @@
   </div>
 </nav>
 
-<section class="otb-all-tours-map">
-  <GMap
-    @lat={{32.6620411}}
-    @lng={{-83.4375901}}
-    @zoom={{6}}
-    @disableDefaultUI={{true}}
-    as |map|
-  >
-    {{#each this.model as |tourSet|}}
-      {{#if tourSet.mapableTours}}
-        {{#each tourSet.mapableTours as |tour|}}
-          <map.marker @lat={{tour.center.lat}} @lng={{tour.center.lng}} @onClick={{toggle 'showInfoWindow' tour}} as |marker|>
-            <marker.infoWindow @isOpen={{tour.showInfoWindow}}>
-              <h3>{{tour.title}}</h3>
-            </marker.infoWindow>
-          </map.marker>
-        {{/each}}
-      {{/if}}
-    {{/each}}
-  </GMap>
-</section>
+{{#if this.deviceContext.isDesktop}}
+  <section class="otb-all-tours-map">
+    <GMap
+      @lat={{32.6620411}}
+      @lng={{-83.4375901}}
+      @zoom={{6}}
+      @disableDefaultUI={{true}}
+      as |map|
+    >
+      {{#each this.model as |tourSet|}}
+        {{#if tourSet.mapableTours}}
+          {{#each tourSet.mapableTours as |tour|}}
+            <map.marker @lat={{tour.center.lat}} @lng={{tour.center.lng}} @onClick={{toggle 'showInfoWindow' tour}} as |marker|>
+              <marker.infoWindow @isOpen={{tour.showInfoWindow}}>
+                <h3>
+                  <TourLink @tenant={{tourSet.subdir}} @tour={{tour}} />
+                </h3>
+              </marker.infoWindow>
+            </map.marker>
+          {{/each}}
+        {{/if}}
+      {{/each}}
+    </GMap>
+  </section>
+{{/if}}
 
 <section class="uk-container uk-margin-top">
   <ul class="uk-list">
     {{#each this.model as |tourSet|}}
       {{#if tourSet.publishedTours}}
       <li class="toursitename">
-        <h2 style="line-height: 1.5; font-size: 16px;">
-          {{!-- <a href="{{tourSet.subdir}}" aria-label="{{tourSet.name}}">
-            {{tourSet.name}}
-          </a> --}}
-          <a href={{concat "/" tourSet.subdir}}>
-            {{tourSet.name}}
-          </a>
+        <h2>
+          <TenantLink @tourSet={{tourSet}} />
         </h2>
-      </li>
         <ul class="uk-list uk-list-bullet">
           {{#each tourSet.publishedTours as |tour|}}
             <li class="tourname">
-              <a href={{concat "/" tourSet.subdir "/" tour.slug}}>
-                {{tour.title}}
-              </a>
+              <TourLink @tenant={{tourSet.subdir}} @tour={{tour}} />
             </li>
           {{/each}}
         </ul>
+      </li>
       {{/if}}
     {{/each}}
   </ul>
