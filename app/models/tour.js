@@ -8,6 +8,7 @@ export default class TourModel extends Model {
   @service location;
   @service maps;
   @service store;
+  @service('tenant') tenantService;
 
   @attr('string') title;
   @attr('string') slug;
@@ -89,6 +90,9 @@ export default class TourModel extends Model {
   }
 
   get cookiePath() {
+    if (this.tenantService.isSubDomain) {
+      return `/${this.slug}`;
+    }
     return `/${this.tenant}/${this.slug}`;
   }
 
