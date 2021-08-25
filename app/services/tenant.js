@@ -11,8 +11,18 @@ export default class TenantService extends Service {
   @tracked
   tenantModel = null;
 
-  @tracked
-  isSubDomain = true;
+  get isSubDomain() {
+    if (this.fastboot.isFastBoot) {
+      if (this.fastboot.request.host == ENV.APP.HOST) {
+        return false;
+      }
+    } else {
+      if (window.location.host == ENV.APP.HOST) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   tenantPath = 'public'
 
@@ -27,14 +37,12 @@ export default class TenantService extends Service {
     }
     else if (this.fastboot.isFastBoot) {
       if (this.fastboot.request.host == ENV.APP.HOST) {
-        this.isSubDomain = false;
         this.tenantPath = this.fastboot.request.path.split('/')[1];
       } else {
         this.tenantPath = this.fastboot.request.host.split('.')[0];
       }
     } else {
       if (window.location.host == ENV.APP.HOST) {
-        this.isSubDomain = false;
         this.tenantPath = window.location.pathname.split('/')[1];
       } else {
         this.tenantPath = window.location.host.split('.')[0];
