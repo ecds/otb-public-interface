@@ -35,11 +35,13 @@ export default class ToursRoute extends Route {
 
   title() {
     const model = this.modelFor('tours');
+    if (!model) return '';
     return model.firstObject.get('tenantTitle');
   }
 
   headTags() {
     const model = this.modelFor('tours');
+    if (!model) return [];
     return [
       {
         type: 'meta',
