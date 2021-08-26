@@ -8,6 +8,7 @@ module.exports = function() {
       'chevron-left',
       'chevron-right',
       'directions',
+      'external-link-alt',
       'headphones',
       'info-circle',
       'list',
