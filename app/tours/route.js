@@ -27,21 +27,22 @@ export default class ToursRoute extends Route {
       if (ENV.APP.TENANT) {
         this.transitionTo('tour.overview', model.firstObject.slug);
       } else {
-        this.transitionTo('tour.overview', this.tenant.tenantPath, model.firstObject.slug);
+        if (!this.fastboot.isFastBoot) {
+            this.transitionTo('tour.overview', this.tenant.tenantPath, model.firstObject.slug);
+        }
       }
     }
-
   }
 
   title() {
-    const model = this.modelFor('tours');
-    if (!model) return '';
+    const model = this.modelFor('tours').firstObject;
+    if (!model.firstObject) return '';
     return model.firstObject.get('tenantTitle');
   }
 
   headTags() {
-    const model = this.modelFor('tours');
-    if (!model) return [];
+    const model = this.modelFor('tours').firstObject;
+    if (!model.firstObject) return [];
     return [
       {
         type: 'meta',
