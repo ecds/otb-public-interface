@@ -54,6 +54,9 @@ export default class StopModel extends Model {
   }
 
   get icon() {
+    // if (this.mapIcon.get('imageUrl')) {
+    //   return this.mapIcon.get('imageUrl');
+    // }
     const icon = this.markerIconSVG;
     if (this.active) {
       icon.scale = .125;
@@ -67,19 +70,22 @@ export default class StopModel extends Model {
       fillColor: this.iconColor,
       fillOpacity: 1,
       scale: 0.075,
+      label: 'X',
       labelOrigin: new this.maps.google.maps.Point(200, 200)
     };
 
     if (this.mapIcon.get('imageUrl')) {
-      return Object.assign(icon, { url: this.mapIcon.get('imageUrl') });
+      return icon.url = this.mapIcon.get('imageUrl');
+    } else {
+      icon.anchor = new this.maps.google.maps.Point(200, 600);
+      icon.path = faIcon({ prefix: 'fas', iconName: 'map-marker' }).icon.lastObject;
     }
 
-    const svgIcon = {
-      anchor: new this.maps.google.maps.Point(200, 600),
-      path: faIcon({ prefix: 'fas', iconName: 'map-marker' }).icon.lastObject
-    };
+    // const svgIcon = {
+    // };
 
-    return Object.assign(icon, svgIcon );
+    // return Object.assign(icon, svgIcon );
+    return icon;
   }
 
   get hasMedia() {
