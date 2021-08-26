@@ -5,12 +5,14 @@ import { tracked } from '@glimmer/tracking';
 
 export default class OverviewMapComponent extends Component {
   @service deviceContext;
+  @service store;
 
   @tracked
   zoomLevel = 16;
 
   @action
   markerClicked(stop) {
+    stop = this.store.peekRecord('stop', stop.id);
     if (this.deviceContext.isDesktop) {
       this.args.setActiveStop.perform(stop, true);
     } else {
