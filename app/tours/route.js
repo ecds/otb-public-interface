@@ -35,102 +35,93 @@ export default class ToursRoute extends Route {
   }
 
   title() {
-    const model = this.modelFor('tours').firstObject;
-    if (!model.firstObject) return '';
-    return model.firstObject.get('tenantTitle');
+    try {
+      const model = this.modelFor('tours').firstObject;
+      return model.firstObject.get('tenantTitle');
+    } catch {
+      return '';
+    }
   }
 
   headTags() {
-    const model = this.modelFor('tours').firstObject;
-    if (!model.firstObject) return [];
-    return [
-      {
-        type: 'meta',
-        tagId: 'meta-og-title-tag',
-        attrs: {
-          property: 'og:title',
-          content: model.firstObject.get('tenantTitle')
+    try {
+      const model = this.modelFor('tours').firstObject;
+      return [
+        {
+          type: 'meta',
+          tagId: 'meta-og-title-tag',
+          attrs: {
+            property: 'og:title',
+            content: model.firstObject.get('tenantTitle')
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-og-description-tag',
+          attrs: {
+            property: 'og:description',
+            content: 'A collection of tours built with OpenTourBuilder'
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-og-image-tag',
+          attrs: {
+            property: 'og:image',
+            content: model.firstObject.get('insecureSplash')
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-og-image-height',
+          attrs: {
+            property: 'og:image:height',
+            content: model.firstObject.get('splashHeight')
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-og-width-tag',
+          attrs: {
+            property: 'og:image:width',
+            content: model.firstObject.get('splashWidth')
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-og-secure-image-tag',
+          attrs: {
+            property: 'og:image:secure_url',
+            content: model.firstObject.get('splashUrl')
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-twitter-title',
+          attrs: {
+            name: 'twitter:title',
+            content: model.firstObject.get('tenantTitle')
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-twitter-description',
+          attrs: {
+            name: 'twitter:description',
+            content: 'A collection of tours built with OpenTourBuilder'
+          }
+        },
+        {
+          type: 'meta',
+          tagId: 'meta-twitter-image',
+          attrs: {
+            name: 'twitter:image',
+            content: model.firstObject.splashUrl
+          }
         }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-og-description-tag',
-        attrs: {
-          property: 'og:description',
-          content: 'A collection of tours built with OpenTourBuilder'
-        }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-og-image-tag',
-        attrs: {
-          property: 'og:image',
-          content: model.firstObject.get('insecureSplash')
-        }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-og-image-height',
-        attrs: {
-          property: 'og:image:height',
-          content: model.firstObject.get('splashHeight')
-        }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-og-width-tag',
-        attrs: {
-          property: 'og:image:width',
-          content: model.firstObject.get('splashWidth')
-        }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-og-secure-image-tag',
-        attrs: {
-          property: 'og:image:secure_url',
-          content: model.firstObject.get('splashUrl')
-        }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-twitter-title',
-        attrs: {
-          name: 'twitter:title',
-          content: model.firstObject.get('tenantTitle')
-        }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-twitter-description',
-        attrs: {
-          name: 'twitter:description',
-          content: 'A collection of tours built with OpenTourBuilder'
-        }
-      },
-      {
-        type: 'meta',
-        tagId: 'meta-twitter-image',
-        attrs: {
-          name: 'twitter:image',
-          content: model.firstObject.splashUrl
-        }
-      }
-    ];
+      ];
+    } catch {
+      return [];
+    }
   }
-
-  // /**
-  //  * Redirect for sites that are hosted on an external address
-  //  *
-  //  * @param {*} model
-  //  * @memberof IndexRoute
-  //  */
-  // redirect(model) {
-  //   if (this.fastboot.isFastBoot) return;
-  //   const currentLoc = `${window.location.hostname}:${window.location.port}`;
-  //   const externalUrl = model.firstObject.external_url;
-  //   if (externalUrl && ENV.APP.TENANT && currentLoc !== externalUrl) {
-  //     window.location.replace(`http://${externalUrl}`);
-  //   }
-  // }
 }
