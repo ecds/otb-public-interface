@@ -55,7 +55,7 @@
               <p>{{sortedMedium.medium.caption}}</p>
               {{#if this.deviceContext.isDesktop}}
                 <p>
-                  <a href={{concat this.imageBasePath sortedMedium.medium.originalImage.url}} rel="noopener noreferrer" target="_blank">See larger version</a>
+                  <a href={{sortedMedium.medium.originalImageUrl}} rel="noopener noreferrer" target="_blank">See larger version</a>
                 </p>
               {{/if}}
             </figcaption>
