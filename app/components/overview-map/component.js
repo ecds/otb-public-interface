@@ -11,15 +11,15 @@ export default class OverviewMapComponent extends Component {
   zoomLevel = 16;
 
   @action
-  markerClicked(stop) {
-    stop = this.store.peekRecord('stop', stop.id);
+  markerClicked(tourStop) {
+    tourStop = this.store.peekRecord('tour-stop', tourStop.id);
     if (this.deviceContext.isDesktop) {
-      this.args.setActiveStop.perform(stop, true);
+      this.args.setActiveStop.perform(tourStop, true);
     } else {
       this.args.tour.get('stops').forEach(stop => {
         stop.setProperties({ showOverviewInfoWindow: false });
       });
-      stop.setProperties({ showOverviewInfoWindow: true });
+      tourStop.setProperties({ showOverviewInfoWindow: true });
     }
   }
 

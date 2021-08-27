@@ -29,6 +29,7 @@ export default class TourController extends Controller {
 
   @dropTask
   *setActiveStop(tourStop, scrollTo=false) {
+    console.log("🚀 ~ file: controller.js ~ line 32 ~ TourController ~ *setActiveStop ~ tourStop, scrollTo", tourStop, scrollTo)
     const stops = this.store.peekAll('stop');
 
     yield stops.forEach(tourStop => {
@@ -49,9 +50,9 @@ export default class TourController extends Controller {
 
     stop.setProperties({ active: true });
 
-    if (tourStop) {
-      this.router.transitionTo('tour.stop.index', stop.slug);
-    }
+    // if (tourStop) {
+    //   this.router.transitionTo('tour.stop.index', stop.slug);
+    // }
 
     yield timeout(1500);
 

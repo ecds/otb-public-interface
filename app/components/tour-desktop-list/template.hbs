@@ -1,4 +1,4 @@
-<section id="otb-desktop-stop-list" class="uk-overflow-auto uk-padding otb-desktop-stop" {{did-insert this.registerScrollListener}} {{will-destroy this.destroyScrollListener}}>
+<section id="otb-desktop-stop-list" class="uk-overflow-auto uk-padding otb-desktop-stop" {{did-insert (perform this.registerScrollListener)}} {{will-destroy this.destroyScrollListener}} {{on-resize (fn this.resize this)}}>
   <article  id={{@tourStops.firstObject.tour.slug}}>
     {{#if @tour.hasMedia}}
       <OtbMediaGallery @sortedMedia={{@tourStops.firstObject.tour.sortedMedia}} />

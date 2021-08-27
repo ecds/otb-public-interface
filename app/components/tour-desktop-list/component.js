@@ -5,6 +5,7 @@ import { tracked } from '@glimmer/tracking';
 import ENV from "../../config/environment";
 import 'intersection-observer';
 import scrollama from 'scrollama';
+import { restartableTask, timeout } from 'ember-concurrency';
 
 export default class TourDesktopListComponent extends Component {
   @service fastboot;
@@ -23,8 +24,8 @@ export default class TourDesktopListComponent extends Component {
   pathBase = null;
 
   // Called on insert by the template.
-  @action
-  registerScrollListener() {
+  @restartableTask
+  *registerScrollListener() {
     if (this.fastboot.isFastBoot) return;
     if (this.pathBase == null) {
       this.pathBase = window.location.pathname;
@@ -54,6 +55,11 @@ export default class TourDesktopListComponent extends Component {
         this.args.setActiveStop.perform(null, false);
       }
     });
+    yield timeout(100);
+  }
+
+  resize(_this) {
+    // _this.registerScrollListener.perform();
   }
 
   _updateHistory(path) {
