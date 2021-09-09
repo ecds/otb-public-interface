@@ -20,7 +20,7 @@
         {{#if this.model.linkAddress}}
           <li>
             <a href={{this.model.linkAddress}} targe="_blank">
-              {{if this.model.linkText this.model.linkText this.model.linkAddress}} <FaIcon @icon="external-link-alt" @prefix="fas" />
+              {{if this.model.linkText this.model.linkText this.model.linkAddress}}&nbsp; <FaIcon @icon="external-link-alt" @prefix="fas" />
             </a>
           </li>
         {{/if}}

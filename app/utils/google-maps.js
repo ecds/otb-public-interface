@@ -64,8 +64,8 @@ export default EmberObject.extend({
       marker.setIcon(this.parkingIconSVG());
       marker.setLabel({ text: 'P', color: 'white' });
     } else {
-      if (stop.get('mapIcon.imageUrl')) {
-        marker.setIcon(this.imageIcon(stop.get('mapIcon.imageUrl')));
+      if (stop.get('mapIcon.originalImageUrl')) {
+        marker.setIcon(this.imageIcon(stop.get('mapIcon.originalImageUrl')));
       } else {
         marker.setIcon(this.iconSVG(stop.get('iconColor')));
       }

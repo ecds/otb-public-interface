@@ -2,11 +2,12 @@
   <ul class="uk-slideshow-items uk-margin-top">
     {{#each @sortedMedia as |sortedMedium|}}
       <li class="uk-text-center" uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" onclick={{action this.showEmbed sortedMedium}}>
-        <picture class="uk-position-center {{if sortedMedium.loaded "" "otb-gallery-picture-loading"}}">
+        {{!-- <picture class="uk-position-center {{if sortedMedium.loaded "" "otb-gallery-picture-loading"}}">
           <source srcset={{sortedMedium.medium.files.desktop}} media="(min-width: 824px)">
           <source srcset={{sortedMedium.medium.files.tablet}} media="(min-width: 450px)">
           <img src={{sortedMedium.medium.files.desktop}} alt={{sortedMedium.medium.caption}} {{on "load" (toggle 'loaded' sortedMedium)}}>
-        </picture>
+        </picture> --}}
+        {{sortedMedium.medium.imageTag}}
         {{#if sortedMedium.medium.video}}
           <div id={{concat "play-button-" modelMedium.id}} class="uk-position-center uk-panel otb-common-playbutton-overlay">
             <FaIcon @icon="play" />

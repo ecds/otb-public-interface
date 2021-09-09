@@ -10,13 +10,13 @@
     @lng={{@stop.lng}}
     @onceOnIdle={{this.mapLoaded}}
   as |map|>
-    {{#if @tour.mapOverlay.imageUrl}}
+    {{#if @tour.mapOverlay.originalImageUrl}}
       <map.imageOverlay
         @south={{@tour.mapOverlay.south}}
         @west={{@tour.mapOverlay.west}}
         @north={{@tour.mapOverlay.north}}
         @east={{@tour.mapOverlay.east}}
-        @image={{@tour.mapOverlay.imageUrl}}
+        @image={{@tour.mapOverlay.originalImageUrl}}
       >
       </map.imageOverlay>
     {{/if}}
@@ -39,7 +39,6 @@
       {{/if}}
     {{else}}
       <map.marker
-        @onDragend={{this.reLocate}}
         @lat={{@stop.lat}}
         @lng={{@stop.lng}}
         @icon={{@stop.markerIconSVG}}
@@ -64,12 +63,11 @@
         </map.marker>
       {{#if @stop.hasParking}}
         <map.marker
-          @onDragend={{this.reLocateParking}}
           @lat={{@stop.parkingLat}}
           @lng={{@stop.parkingLng}}
           @anchor={{@stop.anchor}}
-          @label={{hash text="P" color="white" className="otb-marker-label"}}
           @icon={{@stop.parkingIconSVG}}
+          @label={{hash text="P" color="white" fontSize="1.5rem" fontWeight="600" className='otb-parking-icon'}}
           @onClick={{toggle "showParkingInfoWindow" @stop}}
           as |marker|
         >

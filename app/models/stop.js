@@ -5,7 +5,6 @@ import { sort } from '@ember/object/computed';
 import { htmlSafe } from '@ember/string';
 import { inject as service } from '@ember/service';
 import { icon as faIcon } from '@fortawesome/fontawesome-svg-core';
-
 export default class StopModel extends Model {
   @service maps;
   @attr('string') title;
@@ -54,8 +53,8 @@ export default class StopModel extends Model {
   }
 
   get icon() {
-    // if (this.mapIcon.get('imageUrl')) {
-    //   return this.mapIcon.get('imageUrl');
+    // if (this.mapIcon.get('originalImageUrl')) {
+    //   return this.mapIcon.get('originalImageUrl');
     // }
     const icon = this.imageIcon ? this.imageIcon : this.markerIconSVG;
     if (this.active) {
@@ -78,7 +77,7 @@ export default class StopModel extends Model {
   }
 
   get imageIcon() {
-    const url = this.mapIcon.get('imageUrl');
+    const url = this.mapIcon.get('originalImageUrl');
     return url ? { url } : null;
   }
 
@@ -88,16 +87,18 @@ export default class StopModel extends Model {
 
   get hasParking() {
     // return typeof this.parkingLat == 'number' && typeof this.parkingLat == 'number';
-    return !isNaN(this.parkingLat) && !isNaN(this.parkingLat);
+    if (this.parkingLat && this.parkingLat) return true;
+
+    return false;
   }
 
   get parkingIconSVG() {
     return {
-      path: faIcon({ prefix: 'fas', iconName: 'map-marker' }).icon.lastObject,
+      path: faIcon({ prefix: 'fas', iconName: 'square' }).icon.lastObject,
       fillColor: 'blue',
       fillOpacity: 1,
       scale: 0.075,
-      labelOrigin: new this.maps.google.maps.Point(200, 200),
+      labelOrigin: new this.maps.google.maps.Point(250, 250),
       anchor: new this.maps.google.maps.Point(200, 600)
     };
   }

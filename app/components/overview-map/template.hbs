@@ -7,13 +7,13 @@
     @lng={{@tour.bounds.centerLng}}
     @onLoad={{this.fitBounds}}
   as |map|>
-    {{#if @tour.mapOverlay.imageUrl}}
+    {{#if @tour.mapOverlay.originalImageUrl}}
       <map.imageOverlay
         @south={{@tour.mapOverlay.south}}
         @west={{@tour.mapOverlay.west}}
         @north={{@tour.mapOverlay.north}}
         @east={{@tour.mapOverlay.east}}
-        @image={{@tour.mapOverlay.imageUrl}}
+        @image={{@tour.mapOverlay.originalImageUrl}}
       >
       </map.imageOverlay>
     {{/if}}

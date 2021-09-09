@@ -17,6 +17,7 @@ module.exports = function() {
       'pause',
       'play',
       'play-circle',
+      'square',
       'subway',
       'toggle-off',
       'toggle-on',

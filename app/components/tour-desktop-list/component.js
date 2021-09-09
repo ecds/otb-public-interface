@@ -34,8 +34,7 @@ export default class TourDesktopListComponent extends Component {
     this.scroller = this.redPajamas.setup({
       step: '.otb-desktop-stop',
       container: '#otb-desktop-stop-list',
-      debug: ENV.environment == 'development',
-      offset: `${window.innerHeight / 3}px`
+      debug: ENV.environment == 'development'
     })
     .onStepEnter(event => {
       const stop = this.args.tourStops[event.index - 1];
@@ -56,10 +55,6 @@ export default class TourDesktopListComponent extends Component {
       }
     });
     yield timeout(100);
-  }
-
-  resize(_this) {
-    // _this.registerScrollListener.perform();
   }
 
   _updateHistory(path) {
