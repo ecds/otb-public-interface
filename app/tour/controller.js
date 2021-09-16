@@ -29,7 +29,6 @@ export default class TourController extends Controller {
 
   @dropTask
   *setActiveStop(tourStop, scrollTo=false) {
-    console.log("🚀 ~ file: controller.js ~ line 32 ~ TourController ~ *setActiveStop ~ tourStop, scrollTo", tourStop, scrollTo)
     const stops = this.store.peekAll('stop');
 
     yield stops.forEach(tourStop => {
