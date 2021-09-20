@@ -44,11 +44,7 @@
       {{else}}
         <div class="uk-card uk-card-default">
           <figure class="uk-card-media-top uk-text-center uk-margin-top">
-            <picture>
-              <source srcset={{sortedMedium.medium.files.desktop}} media="(min-width: 824px)">
-              <source srcset={{sortedMedium.medium.files.tablet}} media="(min-width: 450px)">
-              <img src={{sortedMedium.medium.files.mobile}} alt={{sortedMedium.medium.caption}}>
-            </picture>
+            {{sortedMedium.medium.imageTag}}
             <figcaption class="uk-card-body uk-padding-remove-top">
               {{#if this.deviceContext.isMobile}}
                 <p class="uk-text-small uk-text-center">PINCH TO ZOOM IMAGE</p>

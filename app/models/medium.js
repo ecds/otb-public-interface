@@ -35,7 +35,7 @@ export default class MediumModel extends Model {
   get imageTag() {
     if (this.files) {
       return htmlSafe(`
-      <img class="lazyloaded" alt="${this.caption}"
+      <img class="lazyload" alt="${this.caption}"
         data-src="${this.files.desktop}"
         data-srcset="${this.files.desktop} ${this.desktopWidth}w,
           ${this.files.tablet} ${this.tabletWidth}w,
@@ -48,7 +48,7 @@ export default class MediumModel extends Model {
           ${this.files.lqip} ${this.lqipWidth}w">`);
     }
 
-    return htmlSafe('<img src="/assets/images/loading.png" alt="Branding logo">');
+    return htmlSafe('<img src="/assets/images/loading.png" alt="Loading image">');
   }
 
   // @computed('embed')

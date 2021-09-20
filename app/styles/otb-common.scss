@@ -8,8 +8,10 @@
   height: 100vh;
 }
 
-img.lazyloaded {
-  max-height: 33vh !important;
+img {
+  &.lazyloaded {
+    max-height: 100% !important;
+  }
 }
 
 #map-container:first-child {
