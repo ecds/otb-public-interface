@@ -33,7 +33,8 @@
             <directions.waypoint @location={{hash lat=@stop.parkingLat lng=@stop.parkingLng}} />
           {{/if}}
 
-          <directions.route as |route|></directions.route>
+          <directions.route as |route|>
+          </directions.route>
 
         </map.directions>
       {{/if}}
@@ -90,26 +91,24 @@
     {{/if}}
 
     {{#if @tour.locationAllowed}}
-      {{!-- {{#if @tour.useDirections}} --}}
         <map.control @position="TOP_LEFT">
           <div class="uk-margin-top uk-margin-left">
             <ModeControl @tour={{@tour}}/>
           </div>
         </map.control>
-      {{!-- {{/if}} --}}
 
       <map.control @position="TOP_RIGHT">
-        <button type="button" class="uk-button uk-margin-top uk-margin-right otb-mobile-map-control" {{on "click" (toggle "showDirections" this)}}>
+        <button type="button" class="uk-button uk-margin-top uk-margin-right otb-mobile-map-control" {{on "click" (toggle "showDirectionsPanel" this)}}>
           <FaIcon @icon={{"directions"}} /> Directions
         </button>
       </map.control>
     {{/if}}
   </GMap>
-  {{/if}}
-{{!-- </div> --}}
 
-<div class="otb-mobile-directions-panel uk-panel-scrollable {{if this.showDirections "otb-mobile-directions-panel-show" "otb-mobile-directions-panel-hide"}}">
-  <div class="uk-text-center" role="button" onclick={{toggle "showDirections" this}}>
+  {{/if}}
+
+<div class="otb-mobile-directions-panel uk-panel-scrollable {{if this.showDirectionsPanel "otb-mobile-directions-panel-show" "otb-mobile-directions-panel-hide"}}">
+  <div class="uk-text-center" role="button" onclick={{toggle "showDirectionsPanel" this}}>
     <FaIcon @icon="angle-down" />
   </div>
   <ul uk-tab>

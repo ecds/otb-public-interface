@@ -193,7 +193,7 @@ export default class TourModel extends Model {
   }
 
   set currentMode(mode) {
-    this.cookies.write(this.modeCookieName, mode.get('id'), { path: `/${this.tenant}/${this.slug}` });
+    this.cookies.write(this.modeCookieName, mode.get('id'), { path: this.cookiePath });
     return mode;
   }
 
