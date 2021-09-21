@@ -35,17 +35,18 @@ export default class MediumModel extends Model {
   get imageTag() {
     if (this.files) {
       return htmlSafe(`
-      <img class="lazyload" alt="${this.caption}"
-        data-src="${this.files.desktop}"
-        data-srcset="${this.files.desktop} ${this.desktopWidth}w,
-          ${this.files.tablet} ${this.tabletWidth}w,
-          ${this.files.mobile} ${this.mobileWidth}w,
-          ${this.files.lqip} ${this.lqipWidth}w"
-        src="${this.files.desktop}"
-        srcset="${this.files.desktop} ${this.desktopWidth}w,
-          ${this.files.tablet} ${this.tabletWidth}w,
-          ${this.files.mobile} ${this.mobileWidth}w,
-          ${this.files.lqip} ${this.lqipWidth}w">`);
+        <img class="lazyload" alt="${this.caption}"
+          data-src="${this.files.desktop}"
+          data-srcset="${this.files.desktop} ${this.desktopWidth}w,
+            ${this.files.tablet} ${this.tabletWidth}w,
+            ${this.files.mobile} ${this.mobileWidth}w,
+            ${this.files.lqip} ${this.lqipWidth}w"
+          src="${this.files.desktop}"
+          srcset="${this.files.desktop} ${this.desktopWidth}w,
+            ${this.files.tablet} ${this.tabletWidth}w,
+            ${this.files.mobile} ${this.mobileWidth}w,
+            ${this.files.lqip} ${this.lqipWidth}w">
+      `);
     }
 
     return htmlSafe('<img src="/assets/images/loading.png" alt="Loading image">');
