@@ -27,7 +27,7 @@ export default class ApplicationRoute extends Route {
     // // if (this.fastboot.isFastBoot) return;
     // const currentLoc = `${window.location.hostname}:${window.location.port}`;
     // const externalUrl = model.firstObject.external_url;
-    if (ENV.APP.TENANT) {
+    if (this.tenant.currentTenant != '' || this.tenant.currentTenant != 'public') {
       this.transitionTo('tours');
     }
   }
