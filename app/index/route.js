@@ -6,6 +6,9 @@ export default class IndexRoute extends Route {
   @service tenant;
 
   beforeModel() {
+    if (this.tenant.currentTenant != '' || this.tenant.currentTenant != 'public') {
+      this.transitionTo('tours');
+    }
     if (ENV.APP.TENANT) {
       this.transitionTo('tours');
     } else {

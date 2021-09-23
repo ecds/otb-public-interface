@@ -11,25 +11,9 @@ export default class ApplicationRoute extends Route {
 
   constructor() {
     super(...arguments);
-
     this.router.on('routeWillChange', () => {
       this.tenant.currentTenant;
     });
-  }
-
-  /**
-   * Redirect for sites that are hosted on an external address
-   *
-   * @param {*} model
-   * @memberof IndexRoute
-   */
-  beforeModel() {
-    // // if (this.fastboot.isFastBoot) return;
-    // const currentLoc = `${window.location.hostname}:${window.location.port}`;
-    // const externalUrl = model.firstObject.external_url;
-    if (this.tenant.currentTenant != '' || this.tenant.currentTenant != 'public') {
-      this.transitionTo('tours');
-    }
   }
 
   @action
