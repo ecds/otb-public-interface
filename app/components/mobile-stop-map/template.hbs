@@ -42,7 +42,7 @@
       <map.marker
         @lat={{@stop.lat}}
         @lng={{@stop.lng}}
-        @icon={{@stop.markerIconSVG}}
+        @icon={{@stop.icon}}
         @label={{hash text=(concat @position) color="white" className="otb-marker-label"}}
         @onClick={{toggle "showInfoWindow" @stop}}
         as |marker|>
