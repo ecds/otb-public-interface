@@ -69,7 +69,11 @@ export default class TourDesktopListComponent extends Component {
       return `/${this.args.tour.slug}`;
     }
 
-    return `/${this.args.tour.tenant}/${this.args.tour.slug}/${stop.slug}`;
+    if (stop) {
+      return `/${this.args.tour.tenant}/${this.args.tour.slug}/${stop.slug}`;
+    }
+
+    return `/${this.args.tour.tenant}/${this.args.tour.slug}`;
   }
 
   @action
