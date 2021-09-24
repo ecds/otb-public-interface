@@ -5,7 +5,7 @@
     @zoom={{this.zoomLevel}}
     @lat={{@tour.bounds.centerLat}}
     @lng={{@tour.bounds.centerLng}}
-    @onLoad={{this.fitBounds}}
+    @onceOnIdle={{this.fitBounds}}
   as |map|>
     {{#if @tour.mapOverlay.originalImageUrl}}
       <map.imageOverlay

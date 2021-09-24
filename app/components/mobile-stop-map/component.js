@@ -21,7 +21,6 @@ export default class MobileStopMapComponent extends Component {
 
   @action
   setDirections(directions) {
-    console.log("🚀 ~ file: component.js ~ line 24 ~ MobileStopMapComponent ~ setDirections ~ directions", directions)
     if (directions.directions.error) {
       this.directionsError = directions.directions.error;
     } else {

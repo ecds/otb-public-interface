@@ -1,7 +1,6 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { findAll, render } from '@ember/test-helpers';
-import Service from '@ember/service';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 // class permissionsStub extends Service {
@@ -42,7 +41,7 @@ module('Integration | Component | location-settings', function(hooks) {
     // this.permissions.setTour(tour);
   });
 
-  test('it renders all off', async function(assert) {
+  test('it renders all off', async function(/*assert*/) {
     await render(hbs`<LocationSettings />`);
     // assert.dom('.loc-off').exists();
     // assert.dom('.update-loc-off').exists();
@@ -50,7 +49,7 @@ module('Integration | Component | location-settings', function(hooks) {
     // assert.dom('.update-loc-on').doesNotExist();
   });
 
-  test('it renders all on', async function(assert) {
+  test('it renders all on', async function(/*assert*/) {
     // this.permissions.locationAllowed = true;
     // this.permissions.updateLocationAllowed = true;
     await render(hbs`<LocationSettings />`);

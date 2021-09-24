@@ -2,12 +2,12 @@
   <LinkTo @route={{@route}} @model={{@segment}}>
     {{yield}}
   </LinkTo>
-{{else if (includes env.emoryTenants @tourSet.subdir)}}
+{{else if (includes this.env.emoryTenants @tourSet.subdir)}}
   <a href={{concat  "/" @tourSet.subdir}}>
     {{@tourSet.name}}
   </a>
 {{else}}
-  <a href={{concat "//" @tourSet.subdir "." env.APP.HOST "/tours"}}>
+  <a href={{concat "//" @tourSet.subdir "." this.env.APP.HOST "/tours"}}>
     {{@tourSet.name}}
   </a>
   {{!-- <LinkTo @route={{@route}} @models={{array @tenant @segment}}>

@@ -16,12 +16,12 @@
     </LinkTo> --}}
   {{/if}}
 {{else}}
-  {{#if (includes env.emoryTenants @tenant)}}
+  {{#if (includes this.env.emoryTenants @tenant)}}
     <a href={{concat "/" @tenant "/" @tour.slug}}>
       {{@tour.title}}
     </a>
   {{else}}
-    <a href={{concat "//" @tenant "." env.APP.HOST "/" @tour.slug}}>
+    <a href={{concat "//" @tenant "." this.env.APP.HOST "/" @tour.slug}}>
       {{@tour.title}}
     </a>
   {{/if}}

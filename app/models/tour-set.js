@@ -12,13 +12,11 @@ export default class TourSetModel extends Model {
   @attr('string') logoUrl;
   @attr() publishedTours;
   @attr() mapableTours;
-  // @attr('boolean', { defaultValue: this._cookiesAcknowledge }) cookiesAcknowledged;
 
   @tracked
   cookiesAcknowledged = this.cookies.read('openTour') == 'yup';
 
   set cookiesAcknowledged(value) {
-    console.log("🚀 ~ file: tour-set.js ~ line 23 ~ TourSetModel ~ setcookiesAcknowledged ~ value", value);
     return value;
   }
 }

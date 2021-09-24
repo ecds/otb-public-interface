@@ -13,7 +13,6 @@ export default class MobileStopRouteComponent extends Component {
   directionsDisplay = this.mapUtil.directionsDisplay();
 
   setDirections(response) {
-    console.log("🚀 ~ file: component.js ~ line 16 ~ MobileStopRouteComponent ~ setDirections ~ response", response)
     this.directionsDisplay.setDirections(response);
     this.directionsDisplay.setMap(this.maps.map);
     this.maps.set('route', this.directionsDisplay);

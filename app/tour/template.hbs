@@ -26,7 +26,7 @@
         {{/if}}
         {{#each this.model.sortedFlatPages as |page|}}
           <li>
-            <a uk-toggle target={{concat "#flat-page-" page.id}}>
+            <a href="#" uk-toggle target={{concat "#flat-page-" page.id}}>
               {{page.flatPage.title}}
             </a>
             <div uk-offcanvas flip="true" id={{concat "flat-page-" page.id}} container=".otb-desktop-main">
@@ -39,7 +39,7 @@
           </li>
         {{/each}}
         <li>
-          <a uk-toggle target="#about-open-tour">About OpenTour</a>
+          <a href="#" uk-toggle target="#about-open-tour">About OpenTour</a>
           <div uk-offcanvas flip="true" id="about-open-tour" container=".otb-desktop-main">
             <article class="uk-offcanvas-bar otb-desktop-offcanvas-bar">
               <button class="uk-offcanvas-close" type="button" uk-close></button>
@@ -54,7 +54,7 @@
                 An Emory-supported instance of <a href="https://opentour.site/">OpenTour</a> is now available for those who intend to use the technology for educational purposes or the exhibition of research. Tours need to fit within the ECDS and Emory mission. The Emory Center for Digital Scholarship supports partnerships, both with Emory community members and with outside interested parties. If you are interested in a partnership to use OpenTour, please contact us at ecds@emory.edu. You can find more information on the <a href="https://digitalscholarship.emory.edu/expertise/projects/open-tour-builder.html">ECDS OpenTour Page</a>.
               </p>
               <section class="uk-padding">
-                <img src="/assets/images/emory-center-for-digital-scholarship-logo-rev.svg" role="presentation">
+                <img src="/assets/images/emory-center-for-digital-scholarship-logo-rev.svg" role="presentation" alt="">
               </section>
             </article>
           </div>
@@ -74,7 +74,7 @@
     <div class="uk-navbar-left">
       <ul class="uk-navbar-nav">
         <li>
-          <a uk-toggle target="#flat-pages" class="uk-navbar-toggle" data-theme={{this.theme.name}}>
+          <a href="#" uk-toggle target="#flat-pages" class="uk-navbar-toggle" data-theme={{this.theme.name}}>
             <FaIcon @icon="bars" />
           </a>
         </li>
