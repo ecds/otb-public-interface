@@ -24,6 +24,13 @@ export default class TenantService extends Service {
     return true;
   }
 
+  get tenantLink() {
+    if (this.isSubDomain) {
+      return `//${this.currentTenant}.${ENV.APP.HOST}/tours`;
+    }
+    return `/${this.currentTenant}`;
+  }
+
   tenantPath = 'public'
 
   constructor() {

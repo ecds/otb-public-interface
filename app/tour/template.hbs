@@ -2,15 +2,10 @@
   {{!-- DESKTOP --}}
   <nav class="uk-navbar uk-light uk-background-secondary uk-margin uk-position-fixed otb-desktop-navbar" uk-navbar>
     <div class="uk-navbar-left">
-      {{#if this.tenant.isSubDomain}}
-        <a href={{concat "//" this.tenant.currentTenant "." this.env.APP.HOST "/tours"}} class="uk-padding-small uk-padding-remove-vertical">
-          <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
-        </a>
-      {{else}}
-        <a href={{concat "/" this.tenant.currentTenant}}>
-          <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
-        </a>
-      {{/if}}
+
+      <a href={{this.tenant.tenantLink}} class="uk-padding-small uk-padding-remove-vertical">
+        <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
+      </a>
 
       <DesktopNav @tour={{this.model}} @navigateTo={{this.setActiveStop}} />
 
@@ -93,7 +88,7 @@
       <button class="uk-offcanvas-close" type="button" uk-close></button>
       <ul class="uk-nav uk-nav-default">
         <li>
-          <a href={{concat "/" this.model.tenant}} class="otb-menu-link">All Tours</a>
+          <a href={{this.tenant.tenantLink}} class="otb-menu-link">All Tours</a>
         </li>
         <li>
           <LinkTo @route="tour" @model={{this.model}} class="otb-menu-link">Tour Home</LinkTo>
