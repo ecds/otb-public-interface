@@ -103,8 +103,6 @@ export default class TourModel extends Model {
   get cookiesAllowed() {
     if (this.cookies.read(this.cookiesAllowedCookie) == 'yup') {
       return true;
-    } else {
-      this.setProperties({ locationAllowed: false });
     }
     return false;
   }
@@ -125,6 +123,9 @@ export default class TourModel extends Model {
   }
 
   get locationAllowed() {
+    if (!this.cookiesAllowed) {
+      return false;
+    }
     if (this.cookies.read(this.locationAllowedCookie) == 'yup') {
       this.location.notAllowed = false;
       this.location.getLocation.perform();
