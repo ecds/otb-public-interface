@@ -23,7 +23,7 @@ export default class ReadItComponent extends Component {
       this.supported = true;
       this.utterance = new SpeechSynthesisUtterance(this.args.content);
       this.utterance.lang = this.args.lang || navigator.language;
-      this.utterance.text = this.args.content.substr(0, 250);
+      this.utterance.text = this.args.content;
       this.utterance.onend = () => {
         this.speaking = false;
         this.paused = false;
@@ -32,6 +32,11 @@ export default class ReadItComponent extends Component {
         this.speaking = true;
         this.paused = false;
       };
+
+      // this.utterance.onend = () => { console.log("on end!"); }
+      // this.utterance.onerror = () => { console.log("on error!"); }
+      // this.utterance.onpause = () => { console.log("on pause"); }
+      // this.utterance.onresume = () => { console.log("on resume"); }
 
       this.synth = window.speechSynthesis;
     }
