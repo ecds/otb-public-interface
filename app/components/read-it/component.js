@@ -23,6 +23,7 @@ export default class ReadItComponent extends Component {
       this.supported = true;
       this.utterance = new SpeechSynthesisUtterance(this.args.content);
       this.utterance.lang = this.args.lang || navigator.language;
+      this.utterance.voice = speechSynthesis.getVoices().find((voice) => voice.lang == this.args.lang);
       this.utterance.text = this.args.content;
       this.utterance.onend = () => {
         this.speaking = false;
