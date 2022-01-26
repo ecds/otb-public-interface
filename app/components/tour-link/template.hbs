@@ -4,9 +4,15 @@
       {{yield}}
     </LinkTo>
   {{else if this.tenant.isSubDomain}}
-    <LinkTo @route={{@route}} @model={{@segment}}>
+    {{!-- <LinkTo @route={{@route}} @model={{@segment}}>
       {{yield}}
-    </LinkTo>
+    </LinkTo> --}}
+    {{!-- When using the LinkTo component, the path
+    on the Cookie service does not get updated :( --}}
+    <a href={{concat "//" @tenant "." this.env.APP.HOST "/" @segment}}>
+      {{yield}}
+    </a>
+
   {{else}}
     <a href={{concat "/" this.tenant.tenantPath "/" @segment}}>
       {{yield}}
