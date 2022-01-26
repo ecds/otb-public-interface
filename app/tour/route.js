@@ -6,6 +6,7 @@ export default class TourRoute extends Route {
   @service fastboot;
   @service headData;
   @service maps;
+  @service store;
   @service theme;
 
   async model(params) {

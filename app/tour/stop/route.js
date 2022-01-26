@@ -6,6 +6,7 @@ export default class TourStopRoute extends Route {
   @service deviceContext;
   @service fastboot;
   @service router;
+  @service store;
 
   constructor() {
     super(...arguments);

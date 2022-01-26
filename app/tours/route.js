@@ -11,6 +11,7 @@ import ENV from '../config/environment';
  */
 export default class ToursRoute extends Route {
   @service fastboot;
+  @service store;
   @service tenant;
   /**
    *

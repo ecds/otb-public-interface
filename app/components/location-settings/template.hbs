@@ -1,3 +1,4 @@
+{{log @tour.cookiesAllowed}}
 <li class="uk-margin-small-bottom loc-on" role="button" {{on "click" (fn this.togglePermission "cookiesAllowed")}}>
   <span class="uk-text-middle uk-margin-right">Cookies {{if @tour.cookiesAllowed "ALLOWED" "BLOCKED"}}</span> <FaIcon @icon={{concat "toggle-" (if @tour.cookiesAllowed "on" "off")}} class="uk-text-middle" />
 </li>
