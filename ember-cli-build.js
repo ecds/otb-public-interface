@@ -6,6 +6,9 @@ module.exports = function(defaults) {
   let app = new EmberApp(defaults, {
     'ember-composable-helpers': {
       except: ['array']
+    },
+    fingerprint: {
+      exclude: ['markerclustererplus']
     }
   });
 
