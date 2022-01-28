@@ -132,11 +132,30 @@ body {
 .desktop {
   .otb-all-tours-map {
     height: 33vh;
+    margin-top: 80px;
+
+    &.otb-expand-map {
+      height: 66vh;
+    }
 
     .ember-google-map {
-      height: 33vh;
+      height: 100%;
       width: 100%;
     }
+
+    .map-control {
+      button {
+        background-color: rgb(34 34 34 / 25%);
+        color: black;
+
+        &:hover {
+          background-color: rgb(34 34 34 / 100%);
+          color: white;
+
+        }
+      }
+    }
+
   }
 
   nav {

@@ -24,29 +24,7 @@
 </nav>
 
 {{#if this.deviceContext.isDesktop}}
-  <section class="otb-all-tours-map">
-    <GMap
-      @lat={{32.6620411}}
-      @lng={{-83.4375901}}
-      @zoom={{6}}
-      @disableDefaultUI={{true}}
-      as |map|
-    >
-      {{#each this.model as |tourSet|}}
-        {{#if tourSet.mapableTours}}
-          {{#each tourSet.mapableTours as |tour|}}
-            <map.marker @lat={{tour.center.lat}} @lng={{tour.center.lng}} @onClick={{toggle 'showInfoWindow' tour}} as |marker|>
-              <marker.infoWindow @isOpen={{tour.showInfoWindow}}>
-                <h3>
-                  <TourLink @tenant={{tourSet.subdir}} @tour={{tour}} />
-                </h3>
-              </marker.infoWindow>
-            </map.marker>
-          {{/each}}
-        {{/if}}
-      {{/each}}
-    </GMap>
-  </section>
+  <MapAllTours @model={{this.model}} />
 {{/if}}
 
 <section class="uk-container uk-margin-top">

@@ -1,0 +1,32 @@
+<section class={{concat "otb-all-tours-map" (if this.mapExpanded " otb-expand-map" "")}}>
+    <GMap
+      class=""
+      @lat={{32.6620411}}
+      @lng={{-83.4375901}}
+      @zoom={{if this.mapExpanded 2 6}}
+      @disableDefaultUI={{true}}
+      as |map|
+    >
+      {{#each @model as |tourSet|}}
+        {{#if tourSet.mapableTours}}
+          {{#each tourSet.mapableTours as |tour|}}
+            <map.marker @lat={{tour.center.lat}} @lng={{tour.center.lng}} @onClick={{toggle 'showInfoWindow' tour}} as |marker|>
+              <marker.infoWindow @isOpen={{tour.showInfoWindow}}>
+                <h3>
+                  <TourLink @tenant={{tourSet.subdir}} @tour={{tour}} />
+                </h3>
+              </marker.infoWindow>
+            </map.marker>
+          {{/each}}
+        {{/if}}
+      {{/each}}
+      <map.control @position="RIGHT_BOTTOM">
+        <div class="uk-margin-right uk-margin-bottom map-control">
+          <UkButton @size="small" {{on "click" (toggle "mapExpanded" this)}} @color="secondary">
+            <FaIcon @icon={{if this.mapExpanded "compress-arrows-alt" "expand-arrows-alt"}} />
+            <br><span>{{if this.mapExpanded "Collapse" "Expand"}}</span>
+          </UkButton>
+        </div>
+      </map.control>
+    </GMap>
+  </section>
