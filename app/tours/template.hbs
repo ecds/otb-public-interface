@@ -1,9 +1,11 @@
 <nav class="uk-navbar uk-light uk-background-secondary" uk-navbar>
   <div class="uk-navbar-left">
-    <span class="uk-logo">
-      <img src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
-      {{this.tenant.tenantModel.name}}
-    </span>
+    <img class="uk-logo" src={{if this.tenant.tenantModel.logoUrl this.tenant.tenantModel.logoUrl "/assets/images/otblogo.png"}} alt="Branding">
+    <ul class="uk-navbar-nav">
+      <li>
+        <h1 class="uk-text-large uk-margin-remove">{{this.tenant.tenantModel.name}}</h1>
+      </li>
+    </ul>
   </div>
 </nav>
 {{#if this.deviceContext.isDesktop}}
