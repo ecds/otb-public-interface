@@ -9,7 +9,7 @@
     >
       {{#each @model as |tourSet|}}
         {{#if tourSet.mapableTours}}
-          {{#each tourSet.mapableTours as |tour|}}
+          {{!-- {{#each tourSet.mapableTours as |tour|}}
             <map.marker @lat={{tour.center.lat}} @lng={{tour.center.lng}} @onClick={{toggle 'showInfoWindow' tour}} as |marker|>
               <marker.infoWindow @isOpen={{tour.showInfoWindow}}>
                 <h3>
@@ -17,7 +17,13 @@
                 </h3>
               </marker.infoWindow>
             </map.marker>
-          {{/each}}
+          {{/each}} --}}
+          {{!-- {{log map.markerCluster}} --}}
+          <map.markerClusterer as |cluster|>
+            {{#each tourSet.mapableTours as |tour|}}
+              <cluster.marker @lat={{tour.center.lat}} @lng={{tour.center.lng}} />
+            {{/each}}
+          </map.markerClusterer>
         {{/if}}
       {{/each}}
       <map.control @position="RIGHT_BOTTOM">
