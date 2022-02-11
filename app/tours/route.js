@@ -29,7 +29,7 @@ export default class ToursRoute extends Route {
         this.transitionTo('tour.overview', model.firstObject.slug);
       } else {
         if (!this.fastboot.isFastBoot) {
-          if (this.tenant.isSubdomain) {
+          if (this.tenant.isSubDomain) {
             this.transitionTo('tour.overview', model.firstObject.slug);
           } else {
             this.transitionTo('tour.overview', this.tenant.tenantPath, model.firstObject.slug);
