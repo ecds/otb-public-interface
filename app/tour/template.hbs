@@ -1,3 +1,9 @@
+{{#if this.activeStop}}
+  {{page-title this.activeStop.title}}
+{{else}}
+  {{page-title this.model.title}}
+{{/if}}
+
 {{#if this.deviceContext.isDesktop}}
   {{!-- DESKTOP --}}
   <nav class="uk-navbar uk-light uk-background-secondary uk-margin uk-position-fixed otb-desktop-navbar" uk-navbar>

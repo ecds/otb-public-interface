@@ -1,13 +1,26 @@
-<div id="map-container">
+{{!-- <div id="map-container" style={{concat "display:" (if this.show "initial;" "none;")}}> --}}
+<div id="map-container" style={{concat "display:" (if this.show "initial;" "initial;")}}>
   <GMap
     @mapTypeId={{@tour.mapType}}
     @disableDefaultUI={{true}}
     @zoom={{this.zoomLevel}}
     @lat={{@tour.bounds.centerLat}}
     @lng={{@tour.bounds.centerLng}}
+    @restriction={{(hash latLngBounds=@tour.latLngBounds strictBounds=false)}}
     @onceOnIdle={{this.fitBounds}}
   as |map|>
     {{#if @tour.mapOverlay.originalImageUrl}}
+      {{#if @tour.blankMap}}
+        <map.imageOverlay
+          @south={{-90}}
+          @west={{180}}
+          @north={{90}}
+          @east={{0}}
+          @image="/assets/images/blank.jpg"
+          @added={{this.overlayAdded}}
+        >
+        </map.imageOverlay>
+      {{/if}}
       <map.imageOverlay
         @south={{@tour.mapOverlay.south}}
         @west={{@tour.mapOverlay.west}}

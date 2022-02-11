@@ -38,6 +38,8 @@ export default class TourModel extends Model {
   @attr('string') tenant;
   @attr('string') defaultLng;
   @attr('boolean') useDirections;
+  @attr('boolean') restrictBoundsToOverlay;
+  @attr('boolean') blankMap;
   @attr('boolean', { defaultValue: false }) redrawingMap;
   @hasMany('tour_stop') tourStops;
   @hasMany('stop') stops;
@@ -75,6 +77,17 @@ export default class TourModel extends Model {
       north: this.bounds.north,
       east: this.bounds.east
     };
+  }
+
+  get gBounds() {
+    // const poop = [
+    //   {lat: parseFloat(this.bounds.south), lng: parseFloat(this.bounds.west)},
+    //   {lat: parseFloat(this.bounds.north), lng: parseFloat(this.bounds.east)}
+    // ];
+    // console.log("🚀 ~ file: tour.js ~ line 83 ~ TourModel ~ getgBounds ~ poop", poop)
+    const southEast = new google.maps.LatLng(this.bounds.south, this.bounds.east);
+    const northWest = new google.maps.LatLng(this.bounds.north, this.bounds.west);
+    return new google.maps.LatLngBounds(southEast, northWest);
   }
 
   get splashBackground() {

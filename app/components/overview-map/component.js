@@ -10,6 +10,9 @@ export default class OverviewMapComponent extends Component {
   @tracked
   zoomLevel = 16;
 
+  @tracked
+  show = false;
+
   @action
   markerClicked(tourStop) {
     tourStop = this.store.peekRecord('tour-stop', tourStop.id);
@@ -27,5 +30,10 @@ export default class OverviewMapComponent extends Component {
   fitBounds(event){
     event.map.fitBounds(this.args.tour.latLngBounds);
     this.zoomLevel = event.map.getZoom();
+  }
+
+  @action
+  overlayAdded() {
+    this.show = true;
   }
 }

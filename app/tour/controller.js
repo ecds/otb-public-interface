@@ -14,6 +14,9 @@ export default class TourController extends Controller {
   @service theme;
 
   @tracked
+  activeStop = null;
+
+  @tracked
   menuOpen = false;
 
   showStopGrid = false;
@@ -29,6 +32,7 @@ export default class TourController extends Controller {
 
   @dropTask
   *setActiveStop(tourStop, scrollTo=false) {
+    this.activeStop = null;
     const stops = this.store.peekAll('stop');
 
     yield stops.forEach(tourStop => {
@@ -48,6 +52,7 @@ export default class TourController extends Controller {
     const stop = yield this.store.peekRecord('stop', tourStop.get('stop.id'));
 
     stop.setProperties({ active: true });
+    this.activeStop = stop;
 
     // if (tourStop) {
     //   this.router.transitionTo('tour.stop.index', stop.slug);

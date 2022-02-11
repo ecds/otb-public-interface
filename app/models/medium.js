@@ -17,6 +17,7 @@ export default class MediumModel extends Model {
   @attr('string') mobile;
   @attr('string') insecure;
   @attr('string') provider;
+  @attr('string') filename;
   @attr('string') originalImageUrl;
   @attr('number') desktopWeight;
   @attr('number') desktopWidth;

@@ -1,6 +1,5 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import { A } from '@ember/array';
 
 export default class TourRoute extends Route {
   @service fastboot;
@@ -20,13 +19,6 @@ export default class TourRoute extends Route {
 
   afterModel(model) {
     this.theme.setTour(model);
-  }
-
-  title(tokens) {
-    tokens = A(tokens);
-    const model = this.modelFor('tour');
-    tokens.push(model.title);
-    return `${model.tenantTitle}: ${tokens.join(' - ')}`;
   }
 
   headTags() {

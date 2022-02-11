@@ -38,6 +38,7 @@ export default class GMapImageOverlayComponent extends OverlayView {
       this.events,
       this.publicAPI
     );
+    if (this.args.added) this.args.added();
   }
 
   draw() {
