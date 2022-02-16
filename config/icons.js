@@ -20,6 +20,7 @@ module.exports = function() {
       'play',
       'play-circle',
       'square',
+      'spinner',
       'subway',
       'toggle-off',
       'toggle-on',

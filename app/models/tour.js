@@ -38,6 +38,7 @@ export default class TourModel extends Model {
   @attr('string') tenant;
   @attr('string') defaultLng;
   @attr('boolean') useDirections;
+  @attr('boolean') restrictBounds;
   @attr('boolean') restrictBoundsToOverlay;
   @attr('boolean') blankMap;
   @attr('boolean', { defaultValue: false }) redrawingMap;
@@ -79,15 +80,22 @@ export default class TourModel extends Model {
     };
   }
 
-  get gBounds() {
-    // const poop = [
-    //   {lat: parseFloat(this.bounds.south), lng: parseFloat(this.bounds.west)},
-    //   {lat: parseFloat(this.bounds.north), lng: parseFloat(this.bounds.east)}
-    // ];
-    // console.log("🚀 ~ file: tour.js ~ line 83 ~ TourModel ~ getgBounds ~ poop", poop)
-    const southEast = new google.maps.LatLng(this.bounds.south, this.bounds.east);
-    const northWest = new google.maps.LatLng(this.bounds.north, this.bounds.west);
-    return new google.maps.LatLngBounds(southEast, northWest);
+  get mapRestriction() {
+    if (this.restrictBounds || this.restrictBoundsToOverlay) {
+      return {
+        latLngBounds: this.latLngBounds,
+        strictBounds: false
+      };
+    }
+
+    // return null;
+
+    return {
+      latLngBounds: {
+        north: 85, south: -85, west: -179.5, east: 179.5
+      },
+      strictBounds: true
+    };
   }
 
   get splashBackground() {

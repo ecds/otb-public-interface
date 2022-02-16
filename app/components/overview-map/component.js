@@ -30,6 +30,9 @@ export default class OverviewMapComponent extends Component {
   fitBounds(event){
     event.map.fitBounds(this.args.tour.latLngBounds);
     this.zoomLevel = event.map.getZoom();
+    if (!this.args.tour.mapOverlay.content) {
+      this.show = true;
+    }
   }
 
   @action

@@ -1,23 +1,26 @@
-{{!-- <div id="map-container" style={{concat "display:" (if this.show "initial;" "none;")}}> --}}
-<div id="map-container" style={{concat "display:" (if this.show "initial;" "initial;")}}>
+{{#unless this.show}}
+  <div class="uk-position-center">
+    <FaIcon @icon="spinner" @spin={{true}} /> Loading Map
+  </div>
+{{/unless}}
+<div id="map-container" style={{concat "opacity:" (if this.show "1;" "0;")}}>
   <GMap
     @mapTypeId={{@tour.mapType}}
     @disableDefaultUI={{true}}
     @zoom={{this.zoomLevel}}
     @lat={{@tour.bounds.centerLat}}
     @lng={{@tour.bounds.centerLng}}
-    @restriction={{(hash latLngBounds=@tour.latLngBounds strictBounds=false)}}
+    @restriction={{@tour.mapRestriction}}
     @onceOnIdle={{this.fitBounds}}
   as |map|>
     {{#if @tour.mapOverlay.originalImageUrl}}
       {{#if @tour.blankMap}}
         <map.imageOverlay
-          @south={{-90}}
+          @south={{-85}}
           @west={{180}}
-          @north={{90}}
+          @north={{85}}
           @east={{0}}
           @image="/assets/images/blank.jpg"
-          @added={{this.overlayAdded}}
         >
         </map.imageOverlay>
       {{/if}}
@@ -27,34 +30,35 @@
         @north={{@tour.mapOverlay.north}}
         @east={{@tour.mapOverlay.east}}
         @image={{@tour.mapOverlay.originalImageUrl}}
+        @added={{this.overlayAdded}}
       >
       </map.imageOverlay>
     {{/if}}
 
     {{#each @tour.tourStops as |tourStop|}}
-    {{#if (and tourStop.stop.lat tourStop.stop.lng)}}
-      <map.marker
-        @onDragend={{this.reLocate}}
-        @lat={{tourStop.stop.lat}}
-        @lng={{tourStop.stop.lng}}
-        @label={{hash text=(concat tourStop.position) color="white" className=(if tourStop.stop.active "otb-marker-label-active" "otb-marker-label")}}
-        @icon={{tourStop.stop.icon}}
-        @onClick={{fn this.markerClicked tourStop}}
-        as |marker|>
+      {{#if (and tourStop.stop.lat tourStop.stop.lng)}}
+        <map.marker
+          @onDragend={{this.reLocate}}
+          @lat={{tourStop.stop.lat}}
+          @lng={{tourStop.stop.lng}}
+          @label={{hash text=(concat tourStop.position) color="white" className=(if tourStop.stop.active "otb-marker-label-active" "otb-marker-label")}}
+          @icon={{tourStop.stop.icon}}
+          @onClick={{fn this.markerClicked tourStop}}
+          as |marker|>
 
-        <marker.infoWindow
-          @isOpen={{tourStop.showOverviewInfoWindow}}>
-          <div>
-            <h3>
-              {{tourStop.stop.title}}
-            </h3>
-            <p>
-              <LinkTo @route="tour.stop" @model={{tourStop.stop.slug}}>Go To Stop</LinkTo>
-            </p>
-          </div>
-        </marker.infoWindow>
-      </map.marker>
-    {{/if}}
+          <marker.infoWindow
+            @isOpen={{tourStop.showOverviewInfoWindow}}>
+            <div>
+              <h3>
+                {{tourStop.stop.title}}
+              </h3>
+              <p>
+                <LinkTo @route="tour.stop" @model={{tourStop.stop.slug}}>Go To Stop</LinkTo>
+              </p>
+            </div>
+          </marker.infoWindow>
+        </map.marker>
+      {{/if}}
     {{/each}}
   </GMap>
 </div>
