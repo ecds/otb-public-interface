@@ -2,7 +2,11 @@
   <ul class="uk-slideshow-items uk-margin-top">
     {{#each @sortedMedia as |sortedMedium|}}
       <li class="uk-text-center" uk-toggle target={{concat "#modal-" sortedMedium.position sortedMedium.medium.id}}  role="button" {{on "click" (fn this.showEmbed sortedMedium)}}>
-        {{sortedMedium.medium.imageTag}}
+        {{#if this.deviceContext.isDesktop}}
+          {{sortedMedium.medium.imageTag}}
+        {{else}}
+          <img src={{sortedMedium.medium.files.tablet}} alt={{sortedMedium.medium.caption}} />
+        {{/if}}
         {{#if (and sortedMedium.medium.title (not-eq sortedMedium.medium.filename sortedMedium.medium.title))}}
           <div class="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center uk-padding-small">
             {{sortedMedium.medium.title}}
@@ -45,7 +49,11 @@
       {{else}}
         <div class="uk-card uk-card-default">
           <figure class="uk-card-media-top uk-text-center uk-margin-top">
-            {{sortedMedium.medium.imageTag}}
+            {{#if this.deviceContext.isDesktop}}
+              {{sortedMedium.medium.imageTag}}
+            {{else}}
+              <img src={{sortedMedium.medium.files.tablet}} alt={{sortedMedium.medium.caption}} />
+            {{/if}}
             <figcaption class="uk-card-body uk-padding-remove-top">
               {{#if this.deviceContext.isMobile}}
                 <p class="uk-text-small uk-text-center">PINCH TO ZOOM IMAGE</p>
