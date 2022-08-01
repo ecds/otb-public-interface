@@ -27,10 +27,10 @@
         {{/if}}
         {{#each this.model.sortedFlatPages as |page|}}
           <li>
-            <a href="#" uk-toggle target={{concat "#flat-page-" page.id}}>
+            <a href="#" uk-toggle target={{concat "#flat-page-" page.flatPage.id}}>
               {{page.flatPage.title}}
             </a>
-            <div uk-offcanvas flip="true" id={{concat "flat-page-" page.id}} container=".otb-desktop-main">
+            <div uk-offcanvas flip="true" id={{concat "flat-page-" page.flatPage.id}} container=".otb-desktop-main">
               <div class="uk-offcanvas-bar otb-desktop-offcanvas-bar">
                 <button class="uk-offcanvas-close" type="button" uk-close></button>
                 <h3>{{page.flatPage.title}}</h3>
