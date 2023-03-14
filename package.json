@@ -78,7 +78,7 @@
     "qunit-dom": "^1.0.0",
     "sass": "^1.19.0",
     "scrollama": "^3.0.0",
-    "webpack": "^5.67.0"
+    "webpack": "^5.76.0"
   },
   "engines": {
     "node": "10.* || >= 12"
