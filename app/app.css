@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+html {
+  font-size: 18px;
+}
+
+.otb-desktop-content p,
+.otb-flat-page p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.otb-flat-page a {
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+button.paging-item {
+  padding: 2px;
+}

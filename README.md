@@ -1,57 +1,36 @@
-# otb-public
+# Welcome to Remix!
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+- [Remix Docs](https://remix.run/docs)
 
-## Prerequisites
+## Development
 
-You will need the following things properly installed on your computer.
+Start the Remix development asset server and the Express server by running:
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with npm)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+```sh
+npm run dev
+```
 
-## Installation
+This starts your app in development mode, which will purge the server require cache when Remix rebuilds assets so you don't need a process manager restarting the express server.
 
-* `git clone <repository-url>` this repository
-* `cd otb-public`
-* `npm install`
+## Deployment
 
-## Running / Development
+First, build your app for production:
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+```sh
+npm run build
+```
 
-### Code Generators
+Then run the app in production mode:
 
-Make use of the many generators for code, try `ember help generate` for more details
+```sh
+npm start
+```
 
-### Running Tests
+Now you'll need to pick a host to deploy it to.
 
-* `ember test`
-* `ember test --server`
+### DIY
 
-### Linting
+If you're familiar with deploying express applications you should be right at home just make sure to deploy the output of `remix build`
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
-
-### Building
-
-* `ember build` (development)
-* `ember build --environment production` (production)
-
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+- `build/`
+- `public/build/`
