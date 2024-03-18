@@ -14,7 +14,6 @@ export const meta: MetaFunction = () => {
 };
 
 export const loader = async ({ context }: { context: TLoaderContext }) => {
-  console.log("🚀 ~ loader ~ context:", context);
   const { tenant, request } = context;
   if (tenant) {
     throw redirect(
