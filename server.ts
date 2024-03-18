@@ -11,11 +11,10 @@ export const handler = createRequestHandler({
   build,
   mode: build.mode,
   getLoadContext: (req, res) => {
-    console.log("🚀 ~ req, res:", req.headers.host);
     let tenant = undefined;
     const parts = req.headers.host.split(".");
     if (parts.length >= 3) {
-      tenant = parts[0] !== "dev" ? parts[0] : undefined;
+      tenant = parts[0] !== "otb" ? parts[0] : undefined;
     }
     const request = {
       protocol: "http",
