@@ -7,25 +7,13 @@ import StopList from "~/components/desktop/StopList";
 import TourMap from "~/components/desktop/TourMap";
 import { getTour } from "~/data";
 import FlatPage from "~/components/shared/FlatPage";
-import { getTenant } from "~/utils/getTenant";
 import type { TLoaderContext } from "~/types/TLoaderContext";
 import type { TTourFlatPage } from "~/types/TTourFlatPage";
-import type { Request } from "express";
 
 interface LoaderProps {
   context: TLoaderContext;
   params: { tour: string };
-  request: Request;
 }
-
-export const clientLoader = async ({ request, params }: LoaderProps) => {
-  const tenant = getTenant(request.url);
-  if (!tenant) {
-    throw redirect(`http://${process?.env.HOST}`, 302);
-  }
-  const data = await getTour(tenant, params.tour);
-  return { data };
-};
 
 export const loader = async ({ context, params }: LoaderProps) => {
   const { tenant } = context;
@@ -36,11 +24,9 @@ export const loader = async ({ context, params }: LoaderProps) => {
   return json({ data });
 };
 
-clientLoader.hydrate = true;
-
 export default function Tour() {
   const { setCurrentTour } = useContext(TourSiteContext);
-  const { data } = useLoaderData<typeof clientLoader>();
+  const { data } = useLoaderData<typeof loader>();
   setCurrentTour(data.tour);
 
   return (

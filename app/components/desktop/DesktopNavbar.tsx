@@ -36,7 +36,7 @@ export default function DesktopNavbar({ tour }: Props) {
                   <Link to="/">
                     <img
                       className="h-8 w-auto"
-                      src="/images/otblogo.png"
+                      src="/_static/images/otblogo.png"
                       alt="OpenTourBuilder"
                     />
                   </Link>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Links,
-  LiveReload,
   Meta,
   Outlet,
   Scripts,
@@ -11,7 +10,7 @@ import {
 import { json } from "@remix-run/node";
 import TourSiteContext from "./contexts/tourSiteContext";
 import { getTourSet } from "./data";
-import type { LinksFunction } from "@remix-run/node";
+import type { MetaFunction, LinksFunction } from "@remix-run/node";
 import type { TLoaderContext } from "./types/TLoaderContext";
 import type { TTourSet } from "./types/TTourSet";
 import type { TTour } from "./types/TTour";
@@ -23,6 +22,14 @@ import styles from "./app.css";
 interface LoaderProps {
   context: TLoaderContext;
 }
+
+export const meta: MetaFunction = () => {
+  return [
+    { charset: "utf-8" },
+    { title: "OpenTourBuilder" },
+    { name: "viewport", content: "width=device-width,initial-scale=1" },
+  ];
+};
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -68,7 +75,6 @@ export default function App() {
           <Outlet />
           <ScrollRestoration />
           <Scripts />
-          <LiveReload />
         </body>
       </html>
     </TourSiteContext.Provider>

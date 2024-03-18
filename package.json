@@ -5,26 +5,28 @@
   "type": "module",
   "scripts": {
     "build": "remix build",
-    "dev": "remix dev --manual -c \"node --watch-path server.js --watch server.js\"",
+    "dev": "remix dev --manual -c \"arc sandbox -e testing -p 3000\"",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
-    "start": "cross-env NODE_ENV=production node ./server.js",
+    "start": "cross-env NODE_ENV=production arc sandbox",
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@architect/architect": "^11.0.5",
+    "@architect/functions": "^8.0.4",
     "@fortawesome/fontawesome-svg-core": "^6.5.1",
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-regular-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@headlessui/react": "^1.7.18",
+    "@remix-run/architect": "^2.8.1",
     "@remix-run/css-bundle": "^2.6.0",
-    "@remix-run/express": "^2.6.0",
+    "@remix-run/express": "^2.8.1",
     "@remix-run/node": "^2.6.0",
     "@remix-run/react": "^2.6.0",
     "@vis.gl/react-google-maps": "^0.6.1",
     "compression": "^1.7.4",
     "cross-env": "^7.0.3",
-    "express": "^4.18.2",
     "intersection-observer": "^0.12.2",
     "isbot": "^4.1.0",
     "morgan": "^1.10.0",
@@ -58,6 +60,6 @@
     "typescript": "^5.1.6"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   }
 }

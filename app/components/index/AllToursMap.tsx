@@ -23,7 +23,7 @@ const AllToursMap = ({ tours }: Props) => {
 
   return (
     <div className="w-screen h-[50vh]">
-      <APIProvider apiKey={process.env.GOOGLE_MAPS_API_KEY || ""}>
+      <APIProvider apiKey={"AIzaSyD-G_lDtvChv-P3nchtQYHoCLfFzn9ylr8"}>
         <Map
           defaultCenter={position}
           zoom={expandMap ? 2 : zoom}

@@ -24,7 +24,7 @@ const TourMap = ({ tour }: Props) => {
   };
 
   return (
-    <APIProvider apiKey={process.env.GOOGLE_MAPS_API_KEY || ""}>
+    <APIProvider apiKey={"AIzaSyD-G_lDtvChv-P3nchtQYHoCLfFzn9ylr8"}>
       <Map
         defaultBounds={{
           east: tour.attributes.bounds.east,
