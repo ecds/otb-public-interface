@@ -2,10 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-
-html {
+/* html {
   font-size: 18px;
-}
+} */
 
 .otb-desktop-content p,
 .otb-flat-page p {
@@ -20,4 +19,8 @@ html {
 
 button.paging-item {
   padding: 2px;
+}
+
+.slider-control-bottomcenter div {
+  top: 1.5rem !important;
 }

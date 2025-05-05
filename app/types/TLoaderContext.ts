@@ -7,3 +7,11 @@ export type TLoaderContext = {
   tenant: string | undefined;
   request: TContextRequest;
 };
+
+export interface LoaderProps {
+  context: TLoaderContext;
+  params: { tour: string };
+  request: {
+    protocol: string;
+  };
+}

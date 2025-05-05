@@ -1,0 +1,112 @@
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { useContext } from "react";
+import { TourContext } from "~/contexts/tourContext";
+import { useDeviceContext } from "~/hooks";
+
+const FlatPageLinks = () => {
+  const { flatPages, setCurrentFlatPage } = useContext(TourContext);
+  const { isMobile } = useDeviceContext();
+
+  if (flatPages) {
+    if (flatPages.length > 4 || isMobile) {
+      return (
+        <div className="">
+          <Menu>
+            <MenuButton className="inline-flex items-center gap-2 text-gray-400">
+              More <FontAwesomeIcon icon={faChevronDown} />
+            </MenuButton>
+            <MenuItems
+              transition
+              anchor="bottom end"
+              className="w-52 min-w-fit origin-top-right rounded-xl border border-white/5 bg-gray-400 text-left p-1 text-sm/6 text-gray-800 transition duration-100 ease-out [--anchor-gap:1.5rem] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+            >
+              {flatPages.map((flatPage) => {
+                return (
+                  <MenuItem key={flatPage.id}>
+                    {({ close }) => (
+                      <button
+                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:underline"
+                        onClick={() => {
+                          setCurrentFlatPage(flatPage);
+                          close();
+                        }}
+                      >
+                        {flatPage.attributes.title}
+                      </button>
+                    )}
+                  </MenuItem>
+                );
+              })}
+              <MenuItem>
+                {({ close }) => (
+                  <button
+                    className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:underline"
+                    onClick={() => {
+                      setCurrentFlatPage("about");
+                      close();
+                    }}
+                  >
+                    About OpenTour
+                  </button>
+                )}
+              </MenuItem>
+            </MenuItems>
+          </Menu>
+        </div>
+      );
+    }
+
+    return (
+      <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
+        {flatPages?.map((flatPage) => {
+          return (
+            <li key={flatPage.id}>
+              <button
+                tabIndex={0}
+                className="text-gray-400"
+                onClick={() => setCurrentFlatPage(flatPage)}
+                onKeyDown={({ key }: { key: string }) => {
+                  if (key === "Enter") setCurrentFlatPage(flatPage);
+                }}
+              >
+                {flatPage.attributes.title}
+              </button>
+            </li>
+          );
+        })}
+        <li>
+          <button
+            tabIndex={0}
+            className="text-gray-400"
+            onClick={() => setCurrentFlatPage("about")}
+            onKeyDown={({ key }: { key: string }) => {
+              if (key === "Enter") setCurrentFlatPage("about");
+            }}
+          >
+            About OpenTour
+          </button>
+        </li>
+      </ul>
+    );
+  }
+  return (
+    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
+      <li>
+        <button
+          tabIndex={0}
+          className="text-gray-400"
+          onClick={() => setCurrentFlatPage("about")}
+          onKeyDown={({ key }: { key: string }) => {
+            if (key === "Enter") setCurrentFlatPage("about");
+          }}
+        >
+          About OpenTour
+        </button>
+      </li>
+    </ul>
+  );
+};
+
+export default FlatPageLinks;

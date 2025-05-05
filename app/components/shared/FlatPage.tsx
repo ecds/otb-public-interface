@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import TourSiteContext from "~/contexts/tourSiteContext";
+import { TourContext } from "~/contexts/tourContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -29,7 +29,7 @@ const RenderFlatPage = ({ flatPage }: Props) => {
 };
 
 const FlatPage = ({ flatPage }: Props) => {
-  const { currentFlatPage, setCurrentFlatPage } = useContext(TourSiteContext);
+  const { currentFlatPage, setCurrentFlatPage } = useContext(TourContext);
 
   return (
     <div

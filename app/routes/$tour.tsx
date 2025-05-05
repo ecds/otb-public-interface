@@ -1,49 +1,80 @@
-import { useContext } from "react";
-import { json, redirect } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
-import TourSiteContext from "~/contexts/tourSiteContext";
-import DesktopNavbar from "~/components/desktop/DesktopNavbar";
+import { Suspense, useState } from "react";
+import { redirect } from "@remix-run/node";
+import { Await, useLoaderData, Outlet } from "@remix-run/react";
+import Navbar from "~/components/shared/Navbar";
 import StopList from "~/components/desktop/StopList";
-import TourMap from "~/components/desktop/TourMap";
+import TourMap from "~/components/desktop/TourMap.client";
 import { getTour } from "~/data";
 import FlatPage from "~/components/shared/FlatPage";
-import type { TLoaderContext } from "~/types/TLoaderContext";
+import { ClientOnly } from "remix-utils/client-only";
+import { TourContext } from "~/contexts/tourContext";
+import TourIntro from "~/components/desktop/TourIntro";
+import TourFlatPages from "~/components/desktop/TourFlatPages";
+import FlatPageLinks from "~/components/desktop/FlatPageLinks";
+import type { TStop } from "~/types/TStop";
+import type { LoaderProps } from "~/types/TLoaderContext";
 import type { TTourFlatPage } from "~/types/TTourFlatPage";
 
-interface LoaderProps {
-  context: TLoaderContext;
-  params: { tour: string };
-}
-
 export const loader = async ({ context, params }: LoaderProps) => {
-  const { tenant } = context;
+  const { tenant, request } = context;
   if (!tenant) {
-    throw redirect(`http://${process?.env.HOST}`, 302);
+    throw redirect(`${request.protocol}://${process.env.HOST}`);
   }
-  const data = await getTour(tenant, params.tour);
-  return json({ data });
+  const { tour } = await getTour(tenant, params.tour);
+  return { tour };
 };
 
 export default function Tour() {
-  const { setCurrentTour } = useContext(TourSiteContext);
-  const { data } = useLoaderData<typeof loader>();
-  setCurrentTour(data.tour);
+  const { tour } = useLoaderData<typeof loader>();
+  const [stops, setStops] = useState<TStop[] | undefined>(undefined);
+  const [flatPages, setFlatPages] = useState<TTourFlatPage[] | undefined>();
+  const [currentFlatPage, setCurrentFlatPage] = useState<
+    TTourFlatPage | string | undefined
+  >(undefined);
+  const [currentStop, setCurrentStop] = useState<TStop | undefined>(undefined);
 
   return (
-    <div className="hidden md:block">
-      <DesktopNavbar tour={data.tour} />
-      <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-4rem)] grid-flow-row auto-rows-max">
-        <StopList tour={data.tour} stops={data.tour.stops} className="mt-24" />
-        <div className="fixed right-0 w-1/2 h-full mt-16">
-          <TourMap tour={data.tour} />
-        </div>
-        {data.tour.flatPages.map((flatPage: TTourFlatPage) => {
-          return <FlatPage key={flatPage.id} flatPage={flatPage} />;
-        })}
-        <FlatPage flatPage="about" />
-      </div>
-      <Outlet />
-    </div>
+    <TourContext.Provider
+      value={{
+        tour,
+        stops,
+        setStops,
+        currentStop,
+        setCurrentStop,
+        flatPages,
+        setFlatPages,
+        currentFlatPage,
+        setCurrentFlatPage,
+      }}
+    >
+      <Suspense fallback={<div>waiting...blah</div>}>
+        <Await resolve={tour}>
+          <Navbar>
+            <FlatPageLinks />
+          </Navbar>
+          {/* Desktop */}
+          <div className="hidden md:block">
+            <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-4rem)] grid-flow-row auto-rows-max">
+              <StopList className="mt-24 text-black/80 leading-6">
+                <TourIntro />
+              </StopList>
+              <div className="fixed right-0 w-1/2 h-full mt-16">
+                <ClientOnly>
+                  {() => <TourMap tour={tour} stops={stops} />}
+                </ClientOnly>
+              </div>
+              <TourFlatPages />
+              <FlatPage flatPage="about" />
+            </div>
+            <Outlet />
+          </div>
+          {/* Mobile */}
+          <div className="block md:hidden">
+            <TourIntro />
+          </div>
+        </Await>
+      </Suspense>
+    </TourContext.Provider>
   );
 }
 

@@ -55,11 +55,13 @@ export type TStop = {
         type: string;
       };
     };
-    stop: {
-      data: {
-        id: string | number;
-        type: string;
-      };
+    stop_media: {
+      data: [
+        {
+          id: string;
+          type: string;
+        }
+      ];
     };
   };
   included: [

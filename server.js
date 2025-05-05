@@ -1,0 +1,85 @@
+import { createRequestHandler } from "@remix-run/express";
+import { installGlobals } from "@remix-run/node";
+import compression from "compression";
+import express from "express";
+import morgan from "morgan";
+import fs from "node:fs";
+
+const minSubdomainCount = () => {
+  if (process.env.NODE_ENV === "staging") {
+    return 1;
+  }
+  return 0;
+};
+
+installGlobals();
+
+const viteDevServer =
+  process.env.NODE_ENV === "production"
+    ? undefined
+    : await import("vite").then((vite) =>
+        vite.createServer({
+          server: { middlewareMode: true },
+        })
+      );
+
+const remixHandler = createRequestHandler({
+  build: viteDevServer
+    ? () => viteDevServer.ssrLoadModule("virtual:remix/server-build")
+    : await import("./build/server/index.js"),
+  getLoadContext: (req, res) => {
+    const host = req.get("Host");
+    const tenant =
+      req.subdomains.length > minSubdomainCount()
+        ? req.subdomains.pop()
+        : undefined;
+    const port = host.split(":").pop();
+    const request = {
+      protocol: req.protocol,
+      host,
+      subdomains: req.subdomains,
+      port,
+    };
+    return { tenant, res, request, req };
+  },
+});
+
+const app = express();
+
+app.use(compression());
+
+// http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
+app.disable("x-powered-by");
+
+// handle asset requests
+if (viteDevServer) {
+  app.use(viteDevServer.middlewares);
+} else {
+  // Vite fingerprints its assets so we can cache forever.
+  app.use(
+    "/assets",
+    express.static("build/client/assets", { immutable: true, maxAge: "1y" })
+  );
+}
+
+// Everything else (like favicon.ico) is cached for an hour. You may want to be
+// more aggressive with this caching.
+app.use(express.static("build/client", { maxAge: "1h" }));
+
+app.use(morgan("tiny"));
+
+// handle SSR requests
+app.all("*", remixHandler);
+
+const port = process.env.PORT || 3000;
+app.listen(port, "0.0.0.0", () => {
+  fs.writeFile("./pid", `${process.pid}`, (error) => {
+    if (error) console.error(error);
+  });
+  console.log(
+    `Express server listening at http://0.0.0.0:${port} ${process.pid}`
+  );
+  console.log(
+    "For the subdomains to work for local dev, you need to use a fully qualified domain, eg. lvh.me."
+  );
+});

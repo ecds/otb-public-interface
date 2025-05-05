@@ -2,7 +2,8 @@ import type { MetaFunction } from "@remix-run/node";
 import { getTourSets } from "~/data";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import AllToursMap from "~/components/index/AllToursMap";
+import AllToursMap from "~/components/index/AllToursMap.client";
+import { ClientOnly } from "remix-utils/client-only";
 import type { TTourSet } from "~/types/TTourSet";
 import type { TLoaderContext } from "~/types/TLoaderContext";
 
@@ -16,10 +17,11 @@ export const meta: MetaFunction = () => {
 export const loader = async ({ context }: { context: TLoaderContext }) => {
   const { tenant, request } = context;
   if (tenant) {
-    throw redirect(
-      `${request.protocol}://${tenant}.${request.host}/tours`,
-      302
-    );
+    if (request.host.includes(tenant)) {
+      throw redirect("/tours");
+    } else {
+      throw redirect(`${request.protocol}://${tenant}.${request.host}/tours`);
+    }
   }
   const tourSets = await getTourSets();
   return json({ tourSets, request, tenant });
@@ -29,11 +31,15 @@ export default function Index() {
   const { tourSets, request } = useLoaderData<typeof loader>();
   return (
     <div>
-      <AllToursMap
-        tours={tourSets
-          .map((ts: TTourSet) => ts.attributes.mapable_tours)
-          .flat()}
-      />
+      <ClientOnly>
+        {() => (
+          <AllToursMap
+            tours={tourSets
+              .map((ts: TTourSet) => ts.attributes.mapable_tours)
+              .flat()}
+          />
+        )}
+      </ClientOnly>
       <div className="m-8">
         <h1 className="text-2xl">Sites</h1>
         <ul>

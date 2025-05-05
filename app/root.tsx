@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Links,
   Meta,
@@ -7,17 +6,13 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
-import { json } from "@remix-run/node";
 import TourSiteContext from "./contexts/tourSiteContext";
 import { getTourSet } from "./data";
 import type { MetaFunction, LinksFunction } from "@remix-run/node";
 import type { TLoaderContext } from "./types/TLoaderContext";
-import type { TTourSet } from "./types/TTourSet";
-import type { TTour } from "./types/TTour";
-import type { TStop } from "./types/TStop";
-import type { TTourFlatPage } from "./types/TTourFlatPage";
 
-import styles from "./app.css";
+import styles from "./index.css?url";
+import { useDeviceContext } from "./hooks";
 
 interface LoaderProps {
   context: TLoaderContext;
@@ -34,45 +29,34 @@ export const meta: MetaFunction = () => {
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const loader = async ({ context }: LoaderProps) => {
-  const { tenant } = context;
+  const { tenant, request } = context;
   if (tenant) {
     const tourSet = await getTourSet(tenant);
-    return json({ tourSet });
+    return { tourSet, request };
   }
-  return { tourSet: null };
+  return { tourSet: null, request, tenant };
 };
 
 export default function App() {
   const { tourSet } = useLoaderData<typeof loader>();
-  const [currentSite, setCurrentSite] = useState<TTourSet | undefined>(tourSet);
-  const [currentTour, setCurrentTour] = useState<TTour | undefined>(undefined);
-  const [currentFlatPage, setCurrentFlatPage] = useState<
-    TTourFlatPage | string | undefined
-  >(undefined);
-  const [currentStop, setCurrentStop] = useState<TStop | undefined>(undefined);
+  const { isMobile, isDesktop } = useDeviceContext();
 
   return (
     <TourSiteContext.Provider
       value={{
-        currentSite,
-        setCurrentSite,
-        currentTour,
-        setCurrentTour,
-        currentStop,
-        setCurrentStop,
-        currentFlatPage,
-        setCurrentFlatPage,
+        currentSite: tourSet,
+        tenant: tourSet?.attributes.subdir,
       }}
     >
       <html lang="en">
         <head>
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <Meta />
           <Links />
+          <Meta />
         </head>
         <body>
-          <Outlet />
+          {(isMobile || isDesktop) && <Outlet />}
           <ScrollRestoration />
           <Scripts />
         </body>

@@ -1,6 +1,10 @@
-import type { TTourStop } from "./types/TStop";
-import type { TMedia } from "./types/TMedia";
 import type { TTourFlatPage } from "./types/TTourFlatPage";
+import type { TTour } from "./types/TTour";
+
+type TourRelatedRequestParams = {
+  tour: TTour;
+  tenant: string;
+};
 
 const fetchData = async (url: string) => {
   const response = await fetch(url, {
@@ -70,10 +74,10 @@ export const getTourMedium = async (
 
 export const getStopMedium = async (
   tenant: string,
-  tourMedium: number | string
+  stopMedium: number | string
 ) => {
   const response = await fetchData(
-    `https://api.opentour.site/${tenant}/stop-media/${tourMedium}`
+    `https://api.opentour.site/${tenant}/stop-media/${stopMedium}`
   );
   const medium = await getMedium(
     tenant,
@@ -90,17 +94,17 @@ export const getStop = async (tenant: string, stop: number) => {
   const response = await fetchData(
     `https://api.opentour.site/${tenant}/stops/${stop}`
   );
-  let stopMedia = await Promise.all(
-    response.data.relationships.stop_media.data?.map(async (medium: TMedia) => {
-      return getStopMedium(tenant, medium.id);
-    })
-  );
+  // let stopMedia = await Promise.all(
+  //   response.data.relationships.stop_media.data?.map(async (medium: TMedia) => {
+  //     return getStopMedium(tenant, medium.id);
+  //   })
+  // );
 
-  stopMedia = stopMedia.sort((a, b) => {
-    return a.attributes.position - b.attributes.position;
-  });
+  // stopMedia = stopMedia.sort((a, b) => {
+  //   return a.attributes.position - b.attributes.position;
+  // });
 
-  response.data.media = stopMedia;
+  // response.data.media = stopMedia;
   return response.data;
 };
 
@@ -112,7 +116,7 @@ export const getTourStop = async (
     `https://api.opentour.site/${tenant}/tour-stops/${tourStop}`
   );
 
-  let stop = await getStop(tenant, response.data.relationships.stop.data.id);
+  const stop = await getStop(tenant, response.data.relationships.stop.data.id);
 
   stop.attributes = {
     ...response.data.attributes,
@@ -159,23 +163,33 @@ export const getTour = async (tenant: string, tour: number | string) => {
   const response = await fetchData(
     `https://api.opentour.site/${tenant}/tours?slug=${tour}`
   );
+  const tourData = response.data;
+  return { tour: tourData };
+};
 
+export const getTourStops = async ({
+  tenant,
+  tour,
+}: TourRelatedRequestParams) => {
   let tourStops = await Promise.all(
-    response.data.relationships.tour_stops.data.map(
-      async (tourStop: TTourStop) => {
-        return getTourStop(tenant, tourStop.id);
-      }
-    )
+    tour.relationships.tour_stops.data.map(async (tourStop) => {
+      const stop = getTourStop(tenant, tourStop.id);
+      return stop;
+    })
   );
 
   tourStops = tourStops.sort((a, b) => {
     return a.attributes.position - b.attributes.position;
   });
+  return tourStops;
+};
 
-  response.data.stops = tourStops;
-
+export const getTourFlatPages = async ({
+  tenant,
+  tour,
+}: TourRelatedRequestParams) => {
   let tourFlatPages = await Promise.all(
-    response.data.relationships.tour_flat_pages.data?.map(
+    tour.relationships.tour_flat_pages.data?.map(
       async (flatPage: TTourFlatPage) => {
         return getTourFlatPage(tenant, flatPage.id);
       }
@@ -186,10 +200,15 @@ export const getTour = async (tenant: string, tour: number | string) => {
     return a.attributes.position - b.attributes.position;
   });
 
-  response.data.flatPages = tourFlatPages;
+  return tourFlatPages;
+};
 
+export const getTourMedia = async ({
+  tenant,
+  tour,
+}: TourRelatedRequestParams) => {
   let tourMedia = await Promise.all(
-    response.data.relationships.tour_media.data?.map(async (medium: TMedia) => {
+    tour.relationships.tour_media.data?.map(async (medium) => {
       return getTourMedium(tenant, medium.id);
     })
   );
@@ -198,7 +217,5 @@ export const getTour = async (tenant: string, tour: number | string) => {
     return a.attributes.position - b.attributes.position;
   });
 
-  response.data.media = tourMedia;
-
-  return { tour: response.data };
+  return tourMedia;
 };

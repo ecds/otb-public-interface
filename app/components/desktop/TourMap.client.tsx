@@ -5,16 +5,17 @@ import {
   Map,
   Pin,
 } from "@vis.gl/react-google-maps";
-import TourSiteContext from "~/contexts/tourSiteContext";
+import { TourContext } from "~/contexts/tourContext";
 import type { TTour } from "~/types/TTour";
 import type { TStop } from "~/types/TStop";
 
 interface Props {
   tour: TTour;
+  stops?: TStop[];
 }
 
-const TourMap = ({ tour }: Props) => {
-  const { currentStop, setCurrentStop } = useContext(TourSiteContext);
+const TourMap = ({ tour, stops }: Props) => {
+  const { currentStop, setCurrentStop } = useContext(TourContext);
 
   const handelClick = (stop: TStop) => {
     document
@@ -35,7 +36,7 @@ const TourMap = ({ tour }: Props) => {
         disableDefaultUI
         mapId={"bf51a910020fa25a"}
       >
-        {tour.stops.map((stop) => {
+        {stops?.map((stop, index) => {
           return (
             <AdvancedMarker
               key={stop.attributes.slug}
@@ -45,6 +46,7 @@ const TourMap = ({ tour }: Props) => {
               }}
               title={stop.attributes.title}
               onClick={() => handelClick(stop)}
+              zIndex={stop === currentStop ? stops.length + 1 : index}
             >
               <Pin scale={stop === currentStop ? 1.5 : 1}>
                 <span

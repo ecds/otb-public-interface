@@ -1,4 +1,4 @@
-import Carousel from "nuka-carousel";
+import Carousel, { PagingDots } from "nuka-carousel";
 import type { ControlProps } from "nuka-carousel";
 import type { TMedia } from "~/types/TMedia";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -7,11 +7,12 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import Medium from "./Medium";
+import ImagePlaceholder from "./ImagePlaceholder";
 
 // const element = <FontAwesomeIcon icon={faCoffee} />
 
 interface Props {
-  media: TMedia[];
+  media?: TMedia[];
 }
 
 export const leftControls = ({
@@ -55,15 +56,29 @@ export const noControl = () => {
 };
 
 const Gallery = ({ media }: Props) => {
+  if (media) {
+    return (
+      <Carousel
+        renderCenterLeftControls={media.length > 1 ? leftControls : noControl}
+        renderCenterRightControls={media.length > 1 ? rightControls : noControl}
+        renderBottomCenterControls={media.length > 1 ? PagingDots : noControl}
+        wrapAround={media.length > 1}
+      >
+        {media.map((medium) => {
+          return <Medium key={medium.id} medium={medium} />;
+        })}
+      </Carousel>
+    );
+  }
+
   return (
     <Carousel
-      renderCenterLeftControls={leftControls}
-      renderCenterRightControls={rightControls}
+      renderCenterLeftControls={noControl}
+      renderCenterRightControls={noControl}
+      renderBottomCenterControls={noControl}
       wrapAround
     >
-      {media.map((medium) => {
-        return <Medium key={medium.id} medium={medium} />;
-      })}
+      <ImagePlaceholder />
     </Carousel>
   );
 };
