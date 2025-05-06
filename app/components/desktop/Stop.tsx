@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from "react";
-import { ClientOnly } from "remix-utils/client-only";
+import ClientOnly from "~/components/ClientOnly";
 import { getStopMedium } from "~/data";
 import Gallery from "../shared/Gallery";
 import TourSiteContext from "~/contexts/tourSiteContext";
 import type { TStop } from "~/types/TStop";
-import type { TMedia } from "~/types/TMedia";
+import type { TMedium } from "~/types/TMedia";
 
 interface Props {
   stop: TStop;
 }
 
 const Stop = ({ stop }: Props) => {
-  const [media, setMedia] = useState<TMedia[] | undefined>();
+  const [media, setMedia] = useState<TMedium[] | undefined>();
   const { tenant } = useContext(TourSiteContext);
   useEffect(() => {
     const fetchMedia = async () => {
@@ -28,7 +28,7 @@ const Stop = ({ stop }: Props) => {
   }, [stop, tenant]);
 
   return (
-    <div key={stop.id} className="stop" id={stop.attributes.slug}>
+    <div key={stop.id} className="" id={stop.attributes.slug}>
       <div
         className={
           "sticky top-14 bg-white z-10 w-full h-fit text-2xl pt-4 mb-4 drop-shadow-sm"
@@ -38,8 +38,12 @@ const Stop = ({ stop }: Props) => {
           {stop.attributes.position}: {stop.attributes.title}
         </h2>
       </div>
-      <div className="h-48 md:h-96 mx-6">
-        {media && <ClientOnly>{() => <Gallery media={media} />}</ClientOnly>}
+      <div className="relative px-6 w-full pointer-events-auto">
+        {media && (
+          <ClientOnly>
+            <Gallery media={media} />
+          </ClientOnly>
+        )}
       </div>
       <div
         className="relative px-6"

@@ -1,7 +1,7 @@
-import type { TMedia } from "~/types/TMedia";
+import type { TMedium } from "~/types/TMedia";
 
 interface Props {
-  medium: TMedia;
+  medium: TMedium;
 }
 
 const YouTube = ({ medium }: Props) => {

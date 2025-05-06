@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { useParams } from "@remix-run/react";
+import { useParams } from "react-router";
 import TourSiteContext from "~/contexts/tourSiteContext";
 
 const TourStop = () => {

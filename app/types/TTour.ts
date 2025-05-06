@@ -1,5 +1,5 @@
 import type { TStop } from "./TStop";
-import type { TMedia } from "./TMedia";
+import type { TMedium } from "./TMedia";
 import type { TTourFlatPage } from "./TTourFlatPage";
 
 export type TTour = {
@@ -7,7 +7,7 @@ export type TTour = {
   type: string;
   stops: TStop[];
   flatPages: TTourFlatPage[];
-  media: TMedia[];
+  media: TMedium[];
   attributes: {
     title: string;
     slug: string;

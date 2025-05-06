@@ -1,9 +1,9 @@
-import type { TMedia } from "./TMedia";
+import type { TMedium } from "./TMedia";
 
 export type TStop = {
   id: string | number;
   type: string;
-  media: TMedia[];
+  media: TMedium[];
   attributes: {
     title: string;
     slug: string;

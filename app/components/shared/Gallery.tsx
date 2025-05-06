@@ -1,83 +1,75 @@
-import Carousel, { PagingDots } from "nuka-carousel";
-import type { ControlProps } from "nuka-carousel";
-import type { TMedia } from "~/types/TMedia";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faChevronLeft,
-  faChevronRight,
-} from "@fortawesome/free-solid-svg-icons";
+import { Carousel } from "nuka-carousel";
+import useEmblaCarousel from "embla-carousel-react";
+import AutoHeight from "embla-carousel-auto-height";
 import Medium from "./Medium";
 import ImagePlaceholder from "./ImagePlaceholder";
+import { NextButton, PrevButton, usePrevNextButtons } from "./ArrowButtons";
+import { DotButton, useDotButton } from "./DotButtons";
+import type { TMedium } from "~/types/TMedia";
 
 // const element = <FontAwesomeIcon icon={faCoffee} />
 
 interface Props {
-  media?: TMedia[];
+  media?: TMedium[];
 }
 
-export const leftControls = ({
-  previousDisabled,
-  previousSlide,
-}: ControlProps) => {
-  return (
-    <div className="text-3xl">
-      <button
-        aria-label="Navigate to previous figure"
-        type="button"
-        disabled={previousDisabled}
-        onClick={previousSlide}
-        className="bg-white/50 h-28 rounded px-2"
-      >
-        <FontAwesomeIcon icon={faChevronLeft} />
-      </button>
-    </div>
-  );
-};
-
-export const rightControls = ({ nextDisabled, nextSlide }: ControlProps) => {
-  return (
-    <div className="text-3xl">
-      <button
-        aria-label="Navigate to next figure"
-        aria-controls=":r1fd:-slider-frame"
-        type="button"
-        disabled={nextDisabled}
-        onClick={nextSlide}
-        className="bg-white/50 h-28 rounded px-2"
-      >
-        <FontAwesomeIcon icon={faChevronRight} />{" "}
-      </button>
-    </div>
-  );
-};
-
-export const noControl = () => {
-  return <></>;
-};
-
 const Gallery = ({ media }: Props) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [AutoHeight()]);
+
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi);
+
+  const {
+    prevBtnDisabled,
+    nextBtnDisabled,
+    onPrevButtonClick,
+    onNextButtonClick,
+  } = usePrevNextButtons(emblaApi);
   if (media) {
     return (
-      <Carousel
-        renderCenterLeftControls={media.length > 1 ? leftControls : noControl}
-        renderCenterRightControls={media.length > 1 ? rightControls : noControl}
-        renderBottomCenterControls={media.length > 1 ? PagingDots : noControl}
-        wrapAround={media.length > 1}
-      >
-        {media.map((medium) => {
-          return <Medium key={medium.id} medium={medium} />;
-        })}
-      </Carousel>
+      <div className="embla">
+        <div className="embla__viewport" ref={emblaRef}>
+          <div className="embla__container">
+            {media.map((medium, index) => (
+              <div className="embla__slide" key={medium.id}>
+                <div className="embla__slide__number">
+                  <Medium medium={medium} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="embla__controls">
+          <div className="embla__buttons">
+            <PrevButton
+              onClick={onPrevButtonClick}
+              disabled={prevBtnDisabled}
+            />
+            <NextButton
+              onClick={onNextButtonClick}
+              disabled={nextBtnDisabled}
+            />
+          </div>
+
+          <div className="embla__dots">
+            {scrollSnaps.map((_, index) => (
+              <DotButton
+                key={index}
+                onClick={() => onDotButtonClick(index)}
+                className={"embla__dot".concat(
+                  index === selectedIndex ? " embla__dot--selected" : ""
+                )}
+              />
+            ))}
+          </div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Carousel
-      renderCenterLeftControls={noControl}
-      renderCenterRightControls={noControl}
-      renderBottomCenterControls={noControl}
-      wrapAround
-    >
+    <Carousel>
       <ImagePlaceholder />
     </Carousel>
   );

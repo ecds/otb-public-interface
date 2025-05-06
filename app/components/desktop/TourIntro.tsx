@@ -1,15 +1,15 @@
 import { useContext, useEffect, useState } from "react";
-import { ClientOnly } from "remix-utils/client-only";
+import ClientOnly from "~/components/ClientOnly";
 import { TourContext } from "~/contexts/tourContext";
 import Gallery from "../shared/Gallery";
 import { getTourMedium } from "~/data";
 import TourSiteContext from "~/contexts/tourSiteContext";
-import type { TMedia } from "~/types/TMedia";
+import type { TMedium } from "~/types/TMedia";
 
 const TourIntro = () => {
   const { tour, stops } = useContext(TourContext);
   const { tenant } = useContext(TourSiteContext);
-  const [media, setMedia] = useState<TMedia[] | undefined>();
+  const [media, setMedia] = useState<TMedium[] | undefined>();
 
   useEffect(() => {
     const fetchMedia = async () => {
@@ -32,12 +32,16 @@ const TourIntro = () => {
         id={tour.attributes.slug}
       >
         <div className="h-64 md:h-96 mx-6">
-          {media && <ClientOnly>{() => <Gallery media={media} />}</ClientOnly>}
+          {media && (
+            <ClientOnly>
+              <Gallery media={media} />
+            </ClientOnly>
+          )}
         </div>
         <h2 className="md:hidden text-3xl mb-4">{tour.attributes.title}</h2>
 
         <div
-          className="relative md:px-6 text-black/80 leading-relaxed tracking-wide md:leading-none"
+          className="relative md:px-6"
           dangerouslySetInnerHTML={{
             __html: tour.attributes.description,
           }}

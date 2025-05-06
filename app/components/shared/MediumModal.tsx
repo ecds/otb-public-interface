@@ -1,11 +1,11 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import type { Dispatch, SetStateAction, ReactElement } from "react";
-import type { TMedia } from "~/types/TMedia";
+import type { TMedium } from "~/types/TMedia";
 import Embed from "./Embed";
 
 interface Props {
-  medium: TMedia;
+  medium: TMedium;
   showModal: boolean;
   setShowModal: Dispatch<SetStateAction<boolean>>;
   children?: ReactElement | Array<ReactElement>;

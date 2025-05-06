@@ -1,4 +1,4 @@
-export type TMedia = {
+export type TMedium = {
   id: string;
   type: string;
   attributes: {

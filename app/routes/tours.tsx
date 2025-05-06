@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { getTours } from "~/data";
-import { redirect } from "@remix-run/node";
-import { Link, useLoaderData } from "@remix-run/react";
+import { Link, useLoaderData, redirect } from "react-router";
 import { useDeviceContext } from "~/hooks";
 import Navbar from "~/components/shared/Navbar";
 import type { TTour } from "~/types/TTour";
-import type { TLoaderContext } from "~/types/TLoaderContext";
+import type { LoaderFunctionArgs } from "react-router";
 
-export const loader = async ({ context }: { context: TLoaderContext }) => {
+export const loader = async ({ context }: LoaderFunctionArgs) => {
   const { tenant, request } = context;
 
   if (!tenant) {

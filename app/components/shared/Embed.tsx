@@ -1,8 +1,8 @@
-import type { TMedia } from "~/types/TMedia";
+import type { TMedium } from "~/types/TMedia";
 import YouTube from "./embeds/YouTube";
 
 interface Props {
-  medium: TMedia;
+  medium: TMedium;
 }
 
 const IFrame = ({ medium }: Props) => {

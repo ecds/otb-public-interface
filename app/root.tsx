@@ -1,14 +1,7 @@
-import {
-  Links,
-  Meta,
-  Outlet,
-  Scripts,
-  ScrollRestoration,
-  useLoaderData,
-} from "@remix-run/react";
+import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
 import TourSiteContext from "./contexts/tourSiteContext";
 import { getTourSet } from "./data";
-import type { MetaFunction, LinksFunction } from "@remix-run/node";
+import type { MetaFunction, LinksFunction } from "react-router";
 import type { TLoaderContext } from "./types/TLoaderContext";
 
 import styles from "./index.css?url";

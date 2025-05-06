@@ -1,25 +1,32 @@
 import { Suspense, useState } from "react";
-import { redirect } from "@remix-run/node";
-import { Await, useLoaderData, Outlet } from "@remix-run/react";
+import { Await, useLoaderData, Outlet, redirect } from "react-router";
 import Navbar from "~/components/shared/Navbar";
 import StopList from "~/components/desktop/StopList";
 import TourMap from "~/components/desktop/TourMap.client";
 import { getTour } from "~/data";
 import FlatPage from "~/components/shared/FlatPage";
-import { ClientOnly } from "remix-utils/client-only";
+import ClientOnly from "~/components/ClientOnly";
 import { TourContext } from "~/contexts/tourContext";
 import TourIntro from "~/components/desktop/TourIntro";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
 import FlatPageLinks from "~/components/desktop/FlatPageLinks";
 import type { TStop } from "~/types/TStop";
-import type { LoaderProps } from "~/types/TLoaderContext";
+import type { LoaderFunctionArgs } from "react-router";
 import type { TTourFlatPage } from "~/types/TTourFlatPage";
 
-export const loader = async ({ context, params }: LoaderProps) => {
+export const loader = async ({ context, params }: LoaderFunctionArgs) => {
   const { tenant, request } = context;
   if (!tenant) {
     throw redirect(`${request.protocol}://${process.env.HOST}`);
   }
+
+  if (!params.tour) {
+    throw new Response(null, {
+      status: 404,
+      statusText: "Not found",
+    });
+  }
+
   const { tour } = await getTour(tenant, params.tour);
   return { tour };
 };
@@ -60,7 +67,7 @@ export default function Tour() {
               </StopList>
               <div className="fixed right-0 w-1/2 h-full mt-16">
                 <ClientOnly>
-                  {() => <TourMap tour={tour} stops={stops} />}
+                  <TourMap tour={tour} stops={stops} />
                 </ClientOnly>
               </div>
               <TourFlatPages />

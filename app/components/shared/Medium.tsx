@@ -2,11 +2,11 @@ import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import MediumModal from "./MediumModal";
-import type { TMedia } from "~/types/TMedia";
+import type { TMedium } from "~/types/TMedia";
 import { ScrollamaContext } from "~/contexts/scrollamaContext";
 
 interface Props {
-  medium: TMedia;
+  medium: TMedium;
 }
 
 const Medium = ({ medium }: Props) => {
@@ -25,37 +25,35 @@ const Medium = ({ medium }: Props) => {
       setShowModal={setShowModal}
     >
       <figure className="w-full">
-        <div
-          role="button"
-          onClick={() => setShowModal(true)}
-          onKeyDown={({ key }: { key: string }) => {
-            if (key === "Enter") setShowModal(true);
-          }}
-          tabIndex={0}
-        >
-          <div className="relative flex justify-center">
-            <picture className="">
-              <source srcSet={medium.attributes.files.desktop} />
-              <img
-                className={`max-h-64 md:max-h-80 m-auto ${
-                  loaded ? "opacity-100" : "opacity-0"
-                }`}
-                srcSet={medium.attributes.files.desktop}
-                alt={medium.attributes.caption ?? ""}
-                onLoad={() => setLoaded(true)}
-              />
-            </picture>
-            {medium.attributes.title && (
-              <figcaption className="absolute bottom-0 bg-black/60 w-3/4 my-0 mx-4 text-center text-white text-ellipsis overflow-hidden h-min max-h-16 truncate p-2">
-                {medium.attributes.title}
-              </figcaption>
-            )}
-            {medium.attributes.video && (
-              <div className="absolute left-[calc(50%-3rem)] top-[calc(50%-3rem)] text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex">
-                <FontAwesomeIcon className="" icon={faCirclePlay} />
-              </div>
-            )}
-          </div>
+        <div className="relative flex justify-center ">
+          <picture
+            role="button"
+            onClick={() => setShowModal(true)}
+            onKeyDown={({ key }: { key: string }) => {
+              if (key === "Enter") setShowModal(true);
+            }}
+            tabIndex={0}
+          >
+            <source srcSet={medium.attributes.files.desktop} />
+            <img
+              className={`max-h-64 md:max-h-80 m-auto ${
+                loaded ? "opacity-100" : "opacity-0"
+              }`}
+              srcSet={medium.attributes.files.desktop}
+              alt={medium.attributes.caption ?? ""}
+              onLoad={() => setLoaded(true)}
+            />
+          </picture>
+          {medium.attributes.title && (
+            <figcaption className="absolute bottom-0 bg-black/60 w-3/4 my-0 mx-4 text-center text-white text-ellipsis overflow-hidden h-min max-h-16 truncate p-2">
+              {medium.attributes.title}
+            </figcaption>
+          )}
+          {medium.attributes.video && (
+            <div className="absolute left-[calc(50%-3rem)] top-[calc(50%-3rem)] text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex">
+              <FontAwesomeIcon className="" icon={faCirclePlay} />
+            </div>
+          )}
         </div>
       </figure>
     </MediumModal>

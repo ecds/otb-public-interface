@@ -1,9 +1,9 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction } from "react-router";
 import { getTourSets } from "~/data";
-import { redirect } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { redirect } from "react-router";
+import { useLoaderData } from "react-router";
 import AllToursMap from "~/components/index/AllToursMap.client";
-import { ClientOnly } from "remix-utils/client-only";
+import ClientOnly from "~/components/ClientOnly";
 import type { TTourSet } from "~/types/TTourSet";
 import type { TLoaderContext } from "~/types/TLoaderContext";
 
@@ -32,13 +32,11 @@ export default function Index() {
   return (
     <div>
       <ClientOnly>
-        {() => (
-          <AllToursMap
-            tours={tourSets
-              .map((ts: TTourSet) => ts.attributes.mapable_tours)
-              .flat()}
-          />
-        )}
+        <AllToursMap
+          tours={tourSets
+            .map((ts: TTourSet) => ts.attributes.mapable_tours)
+            .flat()}
+        />
       </ClientOnly>
       <div className="m-8">
         <h1 className="text-2xl">Sites</h1>
