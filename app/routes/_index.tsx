@@ -1,6 +1,6 @@
 import type { MetaFunction } from "@remix-run/node";
 import { getTourSets } from "~/data";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import AllToursMap from "~/components/index/AllToursMap.client";
 import { ClientOnly } from "remix-utils/client-only";
@@ -24,7 +24,7 @@ export const loader = async ({ context }: { context: TLoaderContext }) => {
     }
   }
   const tourSets = await getTourSets();
-  return json({ tourSets, request, tenant });
+  return { tourSets, request, tenant };
 };
 
 export default function Index() {

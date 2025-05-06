@@ -1,5 +1,4 @@
 import { createRequestHandler } from "@remix-run/express";
-import { installGlobals } from "@remix-run/node";
 import compression from "compression";
 import express from "express";
 import morgan from "morgan";
@@ -12,7 +11,6 @@ const minSubdomainCount = () => {
   return 0;
 };
 
-installGlobals();
 
 const viteDevServer =
   process.env.NODE_ENV === "production"

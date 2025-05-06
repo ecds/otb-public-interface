@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTours } from "~/data";
-import { json, redirect } from "@remix-run/node";
+import { redirect } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { useDeviceContext } from "~/hooks";
 import Navbar from "~/components/shared/Navbar";
@@ -14,7 +14,7 @@ export const loader = async ({ context }: { context: TLoaderContext }) => {
     throw redirect(`${request.protocol}://${process?.env.HOST}`);
   }
   const tours: TTour[] = await getTours(tenant);
-  return json({ tours });
+  return { tours };
 };
 
 export const meta = ({ data }: { data: { tours: TTour[] } }) => {

@@ -36,6 +36,8 @@
   "devDependencies": {
     "@remix-run/dev": "*",
     "@remix-run/eslint-config": "*",
+    "@remix-run/fs-routes": "^2.16.5",
+    "@remix-run/route-config": "^2.16.5",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/compression": "^1.7.2",
     "@types/express": "^4.17.17",
