@@ -16,8 +16,8 @@ const TourMenu = () => {
         <span className="sr-only">Menu</span>
       </button>
       <div
-        className={`otb-flat-page z-50 fixed left-0 w-3/4 top-0 text-sm h-screen bg-black/95 text-gray-300 overflow-scroll transition-transform duration-700 ${
-          open ? "-translate-x-full" : "translate-x-0"
+        className={`block md:hidden otb-flat-page z-50 fixed left-0 w-3/4 top-0 text-sm h-screen bg-black/95 text-gray-300 overflow-scroll transition-transform duration-700 ${
+          open ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="grid grid-cols-2 my-2 border-b border-white">
