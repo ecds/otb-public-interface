@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+/* Theme customizations */
+@theme {
+  /* You can put theme customizations here later */
+}
+
+/* Custom utilities */
+@layer base {
+  html .stop a {
+    color: #1d4ed8;
+    text-decoration-line: underline;
+  }
+  
+  html .stop a:hover {
+    color: #4338ca;
+  }
+
+  /* Border color compatibility with v3 */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@safelist {
+  grid-cols-3
+}

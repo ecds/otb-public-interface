@@ -27,7 +27,7 @@ const Gallery = ({ media }: Props) => {
   } = usePrevNextButtons(emblaApi);
   if (media) {
     return (
-      <div className="embla">
+      <div className="@container embla">
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container">
             {media.map((medium, index) => (

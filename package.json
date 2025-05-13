@@ -39,6 +39,8 @@
     "@react-router/dev": "*",
     "@react-router/fs-routes": "^7.0.0",
     "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/postcss": "^4.1.6",
+    "@tailwindcss/vite": "^4.1.6",
     "@types/compression": "^1.7.2",
     "@types/express": "^4.17.17",
     "@types/morgan": "^1.9.4",
@@ -58,7 +60,7 @@
     "eslint-plugin-unused-imports": "^4.1.4",
     "nuka-carousel": "^8.0.0",
     "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.3",
+    "tailwindcss": "^4.1.6",
     "typescript": "^5.1.6",
     "vite": "^6.3.5",
     "vite-tsconfig-paths": "^4.3.2"

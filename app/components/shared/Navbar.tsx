@@ -63,7 +63,7 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
                   >
                     <MenuItems
                       anchor="bottom start"
-                      className="grid grid-cols-4 text-center absolute -left-10 z-20 mt-2 origin-top-left rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none h-[50vh] w-[85vw] overflow-scroll transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
+                      className="grid grid-cols-4 text-center absolute -left-10 z-20 mt-2 origin-top-left rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none h-1/2 w-5/6 overflow-scroll transition duration-200 ease-out data-[closed]:scale-95 data-[closed]:opacity-0"
                       transition
                     >
                       {stops?.map((stop) => {
