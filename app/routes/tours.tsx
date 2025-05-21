@@ -56,18 +56,12 @@ const Tours = () => {
   return (
     <div className="py-20 md:py-32 bg-gray-800/50">
       <Navbar />
-      <div className={`grid grid-cols-${columnCount} gap-4 px-4 md:px-16`}>
+      <div
+        className={`grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4 md:px-16`}
+      >
         {/* Chunk the tours into columns for a masonry layout. */}
-        {[...Array(columnCount).keys()].map((column, index) => {
-          return (
-            <div key={column} className="grid gap-4">
-              {tours
-                .filter((_, count) => count % columnCount === index)
-                .map((tour) => {
-                  return <TourCard tour={tour} key={tour.id} />;
-                })}
-            </div>
-          );
+        {tours.map((tour) => {
+          return <TourCard tour={tour} key={tour.id} />;
         })}
       </div>
     </div>

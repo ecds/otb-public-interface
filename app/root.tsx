@@ -1,15 +1,24 @@
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, useLoaderData } from "react-router";
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  useLoaderData,
+} from "react-router";
 import TourSiteContext from "./contexts/tourSiteContext";
 import { getTourSet } from "./data";
 import type { MetaFunction, LinksFunction } from "react-router";
 import type { TLoaderContext } from "./types/TLoaderContext";
 
 import styles from "./index.css?url";
+console.log("🚀 ~ styles:", styles);
 import { useDeviceContext } from "./hooks";
 
 interface LoaderProps {
   context: TLoaderContext;
 }
+export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const meta: MetaFunction = () => {
   return [
@@ -18,8 +27,6 @@ export const meta: MetaFunction = () => {
     { name: "viewport", content: "width=device-width,initial-scale=1" },
   ];
 };
-
-export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const loader = async ({ context }: LoaderProps) => {
   const { tenant, request } = context;
@@ -43,9 +50,9 @@ export default function App() {
     >
       <html lang="en">
         <head>
+          <Links />
           <meta charSet="utf-8" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <Links />
           <Meta />
         </head>
         <body>
