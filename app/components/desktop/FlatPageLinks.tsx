@@ -20,7 +20,7 @@ const FlatPageLinks = () => {
             <MenuItems
               transition
               anchor="bottom end"
-              className="w-52 min-w-fit origin-top-right rounded-xl border border-white/5 bg-gray-400 text-left p-1 text-sm/6 text-gray-800 transition duration-100 ease-out [--anchor-gap:1.5rem] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
+              className="w-52 min-w-fit origin-top-right rounded-xl border border-white/5 bg-gray-400 text-left p-1 text-sm leading-6 text-gray-800 transition duration-100 ease-out [--anchor-gap:1.5rem] focus:outline-none data-[closed]:scale-95 data-[closed]:opacity-0"
             >
               {flatPages.map((flatPage) => {
                 return (

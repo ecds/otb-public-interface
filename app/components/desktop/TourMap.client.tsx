@@ -49,11 +49,9 @@ const TourMap = ({ tour, stops }: Props) => {
               zIndex={stop === currentStop ? stops.length + 1 : index}
             >
               <Pin scale={stop === currentStop ? 1.5 : 1}>
-                <span
-                  className={`text-white text-${
-                    stop === currentStop ? "xl" : "base"
-                  }`}
-                >
+                
+                  <span className={`text-white ${stop === currentStop ? "text-xl" : "text-base"}`}>
+                
                   {stop.attributes.position}
                 </span>
               </Pin>

@@ -50,7 +50,7 @@ const Medium = ({ medium }: Props) => {
             </figcaption>
           )}
           {medium.attributes.video && (
-            <div className="absolute left-[calc(50%-3rem)] top-[calc(50%-3rem)] text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex">
+            <div className="absolute left-1/2 -translate-x-12 top-1/2 -translate-y-12 text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex">
               <FontAwesomeIcon className="" icon={faCirclePlay} />
             </div>
           )}
