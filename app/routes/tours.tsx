@@ -35,9 +35,9 @@ const TourCard = ({ tour }: { tour: TTour }) => {
             {tour.attributes.title}
           </h5>
           <div className="flex items-center justify-between width-full text-gray-200 text-sm font-thin">
-            <div>{tour.attributes.stop_count} Stops</div>
-            <div>{tour.attributes.est_time}</div>
-          </div>
+  <div>{tour.attributes.stop_count} Stops</div>
+  <div>About {tour.attributes.est_time}</div>
+</div>
         </div>
       </Link>
     </div>
