@@ -1,10 +1,11 @@
 import { useContext, useEffect } from "react";
 import { useParams } from "react-router";
 import TourSiteContext from "~/contexts/tourSiteContext";
+import { TourContext } from "~/contexts/tourContext"; 
 
 const TourStop = () => {
-  const { currentSite, currentTour, setCurrentStop } =
-    useContext(TourSiteContext);
+  const { currentSite } = useContext(TourSiteContext);
+  const { tour: currentTour, setCurrentStop } = useContext(TourContext); // Use TourContext for these
   const params = useParams();
 
   useEffect(() => {
