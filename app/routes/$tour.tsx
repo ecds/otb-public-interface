@@ -1,8 +1,5 @@
-// Updated Tours.tsx - Fixed dynamic grid-cols
-import { useEffect, useState } from "react";
 import { getTours } from "~/data";
 import { Link, useLoaderData, redirect } from "react-router";
-import { useDeviceContext } from "~/hooks";
 import Navbar from "~/components/shared/Navbar";
 import type { TTour } from "~/types/TTour";
 import type { LoaderFunctionArgs } from "react-router";
@@ -18,24 +15,28 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 };
 
 export const meta = ({ data }: { data: { tours: TTour[] } }) => {
-  return [{ title: data.tours[1].attributes.title }];
+  return [{ title: data?.tours?.[0]?.attributes?.title || "Tours" }];
 };
 
 const TourCard = ({ tour }: { tour: TTour }) => {
   return (
-    <div className="max-w-sm h-min border rounded-lg shadow bg-gray-800 border-gray-700 cursor-pointer">
-      <Link to={`/${tour.attributes.slug}`}>
-        {" "}
-        <img
-          className="rounded-t-lg max-h-min w-full mx-auto"
-          src={tour.attributes.splash?.url ?? "/images/otblogo.png"}
-          alt=""
-        />
-        <div className="p-5">
-          <h5 className="mb-2 text-2xl font-bold tracking-tight text-white">
+    <div className="w-full h-80 border rounded-lg shadow bg-gray-800 border-gray-700 cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300">
+      <Link to={`/${tour.attributes.slug}`} className="block h-full flex flex-col">
+        {/* Fixed height image container */}
+        <div className="h-48 w-full overflow-hidden rounded-t-lg flex-shrink-0">
+          <img
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            src={tour.attributes.splash?.url ?? "/images/otblogo.png"}
+            alt={tour.attributes.title}
+          />
+        </div>
+        
+        {/* Fixed height content container */}
+        <div className="h-32 p-4 flex flex-col justify-between">
+          <h5 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight">
             {tour.attributes.title}
           </h5>
-          <div className="flex items-center justify-between width-full text-gray-200 text-sm font-thin">
+          <div className="flex items-center justify-between w-full text-gray-200 text-sm">
             <div>{tour.attributes.stop_count} Stops</div>
             <div>{tour.attributes.est_time}</div>
           </div>
@@ -47,69 +48,28 @@ const TourCard = ({ tour }: { tour: TTour }) => {
 
 const Tours = () => {
   const { tours } = useLoaderData<typeof loader>();
-  const [columnCount, setColumnCount] = useState<number>(1);
-  const { isDesktop } = useDeviceContext();
 
-  useEffect(() => {
-    if (isDesktop) setColumnCount(3);
-  }, [isDesktop]);
-
-  // Use conditional rendering for different column layouts
   return (
-    <div className="py-20 md:py-32 bg-gray-800/50">
+    <div className="min-h-screen py-20 md:py-32 bg-gray-800/50">
       <Navbar />
-      {columnCount === 1 && (
-        <div className="grid grid-cols-1 gap-4 px-4 md:px-16">
-          {tours.map((tour) => (
+      
+      <div className="px-4 md:px-16 mb-8">
+        <h1 className="text-2xl font-bold text-white text-center mb-2">
+          Explore Tours
+        </h1>
+        <p className="text-gray-300 text-center">
+          Discover {tours?.length || 0} amazing tours
+        </p>
+      </div>
+
+      {/* RESPONSIVE GRID WITH FIXED SIZE CARDS */}
+      <div className="px-4 md:px-16">
+        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          {tours?.map((tour) => (
             <TourCard tour={tour} key={tour.id} />
           ))}
         </div>
-      )}
-      {columnCount === 2 && (
-        <div className="grid grid-cols-2 gap-4 px-4 md:px-16">
-          {/* Split tours into two columns */}
-          <div className="grid gap-4">
-            {tours
-              .filter((_, index) => index % 2 === 0)
-              .map((tour) => (
-                <TourCard tour={tour} key={tour.id} />
-              ))}
-          </div>
-          <div className="grid gap-4">
-            {tours
-              .filter((_, index) => index % 2 === 1)
-              .map((tour) => (
-                <TourCard tour={tour} key={tour.id} />
-              ))}
-          </div>
-        </div>
-      )}
-      {columnCount === 3 && (
-        <div className="grid grid-cols-3 gap-4 px-4 md:px-16">
-          {/* Split tours into three columns */}
-          <div className="grid gap-4">
-            {tours
-              .filter((_, index) => index % 3 === 0)
-              .map((tour) => (
-                <TourCard tour={tour} key={tour.id} />
-              ))}
-          </div>
-          <div className="grid gap-4">
-            {tours
-              .filter((_, index) => index % 3 === 1)
-              .map((tour) => (
-                <TourCard tour={tour} key={tour.id} />
-              ))}
-          </div>
-          <div className="grid gap-4">
-            {tours
-              .filter((_, index) => index % 3 === 2)
-              .map((tour) => (
-                <TourCard tour={tour} key={tour.id} />
-              ))}
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 };
