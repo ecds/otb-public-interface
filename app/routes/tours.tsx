@@ -53,7 +53,7 @@ const Tours = () => {
       <Navbar />
       
       <div className="px-4 md:px-16 mb-8">
-        <h1 className="text-2xl font-bold text-white text-center mb-2">
+        <h1 className="text-3xl font-bold text-white text-center mb-2">
           Explore Tours
         </h1>
         <p className="text-gray-300 text-center">
@@ -68,6 +68,13 @@ const Tours = () => {
             <TourCard tour={tour} key={tour.id} />
           ))}
         </div>
+
+        {/* Empty State */}
+        {(!tours || tours.length === 0) && (
+          <div className="text-center py-12">
+            <div className="text-gray-400 text-lg">No tours available at the moment.</div>
+          </div>
+        )}
       </div>
     </div>
   );
