@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import tailwindConfig from "../tailwind.config";
 
 type TWindowSize = {
   width: number | undefined;
@@ -39,8 +38,6 @@ const calcDocumentWidth = () => {
 };
 
 export function useResizeObserver() {
-  // Initialize state with undefined width/height so server and client renders match
-  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [viewportSize, setViewportSize] = useState<TViewportSize>({
     windowSize: {
       width: undefined,
@@ -58,10 +55,8 @@ export function useResizeObserver() {
   });
 
   useEffect(() => {
-    // Handler to call on window resize
     function handleResize() {
       const mainContentElement = document.getElementById("main-content");
-      // Set window width/height to state
       setViewportSize({
         windowSize: {
           width: window.innerWidth,
@@ -81,13 +76,8 @@ export function useResizeObserver() {
       });
     }
 
-    // Call handler right away so state gets updated with initial window size
     handleResize();
 
-    // Add ResizeObserver. This will update when someone resizes
-    // their browser window or when elements, like images, load
-    // and resize the document height.
-    // window.addEventListener("resize", handleResize);
     const resizeObserver = new ResizeObserver(() => {
       handleResize();
     });
@@ -95,32 +85,42 @@ export function useResizeObserver() {
     resizeObserver.observe(document.body);
     resizeObserver.observe(document.documentElement);
 
-    // Disconnect observer on cleanup
     return () => {
       resizeObserver.disconnect();
     };
-  }, []); // Empty array ensures that effect is only run on mount
+  }, []);
 
   return viewportSize;
 }
 
 export function useDeviceContext() {
   const { windowSize } = useResizeObserver();
-  const [isMobile, setIsMobile] = useState<boolean>(false);
-  const [isDesktop, setIsDesktop] = useState<boolean>(false);
+  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
+  const [isDesktop, setIsDesktop] = useState<boolean | undefined>(undefined);
+  const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    if (!windowSize.width) return;
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (windowSize.width <= parseInt(400)) {
+    setIsHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!windowSize.width || !isHydrated) return;
+    
+    const MOBILE_BREAKPOINT = 768;
+    
+    if (windowSize.width < MOBILE_BREAKPOINT) {
       setIsMobile(true);
       setIsDesktop(false);
     } else {
       setIsMobile(false);
       setIsDesktop(true);
     }
-  }, [windowSize, setIsDesktop, setIsMobile]);
+  }, [windowSize, isHydrated]);
+
+  // Return undefined during SSR/hydration to prevent mismatch
+  if (!isHydrated || isMobile === undefined) {
+    return { isMobile: undefined, isDesktop: undefined };
+  }
 
   return { isMobile, isDesktop };
 }
