@@ -59,7 +59,6 @@ const TourIntro = () => {
       </div>
     );
   }
-
   return null;
 };
 

@@ -60,7 +60,7 @@ export default function Tour() {
             </div>
           ) : isMobile ? (
             <>
-              {/* Mobile Interface */}
+              {/* Mobile Interface with navigation */}
               <MobileTourInterface tour={tour} stops={stops} />
               {/* Mobile Outlet for nested routes */}
               <div className="hidden">
@@ -86,10 +86,6 @@ export default function Tour() {
                   <TourFlatPages />
                   <FlatPage flatPage="about" />
                 </div>
-              </div>
-              
-              <div className="block md:hidden">
-                <TourIntro />
               </div>
               
               {/* Desktop Outlet for nested routes */}

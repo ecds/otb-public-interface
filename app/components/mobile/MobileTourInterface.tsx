@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
+import { useSearchParams } from "react-router";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faMap, faList } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +10,8 @@ import MobileStopsList from "./MobileStopsList";
 import FlatPage from "~/components/shared/FlatPage";
 import ClientOnly from "~/components/ClientOnly";
 import { TourContext } from "~/contexts/tourContext";
+import TourSiteContext from "~/contexts/tourSiteContext";
+import { getTourStops } from "~/data";
 import type { TTour } from "~/types/TTour";
 import type { TStop } from "~/types/TStop";
 
@@ -17,31 +20,80 @@ interface Props {
   stops?: TStop[];
 }
 
-const MobileTourInterface = ({ tour, stops }: Props) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+const MobileTourInterface = ({ tour, stops: propStops }: Props) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { stops, setStops } = useContext(TourContext);
+  const { tenant } = useContext(TourSiteContext);
   
+  const activeStops = stops || propStops;
+
   const tabs = [
-    { name: 'INFO', icon: faInfoCircle },
-    { name: 'MAP', icon: faMap },
-    { name: 'STOPS', icon: faList }
+    { name: 'INFO', icon: faInfoCircle, param: 'info' },
+    { name: 'MAP', icon: faMap, param: 'map' },
+    { name: 'STOPS', icon: faList, param: 'stops' }
   ];
+
+  const getTabIndexFromURL = () => {
+    const tabParam = searchParams.get('tab');
+    if (tabParam) {
+      const index = tabs.findIndex(tab => tab.param === tabParam);
+      return index >= 0 ? index : 0;
+    }
+    return 0;
+  };
+
+  const [selectedIndex, setSelectedIndex] = useState(getTabIndexFromURL);
+
+  useEffect(() => {
+    const newIndex = getTabIndexFromURL();
+    if (newIndex !== selectedIndex) {
+      setSelectedIndex(newIndex);
+    }
+  }, [searchParams]);
+
+  const handleTabChange = (index: number) => {
+    setSelectedIndex(index);
+    
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('tab', tabs[index].param);
+    
+    try {
+      setSearchParams(newSearchParams);
+    } catch (error) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('tab', tabs[index].param);
+      window.history.pushState({}, '', url.toString());
+    }
+  };
+
+  useEffect(() => {
+    const fetchStops = async () => {
+      if (!tenant || !tour || stops) return;
+      
+      try {
+        const fetchedStops = await getTourStops({ tenant, tour });
+        setStops(fetchedStops);
+      } catch (error) {
+        console.error('Error fetching stops:', error);
+      }
+    };
+
+    fetchStops();
+  }, [tenant, tour, stops, setStops]);
 
   return (
     <div className="h-screen bg-gray-100">
-      {/* Fixed Top Navigation */}
       <div className="fixed top-0 left-0 right-0 z-50">
         <MobileNavbar tourTitle={tour.attributes.title} />
       </div>
 
-      {/* Tab Group with proper height calculation */}
-      <TabGroup selectedIndex={selectedIndex} onChange={setSelectedIndex}>
-        {/* Main Content Area - calculate height minus fixed bars */}
+      <TabGroup selectedIndex={selectedIndex} onChange={handleTabChange}>
         <div 
           className="overflow-hidden"
           style={{ 
-            height: 'calc(100vh - 4rem - 5rem)', // viewport - top nav - bottom tabs
-            marginTop: '4rem', // height of top nav
-            marginBottom: '5rem' // height of bottom tabs
+            height: 'calc(100vh - 4rem - 5rem)',
+            marginTop: '4rem',
+            marginBottom: '5rem'
           }}
         >
           <TabPanels className="h-full">
@@ -50,19 +102,18 @@ const MobileTourInterface = ({ tour, stops }: Props) => {
             </TabPanel>
             <TabPanel className="h-full overflow-hidden">
               <ClientOnly>
-                <MobileTourMap tour={tour} stops={stops} />
+                <MobileTourMap tour={tour} stops={activeStops} />
               </ClientOnly>
             </TabPanel>
             <TabPanel className="h-full overflow-y-auto">
-              <MobileStopsList stops={stops} />
+              <MobileStopsList stops={activeStops} />
             </TabPanel>
           </TabPanels>
         </div>
 
-        {/* Fixed Bottom Tab Bar */}
         <div className="fixed bottom-0 left-0 right-0 z-50">
           <TabList className="flex bg-gray-800 border-t border-gray-700">
-            {tabs.map((tab) => (
+            {tabs.map((tab, index) => (
               <Tab
                 key={tab.name}
                 className={({ selected }) =>
@@ -83,7 +134,6 @@ const MobileTourInterface = ({ tour, stops }: Props) => {
         </div>
       </TabGroup>
 
-      {/* Flat Page Modal (when opened from menu) */}
       <TourContext.Consumer>
         {({ currentFlatPage }) => 
           currentFlatPage && <FlatPage flatPage={currentFlatPage} />
