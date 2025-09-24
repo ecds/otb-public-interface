@@ -3,6 +3,7 @@ import ClientOnly from "~/components/ClientOnly";
 import { getStopMedium } from "~/data";
 import Gallery from "../shared/Gallery";
 import TourSiteContext from "~/contexts/tourSiteContext";
+import TextToSpeechButton from "~/components/shared/TextToSpeechButton";
 import type { TStop } from "~/types/TStop";
 import type { TMedium } from "~/types/TMedia";
 
@@ -13,6 +14,7 @@ interface Props {
 const Stop = ({ stop }: Props) => {
   const [media, setMedia] = useState<TMedium[] | undefined>();
   const { tenant } = useContext(TourSiteContext);
+  
   useEffect(() => {
     const fetchMedia = async () => {
       if (!tenant || !stop || !stop.relationships.stop_media) return;
@@ -34,9 +36,17 @@ const Stop = ({ stop }: Props) => {
           "sticky top-14 bg-white z-10 w-full h-fit text-2xl pt-4 mb-4 drop-shadow-sm"
         }
       >
-        <h2 className="px-6 py-2">
-          {stop.attributes.position}: {stop.attributes.title}
-        </h2>
+        <div className="px-6 py-2 flex items-center justify-between">
+          <h2>
+            {stop.attributes.position}: {stop.attributes.title}
+          </h2>
+          <TextToSpeechButton 
+            text={stop.attributes.description}
+            variant="headphones"
+            size="md"
+            className="flex-shrink-0"
+          />
+        </div>
       </div>
       <div className="relative px-6 w-full pointer-events-auto">
         {media && (
@@ -46,7 +56,7 @@ const Stop = ({ stop }: Props) => {
         )}
       </div>
       <div
-        className="relative px-6"
+        className="relative px-6 stop"
         dangerouslySetInnerHTML={{
           __html: stop.attributes.description,
         }}

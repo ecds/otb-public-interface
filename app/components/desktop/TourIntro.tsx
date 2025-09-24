@@ -4,6 +4,7 @@ import { TourContext } from "~/contexts/tourContext";
 import Gallery from "../shared/Gallery";
 import { getTourMedium } from "~/data";
 import TourSiteContext from "~/contexts/tourSiteContext";
+import TextToSpeechButton from "~/components/shared/TextToSpeechButton";
 import type { TMedium } from "~/types/TMedia";
 
 const TourIntro = () => {
@@ -38,7 +39,16 @@ const TourIntro = () => {
             </ClientOnly>
           )}
         </div>
-        <h2 className="md:hidden text-3xl mb-4">{tour.attributes.title}</h2>
+        
+        <div className="md:hidden flex items-center justify-between mb-4 px-4">
+          <h2 className="text-3xl flex-1">{tour.attributes.title}</h2>
+          <TextToSpeechButton 
+            text={tour.attributes.description}
+            variant="headphones"
+            size="lg"
+            className="flex-shrink-0 ml-3"
+          />
+        </div>
 
         <div
           className="relative md:px-6"
@@ -49,7 +59,6 @@ const TourIntro = () => {
       </div>
     );
   }
-
   return null;
 };
 

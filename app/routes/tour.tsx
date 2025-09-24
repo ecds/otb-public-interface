@@ -4,6 +4,7 @@ import { Await, useLoaderData, Outlet } from "react-router";
 import Navbar from "~/components/shared/Navbar";
 import StopList from "~/components/desktop/StopList";
 import TourMap from "~/components/desktop/TourMap.client";
+import MobileTourInterface from "~/components/mobile/MobileTourInterface";
 import { getTour } from "~/data";
 import FlatPage from "~/components/shared/FlatPage";
 import ClientOnly from "~/components/ClientOnly";
@@ -11,6 +12,7 @@ import { TourContext } from "~/contexts/tourContext";
 import TourIntro from "~/components/desktop/TourIntro";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
 import FlatPageLinks from "~/components/desktop/FlatPageLinks";
+import { useDeviceContext } from "~/hooks";
 import type { TStop } from "~/types/TStop";
 import type { LoaderProps } from "~/types/TLoaderContext";
 import type { TTourFlatPage } from "~/types/TTourFlatPage";
@@ -26,6 +28,7 @@ export const loader = async ({ context, params }: LoaderProps) => {
 
 export default function Tour() {
   const { tour } = useLoaderData<typeof loader>();
+  const { isMobile, isDesktop } = useDeviceContext();
   const [stops, setStops] = useState<TStop[] | undefined>(undefined);
   const [flatPages, setFlatPages] = useState<TTourFlatPage[] | undefined>(undefined);
   const [currentFlatPage, setCurrentFlatPage] = useState<TTourFlatPage | string | undefined>(undefined);
@@ -47,32 +50,50 @@ export default function Tour() {
     >
       <Suspense fallback={<div>Loading tour...</div>}>
         <Await resolve={tour}>
-          <Navbar>
-            <FlatPageLinks />
-          </Navbar>
-          
-          <div className="hidden md:block">
-            <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-4rem)] grid-flow-row auto-rows-max">
-              <StopList className="mt-24 text-black/80 leading-6">
-                <TourIntro />
-              </StopList>
-              <div className="fixed right-0 w-1/2 h-full mt-16">
-                <ClientOnly>
-                  <TourMap tour={tour} stops={stops} />
-                </ClientOnly>
+          {/* Show loading state while detecting device */}
+          {isMobile === undefined ? (
+            <div className="h-screen flex items-center justify-center bg-gray-100">
+              <div className="text-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+                <p>Loading...</p>
               </div>
-              <TourFlatPages />
-              <FlatPage flatPage="about" />
             </div>
-          </div>
-          
-          <div className="block md:hidden">
-            <TourIntro />
-          </div>
+          ) : isMobile ? (
+            <>
+              {/* Mobile Interface with navigation */}
+              <MobileTourInterface tour={tour} stops={stops} />
+              {/* Mobile Outlet for nested routes */}
+              <div className="hidden">
+                <Outlet />
+              </div>
+            </>
+          ) : (
+            <>
+              <Navbar>
+                <FlatPageLinks />
+              </Navbar>
+              
+              <div className="hidden md:block">
+                <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-4rem)] grid-flow-row auto-rows-max">
+                  <StopList className="mt-24 text-black/80 leading-6">
+                    <TourIntro />
+                  </StopList>
+                  <div className="fixed right-0 w-1/2 h-full mt-16">
+                    <ClientOnly>
+                      <TourMap tour={tour} stops={stops} />
+                    </ClientOnly>
+                  </div>
+                  <TourFlatPages />
+                  <FlatPage flatPage="about" />
+                </div>
+              </div>
+              
+              {/* Desktop Outlet for nested routes */}
+              <Outlet />
+            </>
+          )}
         </Await>
       </Suspense>
-      
-      <Outlet />
     </TourContext.Provider>
   );
 }

@@ -159,3 +159,60 @@
     box-shadow: inset 0 0 0 0.2rem rgb(54, 49, 61);
   }
 }
+
+/* Mobile-specific styles to add to existing index.css */
+
+@layer utilities {
+  /* Line clamp utility for text truncation */
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+  
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+}
+
+/* Mobile tour interface specific styles */
+@layer components {
+  .mobile-tour-container {
+    height: 100vh;
+    height: 100dvh; /* Use dynamic viewport height on mobile */
+  }
+
+  /* Touch-friendly button styles */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth transitions for mobile tabs */
+  .mobile-tab-transition {
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Mobile map container */
+  .mobile-map-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Mobile stops list item hover states */
+  .mobile-stop-item {
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .mobile-stop-item:active {
+    background-color: rgb(243 244 246); /* gray-100 */
+    transform: scale(0.98);
+    transition: all 0.1s ease-in-out;
+  }
+}
