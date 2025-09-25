@@ -2,7 +2,7 @@ import type { TMedium } from "./TMedia";
 
 export type TStop = {
   id: string | number;
-  type: string;
+  type: "stops";
   media: TMedium[];
   attributes: {
     title: string;

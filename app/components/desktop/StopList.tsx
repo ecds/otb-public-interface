@@ -4,7 +4,7 @@ import { useResizeObserver } from "~/hooks";
 import TourSiteContext from "~/contexts/tourSiteContext";
 import { getTourStops } from "~/data";
 import { TourContext } from "~/contexts/tourContext";
-import Stop from "./Stop";
+import MainContent from "../shared/MainContent";
 import { ScrollamaContext } from "~/contexts/scrollamaContext";
 import type { ScrollamaInstance } from "scrollama";
 import type { ReactNode } from "react";
@@ -84,15 +84,16 @@ const StopList = ({ className, children }: Props) => {
         >
           {children}
           {stops.map((stop) => {
-            return <Stop key={stop.id} stop={stop} />;
+            return <MainContent key={stop.id} content={stop} />;
           })}
+          <div className="h-12"></div>
         </div>
       </ScrollamaContext.Provider>
     );
   }
 
   return (
-    <div>
+    <div className="px-6">
       {children}
       {tour?.relationships.stops.data.map((stop) => {
         return (
@@ -101,7 +102,7 @@ const StopList = ({ className, children }: Props) => {
             role="status"
             className="flex flex-col space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse mt-16"
           >
-            <div className="my-4">
+            <div className="my-4 -px-6">
               <Gallery />
             </div>
             <div className="my-8">

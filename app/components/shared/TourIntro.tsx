@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import ClientOnly from "~/components/ClientOnly";
 import { TourContext } from "~/contexts/tourContext";
-import Gallery from "../shared/Gallery";
+import Gallery from "./Gallery";
 import { getTourMedium } from "~/data";
 import TourSiteContext from "~/contexts/tourSiteContext";
-import TextToSpeechButton from "~/components/shared/TextToSpeechButton";
 import type { TMedium } from "~/types/TMedia";
 
 const TourIntro = () => {
@@ -26,39 +25,30 @@ const TourIntro = () => {
     fetchMedia();
   }, [tour, tenant]);
 
-  if (tour && stops) {
+  if (tour) {
     return (
-      <div
-        className="stop mt-20 md:mt-0 px-2 md:px-0"
-        id={tour.attributes.slug}
-      >
-        <div className="h-64 md:h-96 -mx-6">
+      <div className="stop mt-16 md:mt-0 px-0" id={tour.attributes.slug}>
+        <div className="">
           {media && (
             <ClientOnly>
               <Gallery media={media} />
             </ClientOnly>
           )}
         </div>
+        <div className="px-6 mb-20 md:mb-0">
+          <h2 className="md:hidden text-3xl mb-4">{tour.attributes.title}</h2>
 
-        <div className="md:hidden flex items-center justify-between mb-4 px-4">
-          <h2 className="text-3xl flex-1">{tour.attributes.title}</h2>
-          <TextToSpeechButton
-            text={tour.attributes.description}
-            variant="headphones"
-            size="lg"
-            className="flex-shrink-0 ml-3"
+          <div
+            className="relative"
+            dangerouslySetInnerHTML={{
+              __html: tour.attributes.description,
+            }}
           />
         </div>
-
-        <div
-          className="relative md:px-6"
-          dangerouslySetInnerHTML={{
-            __html: tour.attributes.description,
-          }}
-        />
       </div>
     );
   }
+
   return null;
 };
 

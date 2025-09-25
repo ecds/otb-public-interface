@@ -1,76 +1,51 @@
 import { Carousel } from "nuka-carousel";
-import useEmblaCarousel from "embla-carousel-react";
-import AutoHeight from "embla-carousel-auto-height";
 import Medium from "./Medium";
 import ImagePlaceholder from "./ImagePlaceholder";
-import { NextButton, PrevButton, usePrevNextButtons } from "./ArrowButtons";
-import { DotButton, useDotButton } from "./DotButtons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { useDeviceContext } from "~/hooks";
 import type { TMedium } from "~/types/TMedia";
-
-// const element = <FontAwesomeIcon icon={faCoffee} />
 
 interface Props {
   media?: TMedium[];
+  className?: string;
 }
 
-const Gallery = ({ media }: Props) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [AutoHeight()]);
+const Gallery = ({ media, className }: Props) => {
+  const { isDesktop } = useDeviceContext();
 
-  const { selectedIndex, scrollSnaps, onDotButtonClick } =
-    useDotButton(emblaApi);
-
-  const {
-    prevBtnDisabled,
-    nextBtnDisabled,
-    onPrevButtonClick,
-    onNextButtonClick,
-  } = usePrevNextButtons(emblaApi);
   if (media) {
     return (
-      <div className="@container embla">
-        <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container">
-            {media.map((medium, index) => (
-              <div className="embla__slide" key={medium.id}>
-                <div className="embla__slide__number">
-                  <Medium medium={medium} />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="embla__controls">
-          <div className="embla__buttons">
-            <PrevButton
-              onClick={onPrevButtonClick}
-              disabled={prevBtnDisabled}
+      <Carousel
+        className="mx-auto w-screen md:w-[50vw]"
+        showArrows={isDesktop}
+        showDots
+        scrollDistance="slide"
+        wrapMode="wrap"
+      >
+        {media.map((medium) => {
+          return (
+            <Medium
+              medium={medium}
+              className="min-w-screen md:min-w-[50vw]"
+              key={medium.id}
             />
-            <NextButton
-              onClick={onNextButtonClick}
-              disabled={nextBtnDisabled}
-            />
-          </div>
-
-          <div className="embla__dots">
-            {scrollSnaps.map((_, index) => (
-              <DotButton
-                key={index}
-                onClick={() => onDotButtonClick(index)}
-                className={"embla__dot".concat(
-                  index === selectedIndex ? " embla__dot--selected" : ""
-                )}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+          );
+        })}
+      </Carousel>
     );
   }
 
   return (
     <Carousel>
-      <ImagePlaceholder />
+      <div className="w-screen md:w-[50ww] h-64 m-auto flex justify-center items-center">
+        <ImagePlaceholder />
+        <FontAwesomeIcon
+          icon={faSpinner}
+          className="absolute text-8xl motion-safe:animate-spin opacity-65"
+          style={{ animationDuration: "4s" }}
+        />
+      </div>
     </Carousel>
   );
 };

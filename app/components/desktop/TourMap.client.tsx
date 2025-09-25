@@ -18,9 +18,6 @@ const TourMap = ({ tour, stops }: Props) => {
   const { currentStop, setCurrentStop } = useContext(TourContext);
 
   const handelClick = (stop: TStop) => {
-    document
-      .getElementById(stop.attributes.slug)
-      ?.scrollIntoView({ behavior: "smooth" });
     setCurrentStop(stop);
   };
 
@@ -49,9 +46,11 @@ const TourMap = ({ tour, stops }: Props) => {
               zIndex={stop === currentStop ? stops.length + 1 : index}
             >
               <Pin scale={stop === currentStop ? 1.5 : 1}>
-                
-                  <span className={`text-white ${stop === currentStop ? "text-xl" : "text-base"}`}>
-                
+                <span
+                  className={`text-white ${
+                    stop === currentStop ? "text-xl" : "text-base"
+                  }`}
+                >
                   {stop.attributes.position}
                 </span>
               </Pin>

@@ -10,7 +10,7 @@ export type TLoaderContext = {
 
 export interface LoaderProps {
   context: TLoaderContext;
-  params: { tour: string };
+  params: { tour: string; stop?: string };
   request: {
     protocol: string;
   };

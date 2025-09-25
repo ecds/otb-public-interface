@@ -1,33 +1,47 @@
-import { useContext, useEffect } from "react";
-import { useParams } from "react-router";
-import TourSiteContext from "~/contexts/tourSiteContext";
+import { useContext, useEffect, useRef } from "react";
+import { Outlet, useParams } from "react-router";
 import { TourContext } from "~/contexts/tourContext";
+import { useDeviceContext } from "~/hooks";
+import type { TStop } from "~/types/TStop";
 
 const TourStop = () => {
-  const tourSiteContext = useContext(TourSiteContext);
-  const tourContext = useContext(TourContext);
+  const { currentStop, stops, setCurrentStop } = useContext(TourContext);
   const params = useParams();
+  const { isMobile } = useDeviceContext();
+  const currentStopRef = useRef<TStop>(currentStop);
 
   useEffect(() => {
     if (!params.stop) return;
-    
-    const element = document.getElementById(params.stop);
+
+    if (stops) {
+      const foundStop = stops.find(
+        (stop) => stop.attributes.slug === params.stop
+      );
+
+      if (foundStop && foundStop !== currentStopRef.current) {
+        currentStopRef.current = foundStop;
+        setCurrentStop(foundStop);
+      }
+    }
+  }, [params, stops, setCurrentStop]);
+
+  useEffect(() => {
+    if (!currentStop || isMobile) return;
+
+    const element = document.getElementById(currentStop.attributes.slug);
     if (element) {
       element.scrollIntoView({ behavior: "smooth" });
     }
-    
-    if (tourContext?.setCurrentStop && tourContext.stops) {
-      const foundStop = tourContext.stops.find(
-        stop => stop.attributes.slug === params.stop
-      );
-      
-      if (foundStop) {
-        tourContext.setCurrentStop(foundStop);
-      }
-    }
-  }, [params.stop, tourContext]);
+  }, [params.stop, currentStop]);
 
-  return <p className="md:hidden">Tour stop content</p>;
+  if (isMobile)
+    return (
+      <>
+        <Outlet />
+      </>
+    );
+
+  return <></>;
 };
 
 export default TourStop;

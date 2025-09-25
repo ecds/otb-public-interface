@@ -17,6 +17,134 @@
   }
 }
 
+@theme {
+  --color-default-primary: #212121;
+  --color-default-secondary: #ffffff;
+  --color-default-accent-text: #ffffff;
+  --color-default-accent: #fe5455;
+  --color-blue-primary: #0081ba;
+  --color-blue-accent-text: #ffffff;
+  --color-blue-secondary: #ffffff;
+  --color-blue-accent: #d32730;
+  --color-bright-blue-primary: #0700ff;
+  --color-bright-blue-accent-text: #ffffff;
+  --color-bright-blue-secondary: #ffffff;
+  --color-bright-blue-accent: #fe5455;
+  --color-atl-primary: #003f75;
+  --color-atl-secondary: #ffffff;
+  --color-atl-accent-text: #ffffff;
+  --color-atl-accent: #cd3648;
+  --color-red-primary: #ff3d57;
+  --color-red-secondary: #ffffff;
+  --color-red-accent-text: #ffffff;
+  --color-red-accent: #23307e;
+  --color-dark-blue-primary: #2a3f74;
+  --color-dark-blue-secondary: #ffffff;
+  --color-dark-blue-accent-text: #ffffff;
+  --color-dark-blue-accent: #5577d1;
+  --color-purple-primary: #5a23b4;
+  --color-purple-secondary: #ffffff;
+  --color-purple-accent-text: #ffffff;
+  --color-purple-accent: #ff00e9;
+  --color-green-primary: #78b953;
+  --color-green-secondary: #ffffff;
+  --color-green-accent-text: #ffffff;
+  --color-green-accent: #f38c03;
+  --color-orange-primary: #ff4601;
+  --color-orange-secondary: #ffffff;
+  --color-orange-accent-text: #ffffff;
+  --color-orange-accent: #0700ff;
+  --color-dark-green-primary: #227b39;
+  --color-dark-green-secondary: #ffffff;
+  --color-dark-green-accent-text: #ffffff;
+  --color-dark-green-accent: #d74442;
+  --color-dark-mode-primary: #4a4a4a;
+  --color-dark-mode-secondary: #ffffff;
+  --color-dark-mode-accent-text: #ffffff;
+  --color-dark-mode-accent: #e30000;
+  --color-austrian-primary: #ed2536;
+  --color-austrian-secondary: #ffffff;
+  --color-austrian-accent-text: #000000;
+  --color-austrian-accent: #fae205;
+  --color-emory-primary: #012169;
+  --color-emory-secondary: #ffffff;
+  --color-emory-accent-text: #ffffff;
+  --color-emory-accent: #f2a900;
+  --color-gsu-primary: #0239a6;
+  --color-gsu-secondary: #ffffff;
+  --color-gsu-accent-text: #ffffff;
+  --color-gsu-accent: #c60d30;
+  --color-gatech-primary: #003057;
+  --color-gatech-secondary: #ffffff;
+  --color-gatech-accent-text: #ffffff;
+  --color-gatech-accent: #b3a369;
+  --color-uga-primary: #ba0d2f;
+  --color-uga-secondary: #ffffff;
+  --color-uga-accent-text: #ffffff;
+  --color-uga-accent: #000000;
+  --color-ksu-primary: #000000;
+  --color-ksu-secondary: #ffffff;
+  --color-ksu-accent-text: #ffffff;
+  --color-ksu-accent: #febc13;
+}
+
+@source inline('bg-default-{primary,secondary,accent}');
+@source inline('text-default-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-default-{accent-text/45}');
+@source inline('bg-blue-{primary,secondary,accent}');
+@source inline('text-blue-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-blue-{accent-text/45}');
+@source inline('bg-bright-blue-{primary,secondary,accent}');
+@source inline('text-bright-blue-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-bright-blue-{accent-text/45}');
+@source inline('bg-atl-{primary,secondary,accent}');
+@source inline('text-atl-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-atl-{accent-text/45}');
+@source inline('bg-red-{primary,secondary,accent}');
+@source inline('text-red-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-red-{accent-text/45}');
+@source inline('bg-dark-blue-{primary,secondary,accent}');
+@source inline('text-dark-blue-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-dark-blue-{accent-text/45}');
+@source inline('bg-purple-{primary,secondary,accent}');
+@source inline('text-purple-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-purple-{accent-text/45}');
+@source inline('bg-green-{primary,secondary,accent}');
+@source inline('text-green-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-green-{accent-text/45}');
+@source inline('bg-orange-{primary,secondary,accent}');
+@source inline('text-orange-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-orange-{accent-text/45}');
+@source inline('bg-dark-green-{primary,secondary,accent}');
+@source inline('text-dark-green-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-dark-green-{accent-text/45}');
+@source inline('bg-dark-mode-{primary,secondary,accent}');
+@source inline('text-dark-mode-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-dark-mode-{accent-text/45}');
+@source inline('bg-austrian-{primary,secondary,accent}');
+@source inline('text-austrian-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-austrian-{accent-text/45}');
+@source inline('bg-emory-{primary,secondary,accent}');
+@source inline('text-emory-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-emory-{accent-text/45}');
+
+@source inline('bg-gsu-{primary,secondary,accent}');
+@source inline('text-gsu-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-gsu-{accent-text/45}');
+@source inline('bg-gatech-{primary,secondary,accent}');
+@source inline('text-gatech-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-gatech-{accent-text/45}');
+@source inline('bg-uga-{primary,secondary,accent}');
+@source inline('text-uga-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-uga-{accent-text/45}');
+@source inline('bg-ksu-{primary,secondary,accent}');
+@source inline('text-ksu-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-ksu-{accent-text/45}');
+
+/* @layer utilities {
+  .theme-default;
+} */
+
 /* Custom component styles */
 @layer components {
   /* Content area typography */
@@ -34,130 +162,6 @@
   button.paging-item {
     padding: 2px;
   }
-
-  /* Embla carousel styles */
-  .embla {
-    max-width: 48rem;
-    margin: auto;
-    --slide-height: 19rem;
-    --slide-spacing: 1rem;
-    --slide-size: 100%;
-  }
-
-  .embla__viewport {
-    overflow: hidden;
-  }
-
-  .embla__container {
-    display: flex;
-    touch-action: pan-y pinch-zoom;
-    margin-left: calc(var(--slide-spacing) * -1);
-  }
-
-  .embla__slide {
-    transform: translate3d(0, 0, 0);
-    flex: 0 0 var(--slide-size);
-    min-width: 0;
-    padding-left: var(--slide-spacing);
-  }
-
-  .embla__slide__number {
-    border-radius: 1.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: var(--slide-height);
-    user-select: none;
-  }
-
-  .embla__controls {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    justify-content: space-between;
-    gap: 1.2rem;
-    margin-top: 1.8rem;
-  }
-
-  .embla__buttons {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
-    align-items: center;
-  }
-
-  .embla__button {
-    -webkit-tap-highlight-color: rgba(49, 49, 49, 0.5);
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: transparent;
-    touch-action: manipulation;
-    display: inline-flex;
-    text-decoration: none;
-    cursor: pointer;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    box-shadow: inset 0 0 0 0.2rem rgb(234, 234, 234);
-    width: 3.6rem;
-    height: 3.6rem;
-    z-index: 1;
-    border-radius: 50%;
-    color: var(--text-body);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .embla__button:disabled {
-    color: rgb(192, 192, 192);
-  }
-
-  .embla__button__svg {
-    width: 35%;
-    height: 35%;
-  }
-
-  .embla__dots {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    align-items: center;
-    margin-right: calc((2.6rem - 1.4rem) / 2 * -1);
-  }
-
-  .embla__dot {
-    -webkit-tap-highlight-color: rgba(49, 49, 49, 0.5);
-    -webkit-appearance: none;
-    appearance: none;
-    background-color: transparent;
-    touch-action: manipulation;
-    display: inline-flex;
-    text-decoration: none;
-    cursor: pointer;
-    border: 0;
-    padding: 0;
-    margin: 0;
-    width: 2.6rem;
-    height: 2.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-  }
-
-  .embla__dot:after {
-    box-shadow: inset 0 0 0 0.2rem rgb(234, 234, 234);
-    width: 1.4rem;
-    height: 1.4rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    content: "";
-  }
-
-  .embla__dot--selected:after {
-    box-shadow: inset 0 0 0 0.2rem rgb(54, 49, 61);
-  }
 }
 
 /* Mobile-specific styles to add to existing index.css */
@@ -169,13 +173,15 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
+    line-clamp: 2;
   }
-  
+
   .line-clamp-3 {
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
+    line-clamp: 3;
   }
 }
 
@@ -183,7 +189,8 @@
 @layer components {
   .mobile-tour-container {
     height: 100vh;
-    height: 100dvh; /* Use dynamic viewport height on mobile */
+    height: 100dvh;
+    /* Use dynamic viewport height on mobile */
   }
 
   /* Touch-friendly button styles */
@@ -211,7 +218,8 @@
   }
 
   .mobile-stop-item:active {
-    background-color: rgb(243 244 246); /* gray-100 */
+    background-color: rgb(243 244 246);
+    /* gray-100 */
     transform: scale(0.98);
     transition: all 0.1s ease-in-out;
   }

@@ -12,7 +12,6 @@ import type { MetaFunction, LinksFunction } from "react-router";
 import type { TLoaderContext } from "./types/TLoaderContext";
 
 import styles from "./index.css?url";
-console.log("🚀 ~ styles:", styles);
 import { useDeviceContext } from "./hooks";
 
 interface LoaderProps {

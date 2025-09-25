@@ -6,6 +6,7 @@ import type { Dispatch, SetStateAction } from "react";
 
 type Context = {
   tour: TTour | undefined;
+  theme: string;
   currentStop: TStop | undefined;
   stops: TStop[] | undefined;
   setFlatPages: Dispatch<SetStateAction<TTourFlatPage[] | undefined>>;
@@ -23,6 +24,7 @@ export const TourContext = createContext<Context>({
   currentStop: undefined,
   flatPages: undefined,
   stops: undefined,
+  theme: "default",
   setFlatPages: (_: SetStateAction<TTourFlatPage[] | undefined>) => {
     console.error("setFlatPages not implemented. Did you pass it to context?");
   },

@@ -10,7 +10,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import TourMenu from "../mobile/TourMenu";
 
 export const Navbar = ({ children }: { children?: ReactNode }) => {
-  const { tour, stops, setCurrentStop } = useContext(TourContext);
+  const { tour, stops, setCurrentStop, theme } = useContext(TourContext);
   const { currentSite } = useContext(TourSiteContext);
   const [show, setShow] = useState<boolean>(false);
 
@@ -18,12 +18,12 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
     setShow(false);
     document
       .getElementById(stop.attributes.slug)
-      ?.scrollIntoView({ behavior: "smooth" });
+      ?.scrollIntoView({ behavior: "instant" });
     setCurrentStop(stop);
   };
 
   return (
-    <nav className="bg-gray-800 fixed top-0 w-screen z-50">
+    <nav className={`bg-${theme}-primary fixed top-0 w-screen z-50`}>
       <>
         <div className="mx-auto px-2 sm:px-6">
           <div className="relative flex h-16 items-center justify-between">
@@ -54,7 +54,9 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
                     </MenuButton>
                     {/* Mobile */}
                     <h1 className="block md:hidden text-white text-sm">
-                      {tour.attributes.title}
+                      <Link to={`/${tour.attributes.slug}`}>
+                        {tour.attributes.title}
+                      </Link>
                     </h1>
                   </div>
                   <div // Desktop

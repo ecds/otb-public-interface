@@ -4,7 +4,7 @@ import type { TTourFlatPage } from "./TTourFlatPage";
 
 export type TTour = {
   id: number;
-  type: string;
+  type: "tours";
   stops: TStop[];
   flatPages: TTourFlatPage[];
   media: TMedium[];
