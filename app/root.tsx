@@ -29,7 +29,8 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ context }: LoaderProps) => {
   const { tenant, request } = context;
-  if (tenant) {
+  console.log("🚀 ~ loader ~ tenant:", tenant);
+  if (tenant && tenant !== "otb") {
     const tourSet = await getTourSet(tenant);
     return { tourSet, request };
   }

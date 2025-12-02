@@ -15,7 +15,7 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ context }: { context: TLoaderContext }) => {
   const { tenant, request } = context;
-  if (tenant) {
+  if (tenant && tenant !== "otb") {
     if (request.host.includes(tenant)) {
       throw redirect("/tours");
     } else {

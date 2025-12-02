@@ -1,6 +1,6 @@
 import { getTours } from "~/data";
 import { Link, useLoaderData, redirect } from "react-router";
-import Navbar from "~/components/shared/Navbar";
+// import Navbar from "~/components/shared/Navbar";
 import type { TTour } from "~/types/TTour";
 import type { LoaderFunctionArgs } from "react-router";
 
@@ -50,16 +50,32 @@ const Tours = () => {
 
   return (
     <div className="min-h-screen py-20 md:py-32 bg-gray-800/50">
-      <Navbar />
-
-      <div className="px-4 md:px-16 mb-8">
+      {/* <Navbar /> */}
+      <nav className={`bg-default-primary h-16 fixed top-0 w-screen z-50`}>
+        <div className="flex items-center justify-between mx-auto p-4">
+          {/* Desktop */}
+          <div className="flex flex-shrink-0 items-center">
+            <Link className="hidden md:block" to="/">
+              <img
+                className="h-12 w-auto"
+                src="/images/otblogo.png"
+                alt="OpenTourBuilder"
+              />
+            </Link>
+            <h1 className="ml-2 md:ml-6 sm:block text-white text-lg font-medium">
+              {tours?.[0]?.attributes?.title}
+            </h1>
+          </div>
+        </div>
+      </nav>
+      {/* <div className="px-4 md:px-16 mb-8">
         <h1 className="text-3xl font-bold text-white text-center mb-2">
           Explore Tours
         </h1>
         <p className="text-gray-300 text-center">
           Discover {tours?.length || 0} amazing tours
         </p>
-      </div>
+      </div> */}
 
       {/* RESPONSIVE GRID WITH FIXED SIZE CARDS */}
       <div className="px-4 md:px-16">
