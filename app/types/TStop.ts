@@ -17,8 +17,8 @@ export type TStop = {
     article_link: string;
     video_embed: string | null;
     video_poster: string | null;
-    parking_lat: number | null;
-    parking_lng: number | null;
+    parking_lat: string | null;
+    parking_lng: string | null;
     direction_intro: string;
     direction_notes: string | null;
     splash: {

@@ -1,3 +1,11 @@
+import {
+  faBicycle,
+  faCar,
+  faSubway,
+  faWalking,
+} from "@fortawesome/free-solid-svg-icons";
+import type { TTravelMode } from "./types/TTravelMode";
+
 export const themes = [
   {
     id: "1",
@@ -58,5 +66,28 @@ export const themes = [
   {
     id: "15",
     title: "ksu",
+  },
+];
+
+export const travelModes: TTravelMode[] = [
+  {
+    id: "1",
+    title: "BICYCLING",
+    icon: faBicycle,
+  },
+  {
+    id: "2",
+    title: "DRIVING",
+    icon: faCar,
+  },
+  {
+    id: "3",
+    title: "TRANSIT",
+    icon: faSubway,
+  },
+  {
+    id: "4",
+    title: "WALKING",
+    icon: faWalking,
   },
 ];

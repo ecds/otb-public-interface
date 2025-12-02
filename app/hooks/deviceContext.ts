@@ -105,9 +105,9 @@ export function useDeviceContext() {
 
   useEffect(() => {
     if (!windowSize.width || !isHydrated) return;
-    
+
     const MOBILE_BREAKPOINT = 768;
-    
+
     if (windowSize.width < MOBILE_BREAKPOINT) {
       setIsMobile(true);
       setIsDesktop(false);

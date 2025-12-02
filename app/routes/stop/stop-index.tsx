@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useDeviceContext } from "~/hooks";
+import { useDeviceContext } from "~/hooks/deviceContext";
 
 const StopIndex = () => {
   const navigate = useNavigate();

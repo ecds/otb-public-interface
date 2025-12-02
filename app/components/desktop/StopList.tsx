@@ -1,9 +1,9 @@
 import scrollama from "scrollama";
 import { useRef, useContext, useEffect } from "react";
-import { useResizeObserver } from "~/hooks";
+import { useResizeObserver } from "~/hooks/deviceContext";
 import TourSiteContext from "~/contexts/tourSiteContext";
 import { getTourStops } from "~/data";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 import MainContent from "../shared/MainContent";
 import { ScrollamaContext } from "~/contexts/scrollamaContext";
 import type { ScrollamaInstance } from "scrollama";

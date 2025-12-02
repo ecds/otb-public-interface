@@ -1,9 +1,7 @@
-import { Suspense, useContext, useEffect, useState } from "react";
-import { redirect, useNavigate } from "react-router";
-import { Await } from "react-router";
-import { TourContext } from "~/contexts/tourContext";
-import { useDeviceContext } from "~/hooks";
-import MainContent from "~/components/shared/MainContent";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router";
+import { TourContext } from "~/contexts/TourContext";
+import { useDeviceContext } from "~/hooks/deviceContext";
 
 export default function TourIndex() {
   const { tour } = useContext(TourContext);
@@ -12,7 +10,7 @@ export default function TourIndex() {
 
   useEffect(() => {
     if (isMobile) navigate(`/${tour?.attributes.slug}/intro`);
-  }, [isMobile, tour]);
+  }, [isMobile, tour, navigate]);
 
   return (
     <div className="h-screen flex items-center justify-center bg-gray-100">

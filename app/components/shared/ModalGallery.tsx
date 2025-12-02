@@ -16,7 +16,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { useDeviceContext } from "~/hooks";
+import { useDeviceContext } from "~/hooks/deviceContext";
 import Embed from "./Embed";
 
 interface Props {
@@ -45,7 +45,7 @@ const Gallery = ({ media }: Props) => {
         >
           {media.map((medium, index) => {
             return (
-              <div className="min-w-screen md:min-w-[50vw]" key={medium.id}>
+              <div className={`min-w-screen md:min-w-[50vw]`} key={medium.id}>
                 <Medium medium={medium} index={index} onClick={toggleModal} />
               </div>
             );
@@ -76,13 +76,13 @@ const Gallery = ({ media }: Props) => {
                         className="min-w-[calc(100vw-3rem)] md:min-w-[50vw]"
                         key={medium.id}
                       >
-                        <div className="flex flex-row-reverse pb-2 items-start sticky top-0 z-10 bg-white">
+                        <div className="flex flex-row-reverse pb-2 items-start sticky top-0 z-10 bg-white w-full">
                           <CloseButton>
                             <FontAwesomeIcon icon={faCircleXmark} />
                           </CloseButton>
                           <DialogTitle
                             as="h3"
-                            className="text-gray-800 text-sm md:text-lg px-4"
+                            className="text-gray-800 text-sm md:text-lg px-4 text-left grow"
                           >
                             {medium.attributes.title}
                           </DialogTitle>
@@ -94,7 +94,6 @@ const Gallery = ({ media }: Props) => {
                           {!medium?.attributes.provider && (
                             <img
                               className={`max-h-64 md:max-h-max m-auto`}
-                              role="button"
                               srcSet={medium.attributes.files.desktop}
                               alt={medium.attributes.caption ?? ""}
                             />
@@ -107,9 +106,10 @@ const Gallery = ({ media }: Props) => {
                           />
                           {!medium?.attributes.provider && (
                             <a
-                              className="ps-6 pt-2 text-xs text-blue-500 hover:text-blue-800 visited:text-purple-700 underline"
+                              className="ps-4 pt-2 text-xs text-blue-500 hover:text-blue-800 visited:text-purple-700 underline"
                               href={medium.attributes.original_image_url}
                               target="_blank"
+                              rel="noreferrer"
                             >
                               Original Image{" "}
                               <FontAwesomeIcon

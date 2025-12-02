@@ -2,8 +2,8 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { useContext } from "react";
-import { TourContext } from "~/contexts/tourContext";
-import { useDeviceContext } from "~/hooks";
+import { TourContext } from "~/contexts/TourContext";
+import { useDeviceContext } from "~/hooks/deviceContext";
 
 const FlatPageLinks = () => {
   const { flatPages, setCurrentFlatPage } = useContext(TourContext);
@@ -27,7 +27,7 @@ const FlatPageLinks = () => {
                   <MenuItem key={flatPage.id}>
                     {({ close }) => (
                       <button
-                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:underline"
+                        className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:underline cursor-pointer"
                         onClick={() => {
                           setCurrentFlatPage(flatPage);
                           close();
@@ -65,7 +65,7 @@ const FlatPageLinks = () => {
             <li key={flatPage.id}>
               <button
                 tabIndex={0}
-                className="text-gray-400"
+                className="text-gray-400 cursor-pointer hover:underline"
                 onClick={() => setCurrentFlatPage(flatPage)}
                 onKeyDown={({ key }: { key: string }) => {
                   if (key === "Enter") setCurrentFlatPage(flatPage);
@@ -79,7 +79,7 @@ const FlatPageLinks = () => {
         <li>
           <button
             tabIndex={0}
-            className="text-gray-400"
+            className="text-gray-400 cursor-pointer hover:underline"
             onClick={() => setCurrentFlatPage("about")}
             onKeyDown={({ key }: { key: string }) => {
               if (key === "Enter") setCurrentFlatPage("about");

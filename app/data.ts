@@ -163,7 +163,7 @@ export const getTour = async (tenant: string, tour: number | string) => {
   const response = await fetchData(
     `https://api.opentour.site/${tenant}/tours?slug=${tour}`
   );
-  const tourData = response.data;
+  const tourData: TTour = response.data;
   return { tour: tourData };
 };
 

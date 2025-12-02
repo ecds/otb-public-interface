@@ -3,7 +3,7 @@ import Medium from "./Medium";
 import ImagePlaceholder from "./ImagePlaceholder";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { useDeviceContext } from "~/hooks";
+import { useDeviceContext } from "~/hooks/deviceContext";
 import type { TMedium } from "~/types/TMedia";
 
 interface Props {

@@ -1,15 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphones, faPause } from "@fortawesome/free-solid-svg-icons";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 
 interface Props {
   text: string;
-  size?: "sm" | "md" | "lg";
-  className?: string;
 }
 
-const TextToSpeechButton = ({ text, size = "md", className = "" }: Props) => {
+const TextToSpeechButton = ({ text }: Props) => {
   const { tour } = useContext(TourContext);
   const [isReading, setIsReading] = useState<boolean>(false);
   const [synthState, setSynthState] = useState<
@@ -25,7 +23,7 @@ const TextToSpeechButton = ({ text, size = "md", className = "" }: Props) => {
 
   useEffect(() => {
     if (!isSupported) {
-      console.info("This browser does not support speechSynthesis");
+      console.warn("This browser does not support speechSynthesis");
       return;
     }
 
@@ -36,7 +34,7 @@ const TextToSpeechButton = ({ text, size = "md", className = "" }: Props) => {
     const _synth = window.speechSynthesis;
 
     setSynth(_synth);
-  }, []);
+  }, [isSupported, text]);
 
   useEffect(() => {
     if (!synth) return;
@@ -60,7 +58,7 @@ const TextToSpeechButton = ({ text, size = "md", className = "" }: Props) => {
     };
 
     setUtterance(_utterance);
-  }, [synth, text]);
+  }, [synth, text, tour]);
 
   useEffect(() => {
     if (!synth || !utterance) return;
@@ -106,37 +104,22 @@ const TextToSpeechButton = ({ text, size = "md", className = "" }: Props) => {
     return <></>; // Don't render if not supported
   }
 
-  // Size classes
-  const sizeClasses = {
-    sm: "text-sm p-1",
-    md: "text-base p-2",
-    lg: "text-lg p-3",
-  };
-
   return (
-    <button
-      onClick={handleTextToSpeech}
-      className={`
-          inline-flex items-center justify-center
-          rounded-full bg-gray-100 hover:bg-gray-200 
-          text-gray-600 hover:text-gray-800
-          transition-colors duration-200
-          ${sizeClasses[size]}
-          ${
-            isReading
-              ? "bg-blue-100 text-blue-600 outline-none ring-2 ring-blue-500 ring-offset-2 animate-pulse"
-              : ""
-          }
-          ${className}
-        `}
-      title={isReading ? "Stop reading" : "Read text aloud"}
-      aria-label={isReading ? "Stop reading text" : "Read text aloud"}
-    >
-      <FontAwesomeIcon
-        icon={isReading ? faPause : faHeadphones}
-        className="w-4 h-4"
-      />
-    </button>
+    <span className={"me-3 mt-4 float-left"}>
+      <button
+        onClick={handleTextToSpeech}
+        className={`inline text-gray-600 hover:text-gray-800 transition-colors duration-200 ${
+          isReading ? "animate-pulse" : ""
+        }`}
+        title={isReading ? "Stop reading" : "Read text aloud"}
+        aria-label={isReading ? "Stop reading text" : "Read text aloud"}
+      >
+        <FontAwesomeIcon
+          icon={isReading ? faPause : faHeadphones}
+          // className="w-4 h-4"
+        />
+      </button>
+    </span>
   );
 };
 

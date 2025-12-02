@@ -20,7 +20,7 @@ export const meta = ({ data }: { data: { tours: TTour[] } }) => {
 const TourCard = ({ tour }: { tour: TTour }) => {
   return (
     <div className="w-full h-80 border rounded-lg shadow bg-gray-800 border-gray-700 cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <Link to={`/${tour.attributes.slug}`} className="block h-full flex flex-col">
+      <Link to={`/${tour.attributes.slug}`} className="h-full flex flex-col">
         {/* Fixed height image container */}
         <div className="h-48 w-full overflow-hidden rounded-t-lg flex-shrink-0">
           <img
@@ -29,7 +29,7 @@ const TourCard = ({ tour }: { tour: TTour }) => {
             alt={tour.attributes.title}
           />
         </div>
-        
+
         {/* Fixed height content container */}
         <div className="h-32 p-4 flex flex-col justify-between">
           <h5 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight">
@@ -51,7 +51,7 @@ const Tours = () => {
   return (
     <div className="min-h-screen py-20 md:py-32 bg-gray-800/50">
       <Navbar />
-      
+
       <div className="px-4 md:px-16 mb-8">
         <h1 className="text-3xl font-bold text-white text-center mb-2">
           Explore Tours
@@ -72,7 +72,9 @@ const Tours = () => {
         {/* Empty State */}
         {(!tours || tours.length === 0) && (
           <div className="text-center py-12">
-            <div className="text-gray-400 text-lg">No tours available at the moment.</div>
+            <div className="text-gray-400 text-lg">
+              No tours available at the moment.
+            </div>
           </div>
         )}
       </div>

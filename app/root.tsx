@@ -12,7 +12,7 @@ import type { MetaFunction, LinksFunction } from "react-router";
 import type { TLoaderContext } from "./types/TLoaderContext";
 
 import styles from "./index.css?url";
-import { useDeviceContext } from "./hooks";
+import { useDeviceContext } from "./hooks/deviceContext";
 
 interface LoaderProps {
   context: TLoaderContext;

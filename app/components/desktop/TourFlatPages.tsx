@@ -1,5 +1,5 @@
 import { useContext, useEffect } from "react";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 import { getTourFlatPages } from "~/data";
 import FlatPage from "../shared/FlatPage";
 import TourSiteContext from "~/contexts/tourSiteContext";

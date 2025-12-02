@@ -6,13 +6,11 @@ import type { TMedium } from "~/types/TMedia";
 
 interface Props {
   medium: TMedium;
-  className?: string;
   onClick?: (index: number) => void;
   index?: number;
 }
 
-const Medium = ({ medium, className, onClick, index = 0 }: Props) => {
-  const [showModal, setShowModal] = useState<boolean>(false);
+const Medium = ({ medium, onClick, index = 0 }: Props) => {
   const { resize } = useContext(ScrollamaContext);
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -25,17 +23,25 @@ const Medium = ({ medium, className, onClick, index = 0 }: Props) => {
   };
 
   return (
-    <div className="relative flex items-baseline h-64">
-      <img
-        className={`max-h-64 md:max-h-64 m-auto cursor-pointer transition-opacity duration-1000 ${
-          loaded ? "opacity-100" : "opacity-0"
-        }`}
-        role="button"
-        srcSet={medium.attributes.files.desktop}
-        alt={medium.attributes.caption ?? ""}
-        onLoad={() => setLoaded(true)}
+    <div className={`relative flex items-baseline h-64 bg-cover`}>
+      <button
+        className="m-auto"
         onClick={handleClick}
-      />
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleClick();
+          }
+        }}
+      >
+        <img
+          className={`max-h-64 md:max-h-64 m-auto cursor-pointer transition-opacity duration-1000 ${
+            loaded ? "opacity-100" : "opacity-0"
+          }`}
+          srcSet={medium.attributes.files.desktop}
+          alt={medium.attributes.caption ?? ""}
+          onLoad={() => setLoaded(true)}
+        />
+      </button>
       {medium.attributes.video && (
         <div className="absolute left-1/2 -translate-x-12 top-1/2 -translate-y-12 text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex">
           <FontAwesomeIcon className="" icon={faCirclePlay} />

@@ -1,8 +1,10 @@
 import { createContext } from "react";
+import { travelModes } from "~/mappings";
 import type { TTour } from "~/types/TTour";
 import type { TStop } from "~/types/TStop";
 import type { TTourFlatPage } from "~/types/TTourFlatPage";
 import type { Dispatch, SetStateAction } from "react";
+import type { TTravelMode } from "~/types/TTravelMode";
 
 type Context = {
   tour: TTour | undefined;
@@ -17,16 +19,26 @@ type Context = {
   setCurrentFlatPage: Dispatch<
     SetStateAction<TTourFlatPage | string | undefined>
   >;
+  modes: (TTravelMode | undefined)[];
+  defaultMode: TTravelMode;
+  showMenu: boolean;
+  setShowMenu: Dispatch<SetStateAction<boolean>>;
 };
 
 export const TourContext = createContext<Context>({
   tour: undefined,
   currentStop: undefined,
   flatPages: undefined,
+  showMenu: false,
   stops: undefined,
   theme: "default",
+  modes: [],
+  defaultMode: travelModes[1],
   setFlatPages: (_: SetStateAction<TTourFlatPage[] | undefined>) => {
     console.error("setFlatPages not implemented. Did you pass it to context?");
+  },
+  setShowMenu: (_: SetStateAction<boolean>) => {
+    console.error("setShowMenu not implemented. Did you pass it to context?");
   },
   setStops: (_: SetStateAction<TStop[] | undefined>) => {
     console.error(

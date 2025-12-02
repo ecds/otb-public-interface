@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { Link } from "react-router";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 
 interface Props {}
 

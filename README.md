@@ -12,6 +12,14 @@ npm run dev
 
 This starts your app in development mode, which will purge the server require cache when Remix rebuilds assets so you don't need a process manager restarting the express server.
 
+If you need to run with https for testing location services, start the server with
+
+```sh
+PROTOCOL=https npm run dev
+```
+
+See [this article](https://medium.com/@hjblokland/how-to-create-self-signed-wildcard-ssl-certificates-with-mkcert-on-macos-a6a3663aa157) for adding certs for local development.
+
 ## Deployment
 
 First, build your app for production:

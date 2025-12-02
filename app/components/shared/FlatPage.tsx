@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 
@@ -33,19 +33,21 @@ const FlatPage = ({ flatPage }: Props) => {
 
   return (
     <div
-      className={`otb-flat-page fixed right-0 w-1/2 h-full mt-16 bg-black/85 text-gray-300 overflow-scroll transition-transform duration-700 ${
-        currentFlatPage === flatPage ? "-" : ""
-      }translate-x-full`}
+      className={`otb-flat-page fixed -top-16 z-50 md:top-auto left-0 md:left-auto md:right-0 w-full md:w-1/2 h-full mt-16 bg-black md:bg-black/85 text-gray-300 overflow-scroll transition-transform duration-700 ${
+        currentFlatPage === flatPage
+          ? "-translate-x-0 md:-translate-x"
+          : "-translate-x-full md:translate-x-full"
+      }`}
     >
       <div className="sticky top-0 w-full bg-black px-6">
         <button
-          className="my-4 bg-white text-black rounded p-2"
+          className="my-4 bg-white text-black rounded p-2 cursor-pointer"
           onClick={() => setCurrentFlatPage(undefined)}
         >
           <FontAwesomeIcon icon={faClose} /> Close
         </button>
       </div>
-      <div className="p-6">
+      <div className="px-6 md:p-6">
         <RenderFlatPage flatPage={flatPage} />
       </div>
     </div>

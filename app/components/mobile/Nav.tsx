@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { NavLink } from "react-router";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 
 const MobileNav = () => {
   const { theme, tour, currentStop } = useContext(TourContext);

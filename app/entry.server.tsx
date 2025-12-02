@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { PassThrough } from "node:stream";
 
-import type { AppLoadContext, EntryContext } from "react-router";
+import type { EntryContext } from "react-router";
 import { createReadableStreamFromReadable } from "@react-router/node";
 import { ServerRouter } from "react-router";
 import * as isbotModule from "isbot";
@@ -13,11 +12,11 @@ export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  reactRouterContext: EntryContext,
-  loadContext: AppLoadContext
+  reactRouterContext: EntryContext
 ) {
   const prohibitOutOfOrderStreaming =
-    isBotRequest(request.headers.get("user-agent")) || reactRouterContext.isSpaMode;
+    isBotRequest(request.headers.get("user-agent")) ||
+    reactRouterContext.isSpaMode;
 
   return prohibitOutOfOrderStreaming
     ? handleBotRequest(

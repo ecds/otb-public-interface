@@ -1,12 +1,11 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ClientOnly from "~/components/ClientOnly";
 import { getStopMedium, getTourMedium } from "~/data";
 import Gallery from "./ModalGallery";
 import TourSiteContext from "~/contexts/tourSiteContext";
 import TextToSpeechButton from "~/components/shared/TextToSpeechButton";
-import { useDeviceContext } from "~/hooks";
-import { TTour } from "~/types/TTour";
-import { useNavigation } from "react-router";
+import { useDeviceContext } from "~/hooks/deviceContext";
+import type { TTour } from "~/types/TTour";
 import type { TStop } from "~/types/TStop";
 import type { TMedium } from "~/types/TMedia";
 
@@ -16,11 +15,8 @@ interface Props {
 
 const MainContent = ({ content }: Props) => {
   const [media, setMedia] = useState<TMedium[] | undefined>();
-  const mediaLoadedRef = useRef<boolean>(false);
   const { tenant } = useContext(TourSiteContext);
   const { isDesktop, isMobile } = useDeviceContext();
-  const navigation = useNavigation();
-  const isNavigating = Boolean(navigation.location);
 
   let hasMedia = true;
 
@@ -71,7 +67,7 @@ const MainContent = ({ content }: Props) => {
 
   return (
     <div key={content.id} className="mb-12" id={content.attributes.slug}>
-      <div className="relative w-full mt-18 md:mt-0">
+      <div className="md:relative w-full mt-16 md:mt-0">
         <div className="flex flex-col">
           {isDesktop && (
             <div
@@ -106,21 +102,21 @@ const MainContent = ({ content }: Props) => {
                   )}
                   {content.attributes.title}
                 </h2>
-                <TextToSpeechButton
-                  text={content.attributes.sanitized_description}
-                  size="md"
-                  className="flex-shrink-0"
-                />
               </div>
             </div>
           )}
+          <div className="tracking-wide leading-6 relative px-6 stop mb-24 md:mb-0 box-content flow-root">
+            <TextToSpeechButton
+              text={content.attributes.sanitized_description}
+            />
+            <div
+              className="otb-content"
+              dangerouslySetInnerHTML={{
+                __html: content.attributes.description,
+              }}
+            />
+          </div>
         </div>
-        <div
-          className="relative px-6 stop"
-          dangerouslySetInnerHTML={{
-            __html: content.attributes.description,
-          }}
-        />
       </div>
     </div>
   );

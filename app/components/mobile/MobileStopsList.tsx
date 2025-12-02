@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 import TextToSpeechButton from "~/components/shared/TextToSpeechButton";
 import type { TStop } from "~/types/TStop";
 import { useNavigate } from "react-router";

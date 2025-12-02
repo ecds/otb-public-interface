@@ -8,6 +8,7 @@
   This helps maintain consistent styling with v3
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -147,8 +148,9 @@
 
 /* Custom component styles */
 @layer components {
+
   /* Content area typography */
-  .otb-desktop-content p,
+  .otb-content p,
   .otb-flat-page p {
     margin-top: 1rem;
     margin-bottom: 1rem;
@@ -167,6 +169,7 @@
 /* Mobile-specific styles to add to existing index.css */
 
 @layer utilities {
+
   /* Line clamp utility for text truncation */
   .line-clamp-2 {
     overflow: hidden;
@@ -222,5 +225,13 @@
     /* gray-100 */
     transform: scale(0.98);
     transition: all 0.1s ease-in-out;
+  }
+
+  .adp-placemark img.adp-marker2 {
+    display: none;
+  }
+
+  td.adp-text {
+    padding: 0.25rem;
   }
 }

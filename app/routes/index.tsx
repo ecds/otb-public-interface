@@ -1,7 +1,6 @@
 import type { MetaFunction } from "react-router";
 import { getTourSets } from "~/data";
-import { redirect } from "react-router";
-import { useLoaderData } from "react-router";
+import { redirect, useLoaderData } from "react-router";
 import AllToursMap from "~/components/index/AllToursMap.client";
 import ClientOnly from "~/components/ClientOnly";
 import type { TTourSet } from "~/types/TTourSet";

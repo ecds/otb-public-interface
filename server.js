@@ -3,6 +3,9 @@ import compression from "compression";
 import express from "express";
 import morgan from "morgan";
 import fs from "node:fs";
+import https from "node:https";
+import http from "node:http";
+import path from "node:path";
 
 const minSubdomainCount = () => {
   if (process.env.NODE_ENV === "staging") {
@@ -10,7 +13,6 @@ const minSubdomainCount = () => {
   }
   return 0;
 };
-
 
 const viteDevServer =
   process.env.NODE_ENV === "production"
@@ -21,7 +23,7 @@ const viteDevServer =
         })
       );
 
-const remixHandler = createRequestHandler({
+const handler = createRequestHandler({
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule("virtual:react-router/server-build")
     : await import("./build/server/index.js"),
@@ -38,7 +40,7 @@ const remixHandler = createRequestHandler({
       subdomains: req.subdomains,
       port,
     };
-    return { tenant, res, request, req };
+    return { tenant, res, request };
   },
 });
 
@@ -67,17 +69,52 @@ app.use(express.static("build/client", { maxAge: "1h" }));
 app.use(morgan("tiny"));
 
 // handle SSR requests
-app.all("*", remixHandler);
+app.all("*", handler);
 
-const port = process.env.PORT || 3000;
-app.listen(port, "0.0.0.0", () => {
-  fs.writeFile("./pid", `${process.pid}`, (error) => {
-    if (error) console.error(error);
+const port = process.env.PORT || 4200; // Use 3443 (or 443) for HTTPS
+const protocol = process.env.PROTOCOL || "http";
+const keyPath = process.env.SSL_KEY || path.resolve("./.cert/key.pem");
+const certPath = process.env.SSL_CERT || path.resolve("./.cert/cert.pem");
+
+let sslOptions = {};
+
+if (protocol === "https") {
+  // Load SSL certificate & key
+  sslOptions = {
+    key: fs.readFileSync(keyPath),
+    cert: fs.readFileSync(certPath),
+  };
+}
+
+const startedMessage = () => {
+  console.warn(
+    `🚀 ${protocol.toUpperCase()} server running at ${protocol}://0.0.0.0:${port} (pid: ${
+      process.pid
+    })`
+  );
+  console.warn(
+    `For local subdomains, use a fully qualified domain (e.g. ${protocol}://lvh.me:${port}).`
+  );
+};
+
+// Start HTTPS server
+if (protocol === "https") {
+  https.createServer(sslOptions, app).listen(port, "0.0.0.0", () => {
+    startedMessage();
   });
-  console.log(
-    `Express server listening at http://0.0.0.0:${port} ${process.pid}`
-  );
-  console.log(
-    "For the subdomains to work for local dev, you need to use a fully qualified domain, eg. lvh.me."
-  );
-});
+} else {
+  http.createServer({}, app).listen(port, "0.0.0.0", () => {
+    startedMessage();
+
+    if (process.env.NODE_ENV !== "production") {
+      const separator = "*".repeat(process.stdout.columns);
+      const warning =
+        "Server is running on HTTP. You will not be able to get the device location for directions.\n\n" +
+        "To run the server using HTTPS set the `PROTOCOL` environment variable to 'HTTPS'.\n\n" +
+        "See the README for more information about adding local certs.";
+      console.warn(`\n${separator}`);
+      console.warn(warning);
+      console.warn(separator);
+    }
+  });
+}

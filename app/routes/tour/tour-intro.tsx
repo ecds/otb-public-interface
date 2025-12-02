@@ -1,7 +1,7 @@
-import { Suspense, useContext, useState } from "react";
+import { Suspense, useContext } from "react";
 import { Await } from "react-router";
-import { TourContext } from "~/contexts/tourContext";
-import { useDeviceContext } from "~/hooks";
+import { TourContext } from "~/contexts/TourContext";
+import { useDeviceContext } from "~/hooks/deviceContext";
 import MainContent from "~/components/shared/MainContent";
 
 export default function Tour() {

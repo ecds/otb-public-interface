@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef } from "react";
 import { Outlet, useParams } from "react-router";
-import { TourContext } from "~/contexts/tourContext";
-import { useDeviceContext } from "~/hooks";
+import { TourContext } from "~/contexts/TourContext";
+import { useDeviceContext } from "~/hooks/deviceContext";
 import type { TStop } from "~/types/TStop";
 
 const TourStop = () => {

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import ClientOnly from "~/components/ClientOnly";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 import Gallery from "./Gallery";
 import { getTourMedium } from "~/data";
 import TourSiteContext from "~/contexts/tourSiteContext";

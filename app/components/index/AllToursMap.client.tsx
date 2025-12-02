@@ -23,7 +23,7 @@ const AllToursMap = ({ tours }: Props) => {
 
   return (
     <div className="w-screen h-[50vh]">
-      <APIProvider apiKey={"AIzaSyD-G_lDtvChv-P3nchtQYHoCLfFzn9ylr8"}>
+      <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <Map
           defaultCenter={position}
           zoom={expandMap ? 2 : zoom}

@@ -1,21 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  APIProvider,
-  AdvancedMarker,
-  Map,
-  Pin,
-} from "@vis.gl/react-google-maps";
-import { TourContext } from "~/contexts/tourContext";
-import type { TStop } from "~/types/TStop";
+import { useContext } from "react";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { TourContext } from "~/contexts/TourContext";
+import MapMarker from "./MapMarker";
+import { Link } from "react-router";
 
 const MobileTourMap = () => {
-  const { tour, stops } = useContext(TourContext);
-  const [currentStop, setCurrentStop] = useState<TStop | undefined>(undefined);
-
-  const handleMarkerClick = (stop: TStop) => {
-    setCurrentStop(stop);
-    console.log("Marker clicked:", stop.attributes.title);
-  };
+  const { tour, stops, setCurrentStop } = useContext(TourContext);
 
   if (!stops) {
     return (
@@ -28,10 +18,12 @@ const MobileTourMap = () => {
     );
   }
 
-  if (tour) {
+  if (tour && stops) {
+    // Sort so earlier stops are mapped on top of latter stops.
+    stops.sort((a, b) => b.attributes.position - a.attributes.position);
     return (
       <div className="w-screen h-[calc(100vh-132px)] my-16">
-        <APIProvider apiKey={"AIzaSyD-G_lDtvChv-P3nchtQYHoCLfFzn9ylr8"}>
+        <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
           <Map
             defaultBounds={{
               east: tour.attributes.bounds.east,
@@ -42,8 +34,9 @@ const MobileTourMap = () => {
             disableDefaultUI
             mapId={"bf51a910020fa25a"}
             className="w-full h-full"
+            onClick={() => setCurrentStop(undefined)}
           >
-            {stops?.map((stop, index) => {
+            {stops?.map((stop) => {
               const lat = parseFloat(stop.attributes.lat);
               const lng = parseFloat(stop.attributes.lng);
 
@@ -57,28 +50,17 @@ const MobileTourMap = () => {
               }
 
               return (
-                <AdvancedMarker
-                  key={`stop-${stop.id}-${tour.id}`}
-                  position={{ lat, lng }}
-                  title={stop.attributes.title}
-                  onClick={() => handleMarkerClick(stop)}
-                  zIndex={stop === currentStop ? stops.length + 1 : index}
-                >
-                  <Pin
-                    scale={stop === currentStop ? 1.3 : 1.1}
-                    background={stop === currentStop ? "#dc2626" : "#ef4444"}
-                    borderColor={stop === currentStop ? "#991b1b" : "#dc2626"}
-                    glyphColor="white"
-                  >
-                    <span
-                      className={`text-white font-bold ${
-                        stop === currentStop ? "text-lg" : "text-sm"
-                      }`}
+                <MapMarker stop={stop} key={`${stop.id}-${tour.id}`}>
+                  <>
+                    <h3 className="text-lg mb-2">{stop.attributes.title}</h3>
+                    <Link
+                      to={`/${tour?.attributes.slug}/${stop.attributes.slug}`}
+                      className="text-blue-500 visited:text-purple-800 underline"
                     >
-                      {stop.attributes.position}
-                    </span>
-                  </Pin>
-                </AdvancedMarker>
+                      Go To Stop
+                    </Link>
+                  </>
+                </MapMarker>
               );
             })}
           </Map>

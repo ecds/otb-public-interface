@@ -5,7 +5,7 @@ import {
   Map,
   Pin,
 } from "@vis.gl/react-google-maps";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 import type { TTour } from "~/types/TTour";
 import type { TStop } from "~/types/TStop";
 
@@ -22,7 +22,7 @@ const TourMap = ({ tour, stops }: Props) => {
   };
 
   return (
-    <APIProvider apiKey={"AIzaSyD-G_lDtvChv-P3nchtQYHoCLfFzn9ylr8"}>
+    <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
       <Map
         defaultBounds={{
           east: tour.attributes.bounds.east,

@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import TourMenu from "~/components/mobile/TourMenu";
-import { TourContext } from "~/contexts/tourContext";
+import { TourContext } from "~/contexts/TourContext";
 
 interface Props {
   tourTitle: string;
