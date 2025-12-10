@@ -10,8 +10,10 @@ import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
 
 const TravelModeSelector = () => {
-  const { modes } = useContext(TourContext);
+  const { tour } = useContext(TourContext);
   const { travelMode, setSelectedTravelMode } = useContext(StopMapContext);
+
+  if (!tour || !tour.modes) return <></>;
 
   return (
     <div className="m-6 p-2 bg-black/45 rounded-md text-white text-lg">
@@ -24,7 +26,7 @@ const TravelModeSelector = () => {
           transition
           className="bg-white text-black/75 tracking-wider drop-shadow-2xl p-2 pe-6 mt-3 ms-2"
         >
-          {modes.map((mode) => {
+          {tour.modes.map((mode) => {
             if (mode) {
               return (
                 <ListboxOption key={mode.title} value={mode}>

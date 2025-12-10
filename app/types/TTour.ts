@@ -1,190 +1,83 @@
 import type { TStop } from "./TStop";
-import type { TMedium } from "./TMedia";
-import type { TTourFlatPage } from "./TTourFlatPage";
+import type { TTravelMode } from "./TTravelMode";
 
-export type TTour = {
-  id: number;
-  type: "tours";
-  stops: TStop[];
-  flatPages: TTourFlatPage[];
-  media: TMedium[];
-  attributes: {
-    title: string;
-    slug: string;
-    description: string;
-    is_geo: boolean;
-    published: boolean;
-    sanitized_description: string;
-    position: number | null;
-    theme_title: string;
-    meta_description: string | null;
-    tenant: string;
-    tenant_title: string;
-    stop_count: number;
-    map_type: string;
-    splash: {
-      title: string;
-      caption: string | null;
-      url: string;
-    };
-    use_directions: true;
-    default_lng: string;
-    est_time: string;
-    link_address: string | null;
-    link_text: string | null;
-    restrict_bounds: false;
-    restrict_bounds_to_overlay: boolean;
-    blank_map: false;
-    bounds: {
-      south: number;
-      north: number;
-      east: number;
-      west: number;
-      centerLat: number;
-      centerLng: number;
-    };
-  };
-  relationships: {
-    map_overlay: {
-      data: string | null;
-    };
-    tour_modes: {
-      data: [
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        }
-      ];
-    };
-    tour_stops: {
-      data: [
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        }
-      ];
-    };
-    stops: {
-      data: [
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        }
-      ];
-    };
-    mode: {
-      data: {
-        id: string;
-        type: string;
-      };
-    };
-    theme: {
-      data: {
-        id: string;
-        type: string;
-      };
-    };
-    modes: {
-      data: [
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        },
-        {
-          id: string;
-          type: string;
-        }
-      ];
-    };
-    media: {
-      data: [
-        {
-          id: string;
-          type: string;
-        }
-      ];
-    };
-    tour_media: {
-      data: [
-        {
-          id: string;
-          type: string;
-        }
-      ];
-    };
-    flat_pages: {
-      data: [];
-    };
-    tour_flat_pages: {
-      data: [];
-    };
-    users: {
-      data: [];
-    };
-  };
+export type TTourFlatPage = {
+  title: string;
+  position: number;
+  slug: string;
+  body: string;
 };
 
-export type TPublishedTour = {
-  title: string;
-  slug: string;
-  center: {
-    lat: number;
-    lng: number;
+export type TTourMedium = {
+  caption: string;
+  desktop_width: number;
+  embed: string | undefined;
+  filename: string;
+  files: {
+    lqip: string;
+    mobile: string;
+    tablet: string;
+    desktop: string;
   };
+  lqip_width: number | undefined;
+  mobile_width: number;
+  original_image: string;
+  position: number;
+  provider: string | undefined;
+  tablet_width: undefined;
+  title: string;
+  video: string | undefined;
+};
+
+export type TTourStop = TStop & {
+  next: { id: number; slug: string; title: string } | undefined;
+  position: number;
+  previous: { id: number; slug: string; title: string } | undefined;
+};
+
+export type TTour = {
+  blank_map: boolean;
+  bounds: {
+    south: number;
+    north: number;
+    east: number;
+    west: number;
+    centerLat: number;
+    centerLng: number;
+  };
+  default_lng: string;
+  description: string;
+  est_time: string | undefined;
+  flat_pages: TTourFlatPage[];
+  is_geo: boolean;
+  link_address: string | undefined;
+  link_text: string | undefined;
+  map_overlay:
+    | {
+        east: string;
+        image_url: string;
+        north: string;
+        south: string;
+        west: string;
+      }
+    | undefined;
+  map_type: "satellite" | "road" | "hybrid";
+  media: TTourMedium[];
+  modes: TTravelMode[];
+  restrict_bounds: boolean;
+  restrict_bounds_to_overlay: boolean;
+  sanitized_description: string;
+  splash: {
+    title: string;
+    caption: string;
+    url: string;
+  };
+  slug: string;
+  stop_count: number;
+  stops: TTourStop[];
+  tenant: string;
+  title: string;
+  theme: string;
+  type: "tour";
+  use_directions: boolean;
 };

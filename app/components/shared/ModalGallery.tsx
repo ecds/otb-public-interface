@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { Carousel } from "nuka-carousel";
 import Medium from "./Medium";
-import ImagePlaceholder from "./ImagePlaceholder";
-import type { TMedium } from "~/types/TMedia";
+import type { TTourMedium } from "~/types/TTour";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,
   faCircleXmark,
-  faSpinner,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   CloseButton,
@@ -16,36 +14,37 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { useDeviceContext } from "~/hooks/deviceContext";
 import Embed from "./Embed";
 
 interface Props {
-  media?: TMedium[];
+  media?: TTourMedium[];
 }
 
 const Gallery = ({ media }: Props) => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [activeMedium, setActiveMedium] = useState<number>(0);
-  const { isDesktop } = useDeviceContext();
 
   const toggleModal = (clickedMedium: number) => {
     setActiveMedium(clickedMedium);
     setShowModal(!showModal);
   };
 
-  if (media) {
+  if (media && media.length > 0) {
     return (
-      <>
+      <div>
         <Carousel
-          className="mx-auto w-screen md:w-[50vw] md:flex-col-reverse"
-          showArrows={isDesktop}
-          showDots
+          className="mx-auto w-screen md:w-[50vw] md:flex-col-reverse mt-2 md:mt-4"
+          showArrows={media.length > 1}
+          showDots={media.length > 1}
           scrollDistance="slide"
           wrapMode="wrap"
         >
           {media.map((medium, index) => {
             return (
-              <div className={`min-w-screen md:min-w-[50vw]`} key={medium.id}>
+              <div
+                className={`min-w-screen md:min-w-[50vw]`}
+                key={medium.files.desktop}
+              >
                 <Medium medium={medium} index={index} onClick={toggleModal} />
               </div>
             );
@@ -63,8 +62,8 @@ const Gallery = ({ media }: Props) => {
             <div className="flex min-h-full items-center justify-center">
               <DialogPanel className="w-screen md:w-auto bg-white p-2 rounded-lg">
                 <Carousel
-                  showArrows={isDesktop}
-                  showDots
+                  showArrows={media.length > 1}
+                  showDots={media.length > 1}
                   initialPage={activeMedium}
                   scrollDistance="screen"
                   wrapMode="wrap"
@@ -74,7 +73,7 @@ const Gallery = ({ media }: Props) => {
                     return (
                       <figure
                         className="min-w-[calc(100vw-3rem)] md:min-w-[50vw]"
-                        key={medium.id}
+                        key={medium.files.desktop}
                       >
                         <div className="flex flex-row-reverse pb-2 items-start sticky top-0 z-10 bg-white w-full">
                           <CloseButton>
@@ -84,30 +83,28 @@ const Gallery = ({ media }: Props) => {
                             as="h3"
                             className="text-gray-800 text-sm md:text-lg px-4 text-left grow"
                           >
-                            {medium.attributes.title}
+                            {medium.title}
                           </DialogTitle>
                         </div>
                         <div className="flex flex-col relative items-start">
-                          {medium?.attributes.provider && (
-                            <Embed medium={medium} />
-                          )}
-                          {!medium?.attributes.provider && (
+                          {medium?.provider && <Embed medium={medium} />}
+                          {!medium?.provider && (
                             <img
                               className={`max-h-64 md:max-h-max m-auto`}
-                              srcSet={medium.attributes.files.desktop}
-                              alt={medium.attributes.caption ?? ""}
+                              srcSet={medium.files.desktop}
+                              alt={medium.caption ?? ""}
                             />
                           )}
                           <figcaption
                             className="text-xs md:text-base px-6 my-2"
                             dangerouslySetInnerHTML={{
-                              __html: medium.attributes.caption ?? "",
+                              __html: medium.caption ?? "",
                             }}
                           />
-                          {!medium?.attributes.provider && (
+                          {!medium?.provider && (
                             <a
                               className="ps-4 pt-2 text-xs text-blue-500 hover:text-blue-800 visited:text-purple-700 underline"
-                              href={medium.attributes.original_image_url}
+                              href={medium.original_image}
                               target="_blank"
                               rel="noreferrer"
                             >
@@ -126,22 +123,11 @@ const Gallery = ({ media }: Props) => {
             </div>
           </div>
         </Dialog>
-      </>
+      </div>
     );
   }
 
-  return (
-    <Carousel>
-      <div className="w-screen md:w-[50ww] h-64 m-auto flex justify-center items-center">
-        <ImagePlaceholder />
-        <FontAwesomeIcon
-          icon={faSpinner}
-          className="absolute text-8xl motion-safe:animate-spin opacity-65"
-          style={{ animationDuration: "4s" }}
-        />
-      </div>
-    </Carousel>
-  );
+  return <div className="h-16"></div>;
 };
 
 export default Gallery;

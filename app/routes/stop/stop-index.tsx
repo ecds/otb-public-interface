@@ -8,7 +8,7 @@ const StopIndex = () => {
 
   useEffect(() => {
     if (isMobile) navigate(`intro`);
-  }, [isMobile]);
+  }, [isMobile, navigate]);
 
   return <></>;
 };

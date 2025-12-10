@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeadphones, faPause } from "@fortawesome/free-solid-svg-icons";
 import { TourContext } from "~/contexts/TourContext";
+import { useDeviceContext } from "~/hooks/deviceContext";
 
 interface Props {
   text: string;
@@ -20,6 +21,7 @@ const TextToSpeechButton = ({ text }: Props) => {
   const [isSupported] = useState(
     () => typeof window !== "undefined" && "speechSynthesis" in window
   );
+  const { isDesktop } = useDeviceContext();
 
   useEffect(() => {
     if (!isSupported) {
@@ -28,7 +30,7 @@ const TextToSpeechButton = ({ text }: Props) => {
     }
 
     if (!text) {
-      console.error("No text available to read");
+      console.warn("No text available to read");
     }
 
     const _synth = window.speechSynthesis;
@@ -40,7 +42,7 @@ const TextToSpeechButton = ({ text }: Props) => {
     if (!synth) return;
 
     const _utterance = new SpeechSynthesisUtterance(text);
-    _utterance.lang = tour?.attributes.default_lng || navigator.language;
+    _utterance.lang = tour?.default_lng || navigator.language;
     const voice =
       synth.getVoices().find((voice) => voice.lang == _utterance.lang) ||
       synth.getVoices()[0];
@@ -100,15 +102,15 @@ const TextToSpeechButton = ({ text }: Props) => {
     }
   };
 
-  if (!isSupported) {
-    return <></>; // Don't render if not supported
+  if (!isSupported || isDesktop) {
+    return <></>;
   }
 
   return (
     <span className={"me-3 mt-4 float-left"}>
       <button
         onClick={handleTextToSpeech}
-        className={`inline text-gray-600 hover:text-gray-800 transition-colors duration-200 ${
+        className={`inline text-gray-600 hover:text-gray-800 transition-colors duration-200 cursor-pointer ${
           isReading ? "animate-pulse" : ""
         }`}
         title={isReading ? "Stop reading" : "Read text aloud"}

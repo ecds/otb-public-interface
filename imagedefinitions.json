@@ -1,6 +1,0 @@
-[
-  {
-    "name": "Container_OTBPublicUI",
-    "imageUri": "310867200447.dkr.ecr.us-east-1.amazonaws.com/otb_public_ui:latest"
-  }
-]

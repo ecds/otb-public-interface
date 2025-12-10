@@ -8,7 +8,6 @@
   This helps maintain consistent styling with v3
 */
 @layer base {
-
   *,
   ::after,
   ::before,
@@ -148,7 +147,6 @@
 
 /* Custom component styles */
 @layer components {
-
   /* Content area typography */
   .otb-content p,
   .otb-flat-page p {
@@ -164,12 +162,19 @@
   button.paging-item {
     padding: 2px;
   }
+
+  .nuka-nav-button.nuka-nav-button-prev {
+    left: 1rem !important;
+  }
+
+  .nuka-nav-button.nuka-nav-button-next {
+    right: 1rem !important;
+  }
 }
 
 /* Mobile-specific styles to add to existing index.css */
 
 @layer utilities {
-
   /* Line clamp utility for text truncation */
   .line-clamp-2 {
     overflow: hidden;

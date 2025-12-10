@@ -1,24 +1,21 @@
-import { Suspense, useContext, useEffect, useRef, useState } from "react";
+import { Suspense, useState } from "react";
 import { Await, useLoaderData, Outlet, redirect } from "react-router";
 import Navbar from "~/components/shared/Navbar";
 import StopList from "~/components/desktop/StopList";
-import TourMap from "~/components/desktop/TourMap.client";
-import { getTour, getTourStops } from "~/data";
+import TourMap from "~/components/shared/TourMap.client";
+import { getTour, isSignedIn } from "~/data";
 import FlatPage from "~/components/shared/FlatPage";
 import ClientOnly from "~/components/ClientOnly";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import { themes, travelModes } from "~/mappings";
 import MobileNav from "~/components/mobile/Nav";
-import TourSiteContext from "~/contexts/tourSiteContext";
 import { TourContext } from "~/contexts/TourContext";
 import MainContent from "~/components/shared/MainContent";
 import PermissionsModal from "~/components/mobile/PermissionsModal";
 import Permissions from "~/components/mobile/Permissions";
-import type { TStop } from "~/types/TStop";
+import type { ClientLoaderFunctionArgs } from "react-router";
+import type { TTourStop, TTourFlatPage } from "~/types/TTour";
 import type { LoaderProps } from "~/types/TLoaderContext";
-import type { TTourFlatPage } from "~/types/TTourFlatPage";
-import type { TTravelMode } from "~/types/TTravelMode";
 
 export const loader = async ({ context, params }: LoaderProps) => {
   const { tenant, request } = context;
@@ -26,76 +23,57 @@ export const loader = async ({ context, params }: LoaderProps) => {
   if (!tenant) {
     throw redirect(`${request.protocol}://${process.env.HOST}`);
   }
-  const { tour } = await getTour(tenant, params.tour);
+
+  const tourParam = params.tour;
   const stopParam = params.stop;
-  const themeId = tour.relationships.theme.data.id;
-  const theme = themes.find((t) => t.id === themeId)?.title || "default";
-  return { tour, theme, stopParam };
+
+  const { tour } = await getTour(tenant, params.tour);
+
+  return { tenant, tour, tourParam, stopParam };
 };
 
+export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
+  const serverData = await serverLoader<typeof loader>();
+
+  if (serverData.tour.stops) return serverData;
+
+  const signedIn = await isSignedIn();
+
+  if (signedIn) {
+    const { tour } = await getTour(serverData.tenant, serverData.tourParam);
+    return { ...serverData, tour };
+  }
+
+  throw new Response(null, { status: 404, statusText: "Not found" });
+}
+
+clientLoader.hydrate = true as const;
+
 export default function Tour() {
-  const { tour, theme, stopParam } = useLoaderData<typeof loader>();
-  const { tenant } = useContext(TourSiteContext);
+  const { tour } = useLoaderData<typeof loader>();
   const { isMobile, isDesktop } = useDeviceContext();
-  const [stops, setStops] = useState<TStop[] | undefined>(undefined);
   const [flatPages, setFlatPages] = useState<TTourFlatPage[] | undefined>(
     undefined
   );
   const [currentFlatPage, setCurrentFlatPage] = useState<
     TTourFlatPage | string | undefined
   >(undefined);
-  const [currentStop, setCurrentStop] = useState<TStop | undefined>(undefined);
-  const [showMenu, setShowMenu] = useState<boolean>(false);
-  const stopsRef = useRef<boolean>(false);
-  const modes = tour.relationships.modes.data.map((m) =>
-    travelModes.find((tm) => tm.id == m.id)
+  const [currentStop, setCurrentStop] = useState<TTourStop | undefined>(
+    undefined
   );
-  const defaultMode: TTravelMode =
-    modes.find((m) => m?.id == tour.relationships.mode.data.id) ||
-    travelModes[1];
-
-  useEffect(() => {
-    const fetchStops = async () => {
-      const tourStops = await getTourStops({ tenant, tour });
-      setStops(tourStops);
-      stopsRef.current = true;
-    };
-
-    if (tenant && tour && !stopsRef.current) fetchStops();
-  }, [tenant, tour]);
-
-  useEffect(() => {
-    if (stopParam && stops) {
-      setCurrentStop(stops.find((stop) => stop.attributes.slug == stopParam));
-    }
-
-    if (!stopParam) setCurrentStop(undefined);
-  }, [stops, stopParam, isDesktop]);
-
-  useEffect(() => {
-    if (currentStop && isDesktop) {
-      document
-        .getElementById(currentStop.attributes.slug)
-        ?.scrollIntoView({ behavior: "instant" });
-    }
-  }, [isDesktop, currentStop]);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
 
   return (
     <TourContext.Provider
       value={{
         currentFlatPage,
         currentStop,
-        defaultMode,
         flatPages,
-        modes,
         setCurrentFlatPage,
         setCurrentStop,
         setFlatPages,
         setShowMenu,
-        setStops,
         showMenu,
-        stops,
-        theme,
         tour,
       }}
     >
@@ -103,14 +81,15 @@ export default function Tour() {
         <Navbar />
         <Suspense fallback={<div>Loading tour...</div>}>
           <Await resolve={tour}>
-            {isDesktop && (
+            {isDesktop && tour.stops && (
               <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-4rem)] grid-flow-row auto-rows-max">
-                <StopList className="text-black/80 leading-6">
-                  <MainContent content={tour} />
-                </StopList>
+                <StopList
+                  className="text-black/80 leading-6"
+                  intro={<MainContent content={tour} />}
+                />
                 <div className="fixed right-0 w-1/2 h-full mt-16 pb-16">
                   <ClientOnly>
-                    <TourMap tour={tour} stops={stops} />
+                    <TourMap />
                   </ClientOnly>
                 </div>
                 <TourFlatPages />

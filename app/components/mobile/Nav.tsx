@@ -12,31 +12,21 @@ import { NavLink } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
 
 const MobileNav = () => {
-  const { theme, tour, currentStop } = useContext(TourContext);
+  const { tour, currentStop } = useContext(TourContext);
   const [isFirst, setIsFirst] = useState<boolean>(false);
   const [isLast, setIsLast] = useState<boolean>(false);
-  const [previousLink, setPreviousLink] = useState<string>("#");
-  const [nextLink, setNextLink] = useState<string>("#");
 
   useEffect(() => {
-    setIsFirst(!Boolean(currentStop?.attributes.previous));
-    setIsLast(!Boolean(currentStop?.attributes.next));
+    setIsFirst(!currentStop?.previous);
+    setIsLast(!currentStop?.next);
   }, [currentStop]);
 
-  useEffect(() => {
-    if (!isFirst)
-      setPreviousLink(
-        `/${tour?.attributes.slug}/${currentStop?.attributes.previous_slug}/intro`
-      );
-
-    if (!isLast)
-      setNextLink(
-        `/${tour?.attributes.slug}/${currentStop?.attributes.next_slug}/intro`
-      );
-  }, [isFirst, isLast, currentStop, tour]);
-
   const classNames = (isActive: boolean, disabled = false) => {
-    return `w-full text-center flex flex-col m-auto text-${theme}-accent-text aria-disabled:text-${theme}-accent-text/45 bg-${theme}-${
+    return `w-full text-center flex flex-col m-auto text-${
+      tour?.theme ?? "default"
+    }-accent-text aria-disabled:text-${
+      tour?.theme ?? "default"
+    }-accent-text/45 bg-${tour?.theme ?? "default"}-${
       isActive ? "accent" : "primary"
     } h-full py-1 ${disabled ? "pointer-events-none" : ""}`;
   };
@@ -44,10 +34,10 @@ const MobileNav = () => {
   if (tour && !currentStop) {
     return (
       <nav
-        className={`grid grid-rows-1 grid-cols-3 bg-${theme}-primary text-${theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
+        className={`grid grid-rows-1 grid-cols-3 bg-${tour.theme}-primary text-${tour.theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
       >
         <NavLink
-          to={`/${tour.attributes.slug}/intro`}
+          to={`/${tour.slug}/intro`}
           viewTransition
           className={({ isActive }) => classNames(isActive)}
         >
@@ -57,7 +47,7 @@ const MobileNav = () => {
           <div>info</div>
         </NavLink>
         <NavLink
-          to={`/${tour.attributes.slug}/map`}
+          to={`/${tour.slug}/map`}
           viewTransition
           className={({ isActive }) => classNames(isActive)}
         >
@@ -67,7 +57,7 @@ const MobileNav = () => {
           <div>map</div>
         </NavLink>
         <NavLink
-          to={`/${tour.attributes.slug}/stops`}
+          to={`/${tour.slug}/stops`}
           viewTransition
           className={({ isActive }) => classNames(isActive)}
         >
@@ -83,13 +73,13 @@ const MobileNav = () => {
   if (tour && currentStop) {
     return (
       <nav
-        className={`grid grid-rows-1 grid-cols-4 bg-${theme}-primary text-${theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
+        className={`grid grid-rows-1 grid-cols-4 bg-${tour.theme}-primary text-${tour.theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
       >
         <NavLink
-          to={`/${tour.attributes.slug}/${currentStop.attributes.previous_slug}/intro`}
+          to={`/${tour.slug}/${currentStop.previous?.slug}/intro`}
           viewTransition
           className={classNames(false, isFirst)}
-          aria-disabled={!Boolean(currentStop.attributes.previous_slug)}
+          aria-disabled={isFirst}
         >
           <div>
             <FontAwesomeIcon icon={faAngleLeft} />
@@ -97,7 +87,7 @@ const MobileNav = () => {
           <div>Prev</div>
         </NavLink>
         <NavLink
-          to={`/${tour.attributes.slug}/${currentStop.attributes.slug}/intro`}
+          to={`/${tour.slug}/${currentStop.slug}/intro`}
           viewTransition
           className={({ isActive }) => classNames(isActive)}
         >
@@ -107,7 +97,7 @@ const MobileNav = () => {
           <div>info</div>
         </NavLink>
         <NavLink
-          to={`/${tour.attributes.slug}/${currentStop.attributes.slug}/map`}
+          to={`/${tour.slug}/${currentStop.slug}/map`}
           viewTransition
           className={({ isActive }) => classNames(isActive)}
         >
@@ -117,7 +107,7 @@ const MobileNav = () => {
           <div>map</div>
         </NavLink>
         <NavLink
-          to={nextLink}
+          to={`/${tour.slug}/${currentStop.next?.slug}/intro`}
           viewTransition
           className={classNames(false, isLast)}
           aria-disabled={isLast}

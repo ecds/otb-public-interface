@@ -9,7 +9,7 @@ const DeviceLocationMarker = () => {
   const { deviceLocation } = useContext(StopMapContext);
   const { locationAllowed } = useContext(PermissionsContext);
 
-  if (deviceLocation && locationAllowed?.isSet) {
+  if (deviceLocation && locationAllowed) {
     return (
       <AdvancedMarker position={deviceLocation}>
         <FontAwesomeIcon

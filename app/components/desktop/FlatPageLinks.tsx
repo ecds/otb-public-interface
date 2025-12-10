@@ -6,7 +6,7 @@ import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
 
 const FlatPageLinks = () => {
-  const { flatPages, setCurrentFlatPage } = useContext(TourContext);
+  const { flatPages, setCurrentFlatPage, tour } = useContext(TourContext);
   const { isMobile } = useDeviceContext();
 
   if (flatPages) {
@@ -24,7 +24,7 @@ const FlatPageLinks = () => {
             >
               {flatPages.map((flatPage) => {
                 return (
-                  <MenuItem key={flatPage.id}>
+                  <MenuItem key={flatPage.slug}>
                     {({ close }) => (
                       <button
                         className="group flex w-full items-center gap-2 rounded-lg py-1.5 px-3 hover:underline cursor-pointer"
@@ -33,7 +33,7 @@ const FlatPageLinks = () => {
                           close();
                         }}
                       >
-                        {flatPage.attributes.title}
+                        {flatPage.title}
                       </button>
                     )}
                   </MenuItem>
@@ -62,16 +62,18 @@ const FlatPageLinks = () => {
       <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
         {flatPages?.map((flatPage) => {
           return (
-            <li key={flatPage.id}>
+            <li key={flatPage.slug}>
               <button
                 tabIndex={0}
-                className="text-gray-400 cursor-pointer hover:underline"
+                className={`text-${
+                  tour?.theme ?? "default"
+                }-secondary md:text-gray-200 cursor-pointer hover:underline`}
                 onClick={() => setCurrentFlatPage(flatPage)}
                 onKeyDown={({ key }: { key: string }) => {
                   if (key === "Enter") setCurrentFlatPage(flatPage);
                 }}
               >
-                {flatPage.attributes.title}
+                {flatPage.title}
               </button>
             </li>
           );
@@ -79,7 +81,9 @@ const FlatPageLinks = () => {
         <li>
           <button
             tabIndex={0}
-            className="text-gray-400 cursor-pointer hover:underline"
+            className={`text-${
+              tour?.theme ?? "default"
+            }-secondary md:text-gray-200 cursor-pointer hover:underline`}
             onClick={() => setCurrentFlatPage("about")}
             onKeyDown={({ key }: { key: string }) => {
               if (key === "Enter") setCurrentFlatPage("about");

@@ -13,7 +13,7 @@ import { TourContext } from "~/contexts/TourContext";
 const Directions = () => {
   const { locationAllowed } = useContext(PermissionsContext);
   const [showPanel, setShowPanel] = useState<boolean>(false);
-  const { tour, currentStop, theme } = useContext(TourContext);
+  const { tour, currentStop } = useContext(TourContext);
   const { deviceLocation, stopLocation, parkingLocation, travelMode } =
     useContext(StopMapContext);
   const directionsContainerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +36,14 @@ const Directions = () => {
   >(undefined);
 
   useEffect(() => {
-    if (!map || !routesLib || !deviceLocation || !stopLocation) return;
+    if (
+      !map ||
+      !routesLib ||
+      !deviceLocation ||
+      !stopLocation ||
+      !tour?.use_directions
+    )
+      return;
 
     directionsServiceRef.current = undefined;
     destinationRenderRef.current = undefined;
@@ -91,7 +98,7 @@ const Directions = () => {
         const bounds = destinationDirections.routes[0].bounds.union(
           parkingDirections.routes[0].bounds
         );
-        map.fitBounds(bounds);
+        map.fitBounds(bounds, 32);
       } else {
         const destinationDirections = await directionsServiceRef.current.route({
           destination: stopLocation,
@@ -109,6 +116,7 @@ const Directions = () => {
       destinationRenderRef.current?.setMap(null);
       parkingRenderRef.current?.setPanel(null);
       destinationRenderRef.current?.setPanel(null);
+      setShowPanel(false);
     };
   }, [
     map,
@@ -140,12 +148,7 @@ const Directions = () => {
     destinationRenderRef.current?.setPanel(directionsContainerRef.current);
   }, [deviceLocation, travelMode]);
 
-  if (
-    !locationAllowed?.isSet &&
-    !currentStop?.attributes.direction_intro &&
-    !currentStop?.attributes.direction_notes
-  )
-    return <></>;
+  if (!locationAllowed || !tour?.use_directions) return <></>;
 
   return (
     <>
@@ -163,15 +166,14 @@ const Directions = () => {
         <div className="text-right m-2 text-lg"></div>
         <TabGroup className="p-2 sticky">
           <TabList className="flex mb-2 text-lg space-x-4">
-            {(currentStop?.attributes.direction_intro ||
-              currentStop?.attributes.direction_notes) && (
+            {(currentStop?.direction_intro || currentStop?.direction_notes) && (
               <Tab as={Fragment}>
                 {({ selected }) => (
                   <span
                     className={`py-1 px-2 rounded-lg border block drop-shadow-xl ${
                       selected
-                        ? `text-${theme}-accent-text underline bg-${theme}-accent`
-                        : `text-${theme}-secondary bg-${theme}-primary`
+                        ? `text-${tour.theme}-accent-text underline bg-${tour.theme}-accent`
+                        : `text-${tour.theme}-secondary bg-${tour.theme}-primary`
                     }`}
                   >
                     Notes
@@ -179,14 +181,14 @@ const Directions = () => {
                 )}
               </Tab>
             )}
-            {locationAllowed?.isSet && (
+            {locationAllowed && (
               <Tab>
                 {({ selected }) => (
                   <span
                     className={`py-1 px-2 rounded-lg border drop-shadow-xl ${
                       selected
-                        ? `text-${theme}-accent-text underline bg-${theme}-accent`
-                        : `text-${theme}-secondary bg-${theme}-primary`
+                        ? `text-${tour.theme}-accent-text underline bg-${tour.theme}-accent`
+                        : `text-${tour.theme}-secondary bg-${tour.theme}-primary`
                     }`}
                   >
                     Turn by Turn
@@ -202,24 +204,23 @@ const Directions = () => {
             </button>
           </TabList>
           <TabPanels className="relative">
-            {(currentStop?.attributes.direction_intro ||
-              currentStop?.attributes.direction_notes) && (
+            {(currentStop?.direction_intro || currentStop?.direction_notes) && (
               <TabPanel className="text-base pt-2 overflow-y-scroll h-[calc(100vh-12rem)]">
                 <div
                   className="text-gray-700 leading-relaxed mb-8"
                   dangerouslySetInnerHTML={{
-                    __html: currentStop.attributes.direction_intro ?? "",
+                    __html: currentStop.direction_intro ?? "",
                   }}
                 />
                 <div
                   className="text-gray-700 leading-relaxed mb-8"
                   dangerouslySetInnerHTML={{
-                    __html: currentStop.attributes.direction_notes ?? "",
+                    __html: currentStop.direction_notes ?? "",
                   }}
                 />
               </TabPanel>
             )}
-            {locationAllowed?.isSet && (
+            {locationAllowed && (
               <TabPanel unmount={false}>
                 <div className="overflow-y-scroll h-[calc(100vh-12rem)]">
                   {parkingLocation && (
@@ -233,7 +234,7 @@ const Directions = () => {
                       Walking Directions from Parking
                     </h3>
                   )}
-                  <div ref={directionsContainerRef}></div>
+                  <div className="text-base" ref={directionsContainerRef}></div>
                 </div>
               </TabPanel>
             )}

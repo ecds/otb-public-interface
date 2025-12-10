@@ -29,7 +29,6 @@ export const meta: MetaFunction = () => {
 
 export const loader = async ({ context }: LoaderProps) => {
   const { tenant, request } = context;
-  console.log("🚀 ~ loader ~ tenant:", tenant);
   if (tenant && tenant !== "otb") {
     const tourSet = await getTourSet(tenant);
     return { tourSet, request };
@@ -45,7 +44,7 @@ export default function App() {
     <TourSiteContext.Provider
       value={{
         currentSite: tourSet,
-        tenant: tourSet?.attributes.subdir,
+        tenant: tourSet?.subdir,
       }}
     >
       <html lang="en">

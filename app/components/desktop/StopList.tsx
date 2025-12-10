@@ -1,18 +1,16 @@
 import scrollama from "scrollama";
 import { useRef, useContext, useEffect } from "react";
 import { useResizeObserver } from "~/hooks/deviceContext";
-import TourSiteContext from "~/contexts/tourSiteContext";
-import { getTourStops } from "~/data";
 import { TourContext } from "~/contexts/TourContext";
 import MainContent from "../shared/MainContent";
 import { ScrollamaContext } from "~/contexts/scrollamaContext";
+import Gallery from "../shared/ModalGallery";
 import type { ScrollamaInstance } from "scrollama";
 import type { ReactNode } from "react";
-import Gallery from "../shared/Gallery";
 
 interface Props {
   className: string;
-  children: ReactNode;
+  intro: ReactNode;
 }
 
 const randomWidthStyle = () => {
@@ -21,34 +19,18 @@ const randomWidthStyle = () => {
   };
 };
 
-const StopList = ({ className, children }: Props) => {
-  const { tour, stops, setStops, currentStop, setCurrentStop } =
-    useContext(TourContext);
-  const { tenant } = useContext(TourSiteContext);
+const StopList = ({ className, intro }: Props) => {
+  const { tour, currentStop, setCurrentStop } = useContext(TourContext);
   const scrollerRef = useRef<ScrollamaInstance | undefined>(undefined);
   const scrollerContainerRef = useRef<HTMLDivElement>(null);
   const { documentSize, mainContentSize } = useResizeObserver();
 
   useEffect(() => {
-    const fetchTourStops = async () => {
-      if (!tenant || !tour) return;
-      const items = await getTourStops({ tenant, tour });
-      setStops(items);
-    };
-
-    fetchTourStops();
-  }, [tour, tenant, setStops]);
-
-  useEffect(() => {
-    history.replaceState(
-      {},
-      "",
-      `/${tour?.attributes.slug}/${currentStop?.attributes.slug ?? ""}`
-    );
+    history.replaceState({}, "", `/${tour?.slug}/${currentStop?.slug ?? ""}`);
   }, [currentStop, tour]);
 
   useEffect(() => {
-    if (!stops) return;
+    if (!tour || !tour.stops) return;
 
     scrollerRef.current = scrollama();
     scrollerRef.current
@@ -56,7 +38,7 @@ const StopList = ({ className, children }: Props) => {
         step: ".stop",
       })
       .onStepEnter(({ index }) => {
-        setCurrentStop(stops.find((stop) => stop.attributes.position == index));
+        setCurrentStop(tour.stops.find((stop) => stop.position == index));
       });
 
     const scrollerRefCopy = scrollerRef.current;
@@ -65,7 +47,7 @@ const StopList = ({ className, children }: Props) => {
       scrollerRefCopy?.destroy();
       scrollerRef.current = undefined;
     };
-  }, [stops, setCurrentStop]);
+  }, [tour, setCurrentStop]);
 
   useEffect(() => {
     scrollerRef.current?.resize();
@@ -75,17 +57,20 @@ const StopList = ({ className, children }: Props) => {
     scrollerRef.current?.resize();
   };
 
-  if (stops) {
+  if (!tour || !tour.stops) return <></>;
+
+  if (tour && tour.stops) {
     return (
       <ScrollamaContext.Provider value={{ resize }}>
         <div
           ref={scrollerContainerRef}
           className={`otb-desktop-content ${className}`}
         >
-          {children}
-          {stops.map((stop) => {
-            return <MainContent key={stop.id} content={stop} />;
-          })}
+          {intro}
+          {tour &&
+            tour.stops.map((stop) => {
+              return <MainContent key={stop.slug} content={stop} />;
+            })}
           <div className="h-12"></div>
         </div>
       </ScrollamaContext.Provider>
@@ -93,40 +78,29 @@ const StopList = ({ className, children }: Props) => {
   }
 
   return (
-    <div className="px-6">
-      {children}
-      {tour?.relationships.stops.data.map((stop) => {
+    <div className="">
+      {intro}
+      {tour?.stops.map((stop) => {
         return (
           <div
-            key={stop.id}
+            key={stop.slug}
             role="status"
             className="flex flex-col space-y-8 animate-pulse md:space-y-0 md:space-x-8 rtl:space-x-reverse mt-16"
           >
-            <div className="my-4 -px-6">
+            <div className="my-4">
               <Gallery />
             </div>
-            <div className="my-8">
+            <div className="m-8">
               <div className="h-2 bg-gray-200 rounded-full mb-4 w-[65%]"></div>
-              <div
-                className="h-1.5 bg-gray-200 rounded-full mb-2.5"
-                style={randomWidthStyle()}
-              ></div>
-              <div
-                className="h-1.5 bg-gray-200 rounded-full mb-2.5"
-                style={randomWidthStyle()}
-              ></div>
-              <div
-                className="h-1.5 bg-gray-200 rounded-full mb-2.5"
-                style={randomWidthStyle()}
-              ></div>
-              <div
-                className="h-1.5 bg-gray-200 rounded-full mb-2.5"
-                style={randomWidthStyle()}
-              ></div>
-              <div
-                className="h-1.5 bg-gray-200 rounded-full"
-                style={randomWidthStyle()}
-              ></div>
+              {[1, 2, 3, 4, 5].map((line) => {
+                return (
+                  <div
+                    key={line}
+                    className="h-1.5 bg-gray-200 rounded-full mb-2.5"
+                    style={randomWidthStyle()}
+                  ></div>
+                );
+              })}
             </div>
             <span className="sr-only">Loading...</span>
           </div>

@@ -23,9 +23,7 @@ const StopMarker = () => {
           onClick={() => setInfoWindowShown(true)}
         >
           <Pin scale={1}>
-            <span className="text-white text-lg">
-              {currentStop.attributes.position}
-            </span>
+            <span className="text-white text-lg">{currentStop.position}</span>
           </Pin>
         </AdvancedMarker>
         {infoWindowShown && (
@@ -33,7 +31,7 @@ const StopMarker = () => {
             anchor={marker}
             onCloseClick={() => setInfoWindowShown(false)}
           >
-            <h2>{currentStop.attributes.title}</h2>
+            <h2>{currentStop.title}</h2>
           </InfoWindow>
         )}
       </>

@@ -28,7 +28,7 @@ export default defineConfig(({ mode }): UserConfig => {
     server: {
       port: parseInt(env.PORT) ?? 3000,
       host: "lvh.me",
-      allowedHosts: [".lvh.me"],
+      allowedHosts: [".lvh.me", ".opentour.site", ".dev.opentour.site"],
       ...httpsOptions,
     },
     plugins: [reactRouter(), tsconfigPaths(), tailwindcss()],

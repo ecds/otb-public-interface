@@ -32,28 +32,26 @@ export default function Index() {
     <div>
       <ClientOnly>
         <AllToursMap
-          tours={tourSets
-            .map((ts: TTourSet) => ts.attributes.mapable_tours)
-            .flat()}
+          tours={tourSets.map((ts: TTourSet) => ts.mapable_tours).flat()}
         />
       </ClientOnly>
       <div className="m-8">
-        <h1 className="text-2xl">Sites</h1>
-        <ul>
+        <ul className="grid grid-cols-1 w-full md:px-16">
           {tourSets?.map((ts: TTourSet) => {
             return (
-              <li key={ts.id} className="text-xl">
+              <li key={ts.id} className="grid mb-8">
                 <a
-                  href={`${request.protocol}://${ts.attributes.subdir}.${request.host}`}
+                  className="bg-gray-300 text-xl px-2 py-1"
+                  href={`${request.protocol}://${ts.subdir}.${request.host}`}
                 >
-                  {ts.attributes.name}
+                  {ts.name}
                 </a>
                 <ul className="list-disc">
-                  {ts.attributes.mapable_tours.map((tour) => {
+                  {ts.mapable_tours.map((tour) => {
                     return (
                       <li key={tour.slug} className="ml-8 text-small">
                         <a
-                          href={`${request.protocol}://${ts.attributes.subdir}.${request.host}/${tour.slug}`}
+                          href={`${request.protocol}://${ts.subdir}.${request.host}/${tour.slug}`}
                         >
                           {tour.title}
                         </a>

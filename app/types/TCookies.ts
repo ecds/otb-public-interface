@@ -7,7 +7,7 @@ export type TCookieName =
   | "update-location"
   | "transportation-mode";
 
-export type TCookieValue = "allowed" | "acknowledged" | TTravelModeTitle;
+export type TCookieValue = TTravelModeTitle | "allowed" | "acknowledged";
 
 export type TCookie = {
   name: TCookieName;

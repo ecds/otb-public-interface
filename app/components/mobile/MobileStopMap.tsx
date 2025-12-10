@@ -10,7 +10,8 @@ const MobileStopMap = ({ children }: { children: ReactNode }) => {
 
   if (!stopLocation) {
     return (
-      <div className="h-[calc(100vh-4rem)] flex items-center justify-center m-auto bg-gray-100 mt-16">
+      // The top and bottom navbars have height of 64px, hence the 100vh - 128px.
+      <div className="h-[calc(100vh-128px)] flex items-center justify-center m-auto bg-gray-100 mt-16">
         <div className="text-center">
           <FontAwesomeIcon icon={faSpinner} spin />
           <p className="text-gray-600">Loading map...</p>
@@ -20,7 +21,8 @@ const MobileStopMap = ({ children }: { children: ReactNode }) => {
   }
 
   return (
-    <div className="w-screen h-[calc(100vh-132px)] my-16">
+    // The top and bottom navbars have height of 64px, hence the 100vh - 128px.
+    <div className="w-screen h-[calc(100vh-128px)] mt-16">
       <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <Map
           defaultCenter={stopLocation}
@@ -30,23 +32,6 @@ const MobileStopMap = ({ children }: { children: ReactNode }) => {
           className="w-full h-full"
         >
           {children}
-          {/* {!locationAllowed?.isSet && (
-              <AdvancedMarker
-                key={`stop-${currentStop.id}-${tour?.id}`}
-                position={stopLocation}
-                title={currentStop.attributes.title}
-                zIndex={1}
-              >
-                <Pin
-                  scale={1.1}
-                  background={"#ef4444"}
-                  borderColor={"#dc2626"}
-                  glyphColor="white"
-                ></Pin>
-              </AdvancedMarker>
-            )}
-            <Directions destination={stopLocation} parking={parkingLocation} />
-            <DeviceLocationMarker /> */}
         </Map>
       </APIProvider>
     </div>

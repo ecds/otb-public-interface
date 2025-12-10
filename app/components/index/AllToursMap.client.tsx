@@ -1,35 +1,24 @@
-import { useState, useEffect } from "react";
-import {
-  APIProvider,
-  ControlPosition,
-  Map,
-  MapControl,
-} from "@vis.gl/react-google-maps";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import MapMarker from "../MapMarker";
-import type { TPublishedTour } from "~/types/TTour";
+import type { TTourSetTour } from "~/types/TTourSet";
 
 interface Props {
-  tours: TPublishedTour[];
+  tours: TTourSetTour[];
 }
 
 const AllToursMap = ({ tours }: Props) => {
   const position = { lat: 32.6620411, lng: -83.4375901 };
-  const [expandMap, setExpandMap] = useState(false);
-  const [zoom, setZoom] = useState(6);
-
-  useEffect(() => {
-    if (!expandMap) setZoom(6);
-  }, [expandMap]);
 
   return (
-    <div className="w-screen h-[50vh]">
+    <div className="w-full max-w-screen h-[50vh]">
       <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
         <Map
           defaultCenter={position}
-          zoom={expandMap ? 2 : zoom}
+          defaultZoom={6}
           disableDefaultUI
           mapId={"bf51a910020fa25a"}
-          onZoomChanged={({ detail }) => setZoom(detail.zoom)}
+          fullscreenControl
+          // fullscreenControlOptions={{ position: ControlPosition.TOP_LEFT }}
         >
           {tours.map((tour) => {
             return (
@@ -42,9 +31,6 @@ const AllToursMap = ({ tours }: Props) => {
               </MapMarker>
             );
           })}
-          <MapControl position={ControlPosition.BOTTOM_RIGHT}>
-            <button onClick={() => setExpandMap(!expandMap)}>Expand</button>
-          </MapControl>
         </Map>
       </APIProvider>
     </div>

@@ -9,7 +9,7 @@ export default function TourIndex() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (isMobile) navigate(`/${tour?.attributes.slug}/intro`);
+    if (isMobile) navigate(`/${tour?.slug}/intro`);
   }, [isMobile, tour, navigate]);
 
   return (

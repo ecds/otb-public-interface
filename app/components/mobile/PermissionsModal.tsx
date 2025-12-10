@@ -11,7 +11,7 @@ import { useDeviceContext } from "~/hooks/deviceContext";
 
 const PermissionsModal = () => {
   const [show, setShow] = useState<boolean>(true);
-  const { setShowMenu } = useContext(TourContext);
+  const { setShowMenu, tour } = useContext(TourContext);
   const {
     cookiesAcknowledged,
     setCookiesAcknowledged,
@@ -20,10 +20,6 @@ const PermissionsModal = () => {
   const { isMobile } = useDeviceContext();
 
   useEffect(() => {
-    console.log(
-      "🚀 ~ PermissionsModal ~ cookiesAcknowledged:",
-      cookiesAcknowledged
-    );
     if (isMobile && cookiesAcknowledged) setShow(!cookiesAcknowledged);
   }, [isMobile, cookiesAcknowledged]);
 
@@ -58,13 +54,22 @@ const PermissionsModal = () => {
             </p>
             <div className="flex flex-col space-y-3">
               <button className="">Cookie Settings</button>
-              <button className="" onClick={handleAcceptAll}>
+              <button
+                className={`bg-${tour?.theme}-accent text-${tour?.theme}-accent-text py-1 rounded-md drop-shadow-lg`}
+                onClick={handleAcceptAll}
+              >
                 Accept All
               </button>
-              <button className="" onClick={handleSettings}>
+              <button
+                className={`bg-${tour?.theme}-accent text-${tour?.theme}-accent-text py-1 rounded-md drop-shadow-lg`}
+                onClick={handleSettings}
+              >
                 Settings
               </button>
-              <button className="" onClick={handleReject}>
+              <button
+                className={`bg-${tour?.theme}-primary text-${tour?.theme}-accent-text py-1 rounded-md drop-shadow-lg`}
+                onClick={handleReject}
+              >
                 Reject All
               </button>
             </div>

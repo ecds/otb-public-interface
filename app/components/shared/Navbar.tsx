@@ -8,31 +8,33 @@ import type { ReactNode } from "react";
 import StopMenu from "../desktop/StopMenu";
 
 const Navbar = ({ children }: { children?: ReactNode }) => {
-  const { tour, theme } = useContext(TourContext);
+  const { tour } = useContext(TourContext);
   const { currentSite } = useContext(TourSiteContext);
 
   return (
-    <nav className={`bg-${theme}-primary h-16 fixed top-0 w-screen z-50`}>
+    <nav
+      className={`bg-${
+        tour?.theme ?? "default"
+      }-primary md:bg-default-primary h-16 fixed top-0 w-screen z-50`}
+    >
       <>
-        {/* <div className="mx-auto px-2 sm:px-6">
-          <div className="relative flex h-16 items-center justify-between"> */}
-        <div className="flex items-center justify-between mx-auto p-4">
+        <div className="h-full flex items-center justify-between mx-auto px-4">
           {/* Desktop */}
-          <div className="flex flex-shrink-0 items-center">
+          <div className="flex flex-shrink-0 items-center w-screen md:w-auto">
             <Link className="hidden md:block" to="/">
               <img
-                className="h-12 w-auto"
-                src="/images/otblogo.png"
-                alt="OpenTourBuilder"
+                className="h-16 w-auto p-2"
+                src={currentSite?.logo_url ?? "/images/otblogo.png"}
+                alt=""
               />
             </Link>
             {tour && (
               <>
                 {/* Mobile */}
                 <TourMenu />
-                <h1 className="block md:hidden text-white text-sm">
-                  <Link to={`/${tour.attributes.slug}`}>
-                    {tour.attributes.title}
+                <h1 className="block md:hidden text-white text-sm m-auto text-wrap text-left grow">
+                  <Link className="text-wrap" to={`/${tour.slug}`}>
+                    {tour.title}
                   </Link>
                 </h1>
                 {/* Desktop */}
@@ -45,7 +47,7 @@ const Navbar = ({ children }: { children?: ReactNode }) => {
           </div>
           {!tour && (
             <h1 className="ml-2 md:ml-6 sm:block text-white text-lg font-medium">
-              {currentSite?.attributes.name}
+              {currentSite?.name}
             </h1>
           )}
         </div>

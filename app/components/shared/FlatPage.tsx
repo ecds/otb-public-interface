@@ -17,11 +17,11 @@ const RenderFlatPage = ({ flatPage }: Props) => {
 
   return (
     <>
-      <h3 className="text-2xl">{flatPage.attributes.title}</h3>
+      <h3 className="text-2xl">{flatPage.title}</h3>
       <div
         className="text-white"
         dangerouslySetInnerHTML={{
-          __html: flatPage.attributes.body,
+          __html: flatPage.body,
         }}
       />
     </>

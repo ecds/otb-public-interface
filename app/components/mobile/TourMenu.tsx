@@ -24,7 +24,7 @@ const TourMenu = () => {
   return (
     <>
       <button
-        className="text-lg text-white p-2 hover:bg-gray-700 rounded"
+        className="text-2xl text-white me-4 hover:bg-gray-700 rounded"
         onClick={handleMenuClick}
         type="button"
       >
@@ -72,12 +72,12 @@ const TourMenu = () => {
             {flatPages && flatPages.length > 0 && (
               <>
                 {flatPages.map((flatPage) => (
-                  <li key={flatPage.id}>
+                  <li key={flatPage.slug}>
                     <button
                       className="block w-full text-left text-gray-300 hover:text-white rounded hover:bg-gray-700"
                       onClick={() => setCurrentFlatPage(flatPage)}
                     >
-                      {flatPage.attributes.title}
+                      {flatPage.title}
                     </button>
                   </li>
                 ))}
