@@ -8,7 +8,7 @@ import { useDeviceContext } from "~/hooks/deviceContext";
 
 const TourMenu = () => {
   const { isDesktop } = useDeviceContext();
-  const { flatPages, setCurrentFlatPage, showMenu, setShowMenu } =
+  const { tour, setCurrentFlatPage, showMenu, setShowMenu } =
     useContext(TourContext);
 
   const handleLinkClick = () => {
@@ -69,9 +69,9 @@ const TourMenu = () => {
               </button>
             </li>
 
-            {flatPages && flatPages.length > 0 && (
+            {tour && tour.flat_pages && tour.flat_pages.length > 0 && (
               <>
-                {flatPages.map((flatPage) => (
+                {tour.flat_pages.map((flatPage) => (
                   <li key={flatPage.slug}>
                     <button
                       className="block w-full text-left text-gray-300 hover:text-white rounded hover:bg-gray-700"

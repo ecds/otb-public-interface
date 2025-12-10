@@ -4,12 +4,12 @@ import FlatPage from "../shared/FlatPage";
 import type { TTourFlatPage } from "~/types/TTourFlatPage";
 
 const TourFlatPages = () => {
-  const { flatPages } = useContext(TourContext);
+  const { tour } = useContext(TourContext);
 
-  if (flatPages) {
+  if (tour && tour.flat_pages) {
     return (
       <>
-        {flatPages.map((flatPage: TTourFlatPage) => {
+        {tour.flat_pages.map((flatPage: TTourFlatPage) => {
           return <FlatPage key={flatPage.slug} flatPage={flatPage} />;
         })}
       </>

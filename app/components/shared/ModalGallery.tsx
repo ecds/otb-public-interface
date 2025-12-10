@@ -95,12 +95,9 @@ const Gallery = ({ media }: Props) => {
                               alt={medium.caption ?? ""}
                             />
                           )}
-                          <figcaption
-                            className="text-xs md:text-base px-6 my-2"
-                            dangerouslySetInnerHTML={{
-                              __html: medium.caption ?? "",
-                            }}
-                          />
+                          <figcaption className="text-xs md:text-base px-6 my-2">
+                            {medium.caption}
+                          </figcaption>
                           {!medium?.provider && (
                             <a
                               className="ps-4 pt-2 text-xs text-blue-500 hover:text-blue-800 visited:text-purple-700 underline"
@@ -127,7 +124,7 @@ const Gallery = ({ media }: Props) => {
     );
   }
 
-  return <div className="h-16"></div>;
+  return <div className="h-auto md:h-16"></div>;
 };
 
 export default Gallery;

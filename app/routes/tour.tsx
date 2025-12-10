@@ -52,9 +52,6 @@ clientLoader.hydrate = true as const;
 export default function Tour() {
   const { tour } = useLoaderData<typeof loader>();
   const { isMobile, isDesktop } = useDeviceContext();
-  const [flatPages, setFlatPages] = useState<TTourFlatPage[] | undefined>(
-    undefined
-  );
   const [currentFlatPage, setCurrentFlatPage] = useState<
     TTourFlatPage | string | undefined
   >(undefined);
@@ -68,10 +65,8 @@ export default function Tour() {
       value={{
         currentFlatPage,
         currentStop,
-        flatPages,
         setCurrentFlatPage,
         setCurrentStop,
-        setFlatPages,
         setShowMenu,
         showMenu,
         tour,
