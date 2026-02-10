@@ -13,12 +13,12 @@ const MapOverlay = () => {
 
     const worldBounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(-85, -180),
-      new google.maps.LatLng(85, 180)
+      new google.maps.LatLng(85, 180),
     );
 
     const mask = new google.maps.GroundOverlay(
       "/images/blank.jpg",
-      worldBounds
+      worldBounds,
     );
     if (tour.blank_map) {
       mask.setMap(map);
@@ -27,17 +27,17 @@ const MapOverlay = () => {
     const bounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(
         parseFloat(tour.map_overlay.south),
-        parseFloat(tour.map_overlay.west)
+        parseFloat(tour.map_overlay.west),
       ),
       new google.maps.LatLng(
         parseFloat(tour.map_overlay.north),
-        parseFloat(tour.map_overlay.east)
-      )
+        parseFloat(tour.map_overlay.east),
+      ),
     );
 
     const overlay = new google.maps.GroundOverlay(
       tour.map_overlay.image_url,
-      bounds
+      bounds,
     );
 
     overlay.setMap(map);

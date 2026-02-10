@@ -51,12 +51,13 @@ clientLoader.hydrate = true as const;
 
 export default function Tour() {
   const { tour } = useLoaderData<typeof loader>();
+  console.log("🚀 ~ Tour ~ tour:", tour);
   const { isMobile, isDesktop } = useDeviceContext();
   const [currentFlatPage, setCurrentFlatPage] = useState<
     TTourFlatPage | string | undefined
   >(undefined);
   const [currentStop, setCurrentStop] = useState<TTourStop | undefined>(
-    undefined
+    undefined,
   );
   const [showMenu, setShowMenu] = useState<boolean>(false);
 

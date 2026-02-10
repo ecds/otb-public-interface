@@ -13,46 +13,46 @@ const fetchData = async (url: string) => {
   return data;
 };
 
-export const getStop = async (tenant: string, stop: number) => {
-  const response = await fetchData(
-    `https://api.opentour.site/${tenant}/v4/stops/${stop}`
-  );
-  return response.data;
-};
+// export const getStop = async (tenant: string, stop: number) => {
+//   const response = await fetchData(
+//     `https://api.opentour.site/${tenant}/v4/public/stops/${stop}`
+//   );
+//   return response.data;
+// };
 
 export const getTourSets = async () => {
   const response = await fetchData(
-    "https://api.opentour.site/public/v4/tour-sets"
+    "https://api.opentour.site/public/v4/public/tour-sets",
   );
-  return response.data;
+  return await response;
 };
 
 export const getTourSet = async (tenant: string) => {
   const response = await fetchData(
-    `https://api.opentour.site/public/tour-sets?subdir=${tenant}`
+    `https://api.opentour.site/public/tour-sets?subdir=${tenant}`,
   );
   return response.data[0];
 };
 
 export const getTours = async (tenant: string) => {
   const response = await fetchData(
-    `https://api.opentour.site/${tenant}/v4/tours`
+    `https://api.opentour.site/${tenant}/v4/public/tours`,
   );
-  return response.data;
+  return response;
 };
 
 export const isSignedIn = async () => {
   const response = await fetchData(
-    "https://api.opentour.site/public/users?me=true"
+    "https://api.opentour.site/public/users?me=true",
   );
   return Boolean(response.data.id);
 };
 
 export const getTour = async (tenant: string, tour: number | string) => {
   const response = await fetchData(
-    `https://api.opentour.site/${tenant}/v4/tours?slug=${tour}`
+    `https://api.opentour.site/${tenant}/v4/public/tours/${tour}`,
   );
-  const tourData: TTour = response.data;
+  const tourData: TTour = response;
   return { tour: tourData };
 };
 
@@ -66,7 +66,7 @@ export const getRelatedData = async ({
   relationship: string;
 }) => {
   const response = await fetchData(
-    `https://api.opentour.site/${tenant}/v4/${relationship}/${id}`
+    `https://api.opentour.site/${tenant}/v4/public/${relationship}/${id}`,
   );
   return response;
 };

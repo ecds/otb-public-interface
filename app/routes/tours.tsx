@@ -75,12 +75,12 @@ const Tours = () => {
             <Link className="hidden md:block" to="/">
               <img
                 className="h-16 w-auto p-2"
-                src={currentSite?.attributes.logo_url ?? "/images/otblogo.png"}
+                src={currentSite?.logo_url ?? "/images/otblogo.png"}
                 alt=""
               />
             </Link>
             <h1 className="ml-2 md:ml-6 sm:block text-white text-lg font-medium">
-              {currentSite?.attributes.name}
+              {currentSite?.name}
             </h1>
           </div>
         </div>
