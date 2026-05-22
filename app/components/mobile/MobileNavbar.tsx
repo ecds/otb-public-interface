@@ -7,7 +7,7 @@ const MobileNavbar = () => {
   return (
     <div
       className={`bg-${
-        tour?.theme ?? "default"
+        tour?.theme.title ?? "default"
       }-primary text-white p-3 flex items-center justify-between`}
     >
       <TourMenu />

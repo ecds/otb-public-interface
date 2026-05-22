@@ -5,20 +5,18 @@ import {
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
 import { useContext, useState } from "react";
-import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
 
 const StopMarker = () => {
-  const { stopLocation } = useContext(StopMapContext);
   const { currentStop } = useContext(TourContext);
   const [infoWindowShown, setInfoWindowShown] = useState<boolean>(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
 
-  if (stopLocation && currentStop) {
+  if (currentStop) {
     return (
       <>
         <AdvancedMarker
-          position={stopLocation}
+          position={{ lat: currentStop.lat, lng: currentStop.lng }}
           ref={markerRef}
           onClick={() => setInfoWindowShown(true)}
         >

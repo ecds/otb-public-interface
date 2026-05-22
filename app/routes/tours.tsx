@@ -1,37 +1,38 @@
 import { getTours, isSignedIn } from "~/data";
-import { Link, useLoaderData, redirect } from "react-router";
-import type { TTour } from "~/types/TTour";
+import { Link, useLoaderData, redirect, useNavigate } from "react-router";
 import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
 } from "react-router";
-import { useContext } from "react";
-import TourSiteContext from "~/contexts/tourSiteContext";
+import type { TTour } from "~/types/TTour";
+import type { TTourSetPreview } from "~/types/TTourSet";
+import { useEffect } from "react";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const { tenant, request } = context;
   if (!tenant) {
     throw redirect(`${request.protocol}://${process?.env.HOST}`);
   }
-  const tours: TTour[] = await getTours(tenant);
-  return { tenant, tours };
+  const { tour_set, tours }: { tour_set: TTourSetPreview; tours: TTour[] } =
+    await getTours(tenant);
+  return { tenant, tour_set, tours };
 };
 
 export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
-  const { tenant, tours } = await serverLoader<typeof loader>();
+  const { tenant, tour_set, tours } = await serverLoader<typeof loader>();
   const signedIn = await isSignedIn();
   if (signedIn) {
-    const allTours: TTour[] = await getTours(tenant);
-    return { tours: allTours };
+    const { tours: allTours }: { tours: TTour[] } = await getTours(tenant);
+    return { tour_set, tours: allTours };
   }
-  return { tours };
+  return { tour_set, tours };
 }
 
 clientLoader.hydrate = true as const;
 
-export const meta = ({ data }: { data: { tours: TTour[] } }) => {
-  return [{ title: data?.tours?.[0]?.tenant || "Tours" }];
-};
+// export const meta = ({ data }: { data: { tours: TTour[] } }) => {
+//   return [{ title: data?.tours?.[0]?.tenant || "Tours" }];
+// };
 
 const TourCard = ({ tour }: { tour: TTour }) => {
   return (
@@ -62,8 +63,12 @@ const TourCard = ({ tour }: { tour: TTour }) => {
 };
 
 const Tours = () => {
-  const { currentSite } = useContext(TourSiteContext);
-  const { tours } = useLoaderData<typeof loader>();
+  const { tour_set, tours } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (tours.length === 1) navigate(`/${tours[0].slug}`);
+  }, [tours, navigate]);
 
   return (
     <div className="min-h-screen py-20 md:py-32 bg-gray-800/50">
@@ -72,15 +77,15 @@ const Tours = () => {
         <div className="flex items-center justify-between mx-auto px-4">
           {/* Desktop */}
           <div className="flex flex-shrink-0 items-center">
-            <Link className="hidden md:block" to="/">
+            <Link className="" to="/">
               <img
                 className="h-16 w-auto p-2"
-                src={currentSite?.logo_url ?? "/images/otblogo.png"}
+                src={tour_set.logo_url ?? "/images/otblogo.png"}
                 alt=""
               />
             </Link>
             <h1 className="ml-2 md:ml-6 sm:block text-white text-lg font-medium">
-              {currentSite?.name}
+              {tour_set.name}
             </h1>
           </div>
         </div>

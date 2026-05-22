@@ -47,7 +47,7 @@ export default function Index() {
                   {ts.name}
                 </a>
                 <ul className="list-disc">
-                  {ts.mapable_tours.map((tour) => {
+                  {ts.published_tours.map((tour) => {
                     return (
                       <li key={tour.slug} className="ml-8 text-small">
                         <a

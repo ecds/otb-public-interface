@@ -6,13 +6,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
-import PermissionsContext from "~/contexts/PermissionsContext";
 import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
 
 const Directions = () => {
-  const { locationAllowed } = useContext(PermissionsContext);
   const [showPanel, setShowPanel] = useState<boolean>(false);
+  const locationAllowed = true;
   const { tour, currentStop } = useContext(TourContext);
   const { deviceLocation, stopLocation, parkingLocation, travelMode } =
     useContext(StopMapContext);
@@ -28,7 +27,7 @@ const Directions = () => {
   >(undefined);
 
   const parkingRenderRef = useRef<google.maps.DirectionsRenderer | undefined>(
-    undefined
+    undefined,
   );
 
   const destinationRenderRef = useRef<
@@ -96,7 +95,7 @@ const Directions = () => {
         destinationRenderRef.current.setDirections(destinationDirections);
 
         const bounds = destinationDirections.routes[0].bounds.union(
-          parkingDirections.routes[0].bounds
+          parkingDirections.routes[0].bounds,
         );
         map.fitBounds(bounds, 32);
       } else {

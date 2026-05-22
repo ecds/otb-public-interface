@@ -26,7 +26,7 @@ const MobileStopsList = () => {
           className="flex items-center p-4 border-b border-gray-200 hover:bg-gray-50 active:bg-gray-100"
           onClick={() => navigate(`/${tour.slug}/${stop.slug}/intro`)}
         >
-          <div className="w-16 h-16 mr-3 flex-shrink-0">
+          <div className="w-16 h-16 mr-3 shrink-0">
             <img
               src={stop.splash?.url || "/images/otblogo.png"}
               alt={stop.title}

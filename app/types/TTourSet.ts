@@ -7,10 +7,15 @@ export type TTourSetTour = {
   };
 };
 
-export type TTourSet = {
+export type TTourSetPreview = {
   id: string | number;
+  description: string;
   name: string;
   subdir: string;
-  mapable_tours: TTourSetTour[];
   logo_url: string | null;
+};
+
+export type TTourSet = TTourSetPreview & {
+  mapable_tours: TTourSetTour[];
+  published_tours: TTourSetTour[];
 };

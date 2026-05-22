@@ -66,7 +66,7 @@ const FlatPageLinks = () => {
               <button
                 tabIndex={0}
                 className={`text-${
-                  tour?.theme ?? "default"
+                  tour?.theme.title ?? "default"
                 }-secondary md:text-gray-200 cursor-pointer hover:underline`}
                 onClick={() => setCurrentFlatPage(flatPage)}
                 onKeyDown={({ key }: { key: string }) => {
@@ -82,7 +82,7 @@ const FlatPageLinks = () => {
           <button
             tabIndex={0}
             className={`text-${
-              tour?.theme ?? "default"
+              tour?.theme.title ?? "default"
             }-secondary md:text-gray-200 cursor-pointer hover:underline`}
             onClick={() => setCurrentFlatPage("about")}
             onKeyDown={({ key }: { key: string }) => {

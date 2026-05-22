@@ -2,12 +2,11 @@ import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useContext } from "react";
-import PermissionsContext from "~/contexts/PermissionsContext";
 import { StopMapContext } from "~/contexts/StopMapContext";
 
 const DeviceLocationMarker = () => {
   const { deviceLocation } = useContext(StopMapContext);
-  const { locationAllowed } = useContext(PermissionsContext);
+  const locationAllowed = true;
 
   if (deviceLocation && locationAllowed) {
     return (

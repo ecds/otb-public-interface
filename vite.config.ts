@@ -32,5 +32,11 @@ export default defineConfig(({ mode }): UserConfig => {
       ...httpsOptions,
     },
     plugins: [reactRouter(), tsconfigPaths(), tailwindcss()],
+    optimizeDeps: { include: ["maplibre-gl"] },
+    build: {
+      commonjsOptions: {
+        transformMixedEsModules: true,
+      },
+    },
   };
 });

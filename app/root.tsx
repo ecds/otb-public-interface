@@ -44,7 +44,7 @@ export default function App() {
     <TourSiteContext.Provider
       value={{
         currentSite: tourSet,
-        tenant: tourSet?.subdir,
+        tenant: tourSet?.attributes.subdir,
       }}
     >
       <html lang="en">

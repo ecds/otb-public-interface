@@ -5,10 +5,10 @@ import {
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
 import { useCallback, useContext, useState } from "react";
-import { useNavigate } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
 import type { TTourStop } from "~/types/TTour";
+import PopUpContent from "../mobile/PopUpContent";
 
 const MapMarker = ({
   stop,
@@ -18,11 +18,10 @@ const MapMarker = ({
   zIndex: number;
   hasIcon: boolean;
 }) => {
-  const { currentStop, setCurrentStop, tour } = useContext(TourContext);
+  const { currentStop, setCurrentStop } = useContext(TourContext);
   const { isMobile } = useDeviceContext();
   const [infoWindowShown, setInfoWindowShown] = useState<boolean>(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
-  const navigate = useNavigate();
 
   const handleClose = useCallback(() => {
     setInfoWindowShown(false);
@@ -41,26 +40,21 @@ const MapMarker = ({
     }
   };
 
-  const goToStop = () => {
-    setCurrentStop(stop);
-    navigate(`/${tour?.slug}/${stop.slug}`);
-  };
-
   if (stop) {
     return (
       <>
         <AdvancedMarker
           position={{
-            lat: parseFloat(stop.lat),
-            lng: parseFloat(stop.lng),
+            lat: stop.lat,
+            lng: stop.lng,
           }}
           title={stop.title}
           onClick={() => handleMarkerClick(stop)}
           zIndex={zIndex}
           ref={markerRef}
         >
-          {stop.icon ? (
-            <img src={stop.icon} alt="" width={32} />
+          {stop.map_icon ? (
+            <img src={stop.map_icon} alt="" width={32} />
           ) : (
             <Pin
               scale={stop === currentStop ? 1.5 : 1}
@@ -79,21 +73,14 @@ const MapMarker = ({
         </AdvancedMarker>
         {infoWindowShown && isMobile && (
           <InfoWindow anchor={marker} onCloseClick={handleClose}>
-            <>
-              <h3 className="text-lg mb-2">{stop.title}</h3>
-              <button
-                role="link"
-                className="text-blue-500 visited:text-purple-800 underline"
-                onClick={goToStop}
-              >
-                Go To Stop
-              </button>
-            </>
+            <PopUpContent stop={stop} />
           </InfoWindow>
         )}
       </>
     );
   }
+
+  return <></>;
 };
 
 export default MapMarker;

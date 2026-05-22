@@ -4,15 +4,14 @@ import Directions from "~/components/mobile/Directions";
 import DeviceLocationMarker from "~/components/mobile/mapMarkers/DeviceLocation";
 import ParkingMarker from "~/components/mobile/mapMarkers/Parking";
 import StopMarker from "~/components/mobile/mapMarkers/Stop";
-import MobileStopMap from "~/components/mobile/MobileStopMap";
+import MobileStopGMap from "~/components/mobile/MobileStopGMap";
+import StopMap from "~/components/mobile/StopMap";
 import TravelModeSelector from "~/components/mobile/TravelModeSelector";
 import MapOverlay from "~/components/shared/MapOverlay";
-import PermissionsContext from "~/contexts/PermissionsContext";
+import { PermissionsContext } from "~/contexts/PermissionsContext";
 import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceLocation } from "~/hooks/deviceLocation";
-import { travelModes } from "~/mappings";
-import { createCookie, getCookieValue } from "~/utils/cookies";
 import type { TTravelMode } from "~/types/TTravelMode";
 
 const MODE_COOKIE_NAME = "transportation-mode";
@@ -24,117 +23,79 @@ const WALKING: TTravelMode = {
 };
 
 const StopMapRoute = () => {
-  const { locationAllowed } = useContext(PermissionsContext);
+  const locationAllowed = true;
   const { tour, currentStop } = useContext(TourContext);
-  const { deviceLocation } = useDeviceLocation();
+  const { setShowPermissionsModal } = useContext(PermissionsContext);
+  const { gMaps } = useContext(PermissionsContext);
 
-  const [stopLocation, setStopLocation] = useState<
-    google.maps.LatLngLiteral | undefined
-  >();
+  // const [stopLocation, setStopLocation] = useState<
+  //   google.maps.LatLngLiteral | undefined
+  // >();
 
-  const [parkingLocation, setParkingLocation] = useState<
-    google.maps.LatLngLiteral | undefined
-  >(undefined);
+  // const [parkingLocation, setParkingLocation] = useState<
+  //   google.maps.LatLngLiteral | undefined
+  // >(undefined);
 
-  const [selectedTravelMode, setSelectedTravelMode] = useState<
-    TTravelMode | undefined
-  >(undefined);
+  // const [selectedTravelMode, setSelectedTravelMode] = useState<
+  //   TTravelMode | undefined
+  // >(undefined);
 
-  useEffect(() => {
-    if (!currentStop) return;
+  // useEffect(() => {
+  //   if (!currentStop) return;
 
-    const lat = parseFloat(currentStop.lat);
-    const lng = parseFloat(currentStop.lng);
+  //   const lat = currentStop.lat;
+  //   const lng = currentStop.lng;
 
-    if (isNaN(lat) || isNaN(lng)) return;
+  //   if (isNaN(lat) || isNaN(lng)) return;
 
-    setStopLocation({ lat, lng });
+  //   setStopLocation({ lat, lng });
 
-    if (currentStop.parking_lat && currentStop.parking_lng) {
-      setParkingLocation({
-        lat: parseFloat(currentStop.parking_lat),
-        lng: parseFloat(currentStop.parking_lng),
-      });
-    }
-  }, [currentStop]);
-
-  useEffect(() => {
-    if (!locationAllowed || !tour) return;
-
-    const modeCookieValue = async () => {
-      const cookieValue = await getCookieValue({
-        name: MODE_COOKIE_NAME,
-        path: `/${tour.slug}`,
-      });
-
-      if (!cookieValue) {
-        const defaultTravelMode = tour.modes.find((m) => m.default) || WALKING;
-        setSelectedTravelMode(defaultTravelMode);
-        createCookie({
-          name: MODE_COOKIE_NAME,
-          path: `/${tour.slug}`,
-          value: defaultTravelMode.title,
-        });
-      } else {
-        const newMode = travelModes.find((mode) => mode.title === cookieValue);
-        if (newMode) setSelectedTravelMode(newMode);
-      }
-    };
-    modeCookieValue();
-  }, [tour, locationAllowed]);
-
-  useEffect(() => {
-    if (!locationAllowed || !tour || !selectedTravelMode) return;
-
-    const modeCookieValue = async () => {
-      const cookieValue = await getCookieValue({
-        name: MODE_COOKIE_NAME,
-        path: `/${tour.slug}`,
-      });
-
-      if (cookieValue && cookieValue !== selectedTravelMode.title) {
-        createCookie({
-          name: MODE_COOKIE_NAME,
-          value: selectedTravelMode.title,
-          path: `/${tour.slug}`,
-        });
-      }
-    };
-    modeCookieValue();
-  }, [selectedTravelMode, tour, locationAllowed]);
+  //   if (currentStop.parking_lat && currentStop.parking_lng) {
+  //     setParkingLocation({
+  //       lat: currentStop.parking_lat,
+  //       lng: currentStop.parking_lng,
+  //     });
+  //   }
+  // }, [currentStop]);
 
   return (
-    <StopMapContext.Provider
-      value={{
-        deviceLocation,
-        stopLocation,
-        parkingLocation,
-        travelMode: selectedTravelMode || WALKING,
-        setSelectedTravelMode,
-      }}
-    >
-      <MobileStopMap>
-        <MapOverlay />
-        <ParkingMarker />
-        <StopMarker />
-        <MapControl position={ControlPosition.TOP_RIGHT}>
-          <Directions />
-        </MapControl>
-        {locationAllowed && (
-          <>
-            <MapControl position={ControlPosition.TOP_LEFT}>
-              <TravelModeSelector />
-            </MapControl>
-            <DeviceLocationMarker />
-          </>
-        )}
-        <MapControl position={ControlPosition.BOTTOM}>
-          <div className="mb-6 mx-auto p-2 bg-white/65 border border-black rounded-md text-lg text-nowrap truncate text-black overflow-hidden max-w-[80vw]">
-            {currentStop?.position}: {currentStop?.title}
+    <>
+      {gMaps ? (
+        <MobileStopGMap>
+          <MapOverlay />
+          <ParkingMarker />
+          <StopMarker />
+          <MapControl position={ControlPosition.TOP_RIGHT}>
+            <Directions />
+          </MapControl>
+          {locationAllowed && (
+            <>
+              <MapControl position={ControlPosition.TOP_LEFT}>
+                <TravelModeSelector />
+              </MapControl>
+              <DeviceLocationMarker />
+            </>
+          )}
+          <MapControl position={ControlPosition.BOTTOM}>
+            <div className="mb-6 mx-auto p-2 bg-white/65 border border-black rounded-md text-lg text-nowrap truncate text-black overflow-hidden max-w-[80vw]">
+              {currentStop?.position}: {currentStop?.title}
+            </div>
+          </MapControl>
+        </MobileStopGMap>
+      ) : (
+        <>
+          <div className="w-screen h-[calc(100vh-10rem)] md:h-[calc(100vh-8rem)] mt-16">
+            <StopMap />
           </div>
-        </MapControl>
-      </MobileStopMap>
-    </StopMapContext.Provider>
+          <button
+            className="md:hidden text-xs text-center w-full my-auto underline"
+            onClick={() => setShowPermissionsModal(true)}
+          >
+            Allow Google Maps and location to see directions.
+          </button>
+        </>
+      )}
+    </>
   );
 };
 

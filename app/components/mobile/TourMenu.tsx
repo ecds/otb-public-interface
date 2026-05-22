@@ -3,13 +3,15 @@ import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import { useContext } from "react";
 import { Link } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
-import PermissionSettings from "./PermissionSettings";
 import { useDeviceContext } from "~/hooks/deviceContext";
+import { PermissionsContext } from "~/contexts/PermissionsContext";
 
 const TourMenu = () => {
   const { isDesktop } = useDeviceContext();
   const { tour, setCurrentFlatPage, showMenu, setShowMenu } =
     useContext(TourContext);
+
+  const { setShowPermissionsModal } = useContext(PermissionsContext);
 
   const handleLinkClick = () => {
     setShowMenu(false);
@@ -93,10 +95,12 @@ const TourMenu = () => {
         </div>
 
         <div className="p-4 border-t border-gray-700">
-          <p className="uppercase text-xs font-semibold text-gray-400 mb-4">
-            Location Controls
-          </p>
-          <PermissionSettings />
+          <button
+            className="block w-full text-left text-gray-300 hover:text-white rounded hover:bg-gray-700"
+            onClick={() => setShowPermissionsModal(true)}
+          >
+            Manage Preferences
+          </button>
         </div>
 
         <div className="h-8"></div>

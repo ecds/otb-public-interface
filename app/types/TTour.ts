@@ -54,11 +54,11 @@ export type TTour = {
   link_text: string | undefined;
   map_overlay:
     | {
-        east: string;
+        east: number;
         image_url: string;
-        north: string;
-        south: string;
-        west: string;
+        north: number;
+        south: number;
+        west: number;
       }
     | undefined;
   map_type: "satellite" | "road" | "hybrid";
@@ -77,7 +77,7 @@ export type TTour = {
   stops: TTourStop[];
   tenant: string;
   title: string;
-  theme: string;
+  theme: { id: number; title: string };
   type: "tour";
   use_directions: boolean;
 };

@@ -1,20 +1,25 @@
 import { useContext } from "react";
 import { Link } from "react-router";
-import TourSiteContext from "~/contexts/tourSiteContext";
 import { TourContext } from "~/contexts/TourContext";
 import TourMenu from "../mobile/TourMenu";
 import FlatPageLinks from "../desktop/FlatPageLinks";
-import type { ReactNode } from "react";
 import StopMenu from "../desktop/StopMenu";
+import type { ReactNode } from "react";
+import type { TTourSetPreview } from "~/types/TTourSet";
 
-const Navbar = ({ children }: { children?: ReactNode }) => {
+const Navbar = ({
+  children,
+  tour_set,
+}: {
+  children?: ReactNode;
+  tour_set?: TTourSetPreview;
+}) => {
   const { tour } = useContext(TourContext);
-  const { currentSite } = useContext(TourSiteContext);
 
   return (
     <nav
       className={`bg-${
-        tour?.theme ?? "default"
+        tour?.theme.title ?? "default"
       }-primary md:bg-default-primary h-16 fixed top-0 w-screen z-50`}
     >
       <>
@@ -24,7 +29,7 @@ const Navbar = ({ children }: { children?: ReactNode }) => {
             <Link className="hidden md:block" to="/">
               <img
                 className="h-16 w-auto p-2"
-                src={currentSite?.logo_url ?? "/images/otblogo.png"}
+                src={tour_set?.logo_url ?? "/images/otblogo.png"}
                 alt=""
               />
             </Link>
@@ -32,11 +37,16 @@ const Navbar = ({ children }: { children?: ReactNode }) => {
               <>
                 {/* Mobile */}
                 <TourMenu />
-                <h1 className="block md:hidden text-white text-sm m-auto text-wrap text-left grow">
-                  <Link className="text-wrap" to={`/${tour.slug}`}>
+                <Link className="text-wrap" to={`/${tour.slug}`}>
+                  {/* <img
+                    className="h-16 w-auto p-2"
+                    src={tour_set?.logo_url ?? "/images/otblogo.png"}
+                    alt=""
+                  /> */}
+                  <h1 className="block md:hidden text-white text-sm m-auto text-wrap text-left grow">
                     {tour.title}
-                  </Link>
-                </h1>
+                  </h1>
+                </Link>
                 {/* Desktop */}
                 <StopMenu />
               </>
@@ -47,7 +57,7 @@ const Navbar = ({ children }: { children?: ReactNode }) => {
           </div>
           {!tour && (
             <h1 className="ml-2 md:ml-6 sm:block text-white text-lg font-medium">
-              {currentSite?.name}
+              {tour_set?.name}
             </h1>
           )}
         </div>

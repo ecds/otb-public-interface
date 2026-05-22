@@ -1,5 +1,3 @@
-import type { TTour } from "./types/TTour";
-
 const fetchData = async (url: string) => {
   const response = await fetch(url, {
     referrerPolicy: "strict-origin-when-cross-origin",
@@ -52,8 +50,7 @@ export const getTour = async (tenant: string, tour: number | string) => {
   const response = await fetchData(
     `https://api.opentour.site/${tenant}/v4/public/tours/${tour}`,
   );
-  const tourData: TTour = response;
-  return { tour: tourData };
+  return response;
 };
 
 export const getRelatedData = async ({

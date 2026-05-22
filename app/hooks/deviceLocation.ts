@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import PermissionsContext from "~/contexts/PermissionsContext";
 
 const geoOpts = {
   enableHighAccuracy: true,
@@ -8,8 +7,9 @@ const geoOpts = {
 };
 
 export const useDeviceLocation = () => {
-  const { locationAllowed, setLocationAllowed, locationUpdateAllowed } =
-    useContext(PermissionsContext);
+  const locationAllowed = true;
+  const setLocationAllowed = true;
+  const locationUpdateAllowed = true;
   const [deviceLocation, setDeviceLocation] = useState<
     google.maps.LatLngLiteral | undefined
   >(undefined);
@@ -29,7 +29,7 @@ export const useDeviceLocation = () => {
         setLocationAllowed(false);
         console.warn(error.message);
       },
-      geoOpts
+      geoOpts,
     );
   }, [locationAllowed, setLocationAllowed]);
 
@@ -47,7 +47,7 @@ export const useDeviceLocation = () => {
       (error) => {
         console.warn(error.message);
       },
-      geoOpts
+      geoOpts,
     );
 
     return () => {

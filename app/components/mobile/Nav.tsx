@@ -23,10 +23,10 @@ const MobileNav = () => {
 
   const classNames = (isActive: boolean, disabled = false) => {
     return `w-full text-center flex flex-col m-auto text-${
-      tour?.theme ?? "default"
+      tour?.theme.title ?? "default"
     }-accent-text aria-disabled:text-${
-      tour?.theme ?? "default"
-    }-accent-text/45 bg-${tour?.theme ?? "default"}-${
+      tour?.theme.title ?? "default"
+    }-accent-text/45 bg-${tour?.theme.title ?? "default"}-${
       isActive ? "accent" : "primary"
     } h-full py-1 ${disabled ? "pointer-events-none" : ""}`;
   };
