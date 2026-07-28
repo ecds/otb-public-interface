@@ -1,4 +1,4 @@
-import type { TCookie, TCookieName } from "~/types/TCookies";
+import type { TCookie, TCookieName } from "~/types";
 
 export const sitePreferences = () => {
   const sitePrefs = preferences("OpenTour");
@@ -81,5 +81,13 @@ export const cookies: {
       "Continuously updates your location while you browse. Requires 'Share location'. If Google Maps is also enabled, your live location may be sent to Google.",
     dependsOn: "locationAllowed",
     thirdParty: false,
+  },
+  {
+    id: "thirdPartyEmbeds" as TCookieName,
+    label: "3rd Party Embeds",
+    required: false,
+    description:
+      "View content that is hosted by a third party. Loading it will connect you to their servers and may set cookies.",
+    thirdParty: true,
   },
 ];

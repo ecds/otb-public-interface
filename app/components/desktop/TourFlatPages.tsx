@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { TourContext } from "~/contexts/TourContext";
 import FlatPage from "../shared/FlatPage";
-import type { TTourFlatPage } from "~/types/TTourFlatPage";
+import type { TTourFlatPage } from "~/types";
 
 const TourFlatPages = () => {
   const { tour } = useContext(TourContext);

@@ -1,11 +1,18 @@
-import { useState } from 'react';
+import { useState } from "react";
+import type { ReactNode } from "react";
 import {
   AdvancedMarker,
   InfoWindow,
-  useAdvancedMarkerRef
-} from '@vis.gl/react-google-maps';
+  useAdvancedMarkerRef,
+} from "@vis.gl/react-google-maps";
 
-const MapMarker = ({ title, position, children }) => {
+interface Props {
+  title: string;
+  position: google.maps.LatLngLiteral;
+  children: ReactNode;
+}
+
+const MapMarker = ({ title, position, children }: Props) => {
   const [infowindowOpen, setInfowindowOpen] = useState(false);
   const [markerRef, marker] = useAdvancedMarkerRef();
 

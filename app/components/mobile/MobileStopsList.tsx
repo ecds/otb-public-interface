@@ -1,8 +1,8 @@
-import { useContext } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList } from "@fortawesome/free-solid-svg-icons";
-import { TourContext } from "~/contexts/TourContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
+import { TourContext } from "~/contexts/TourContext";
 
 const MobileStopsList = () => {
   const { tour } = useContext(TourContext);

@@ -1,12 +1,11 @@
-import scrollama from "scrollama";
 import { useRef, useContext, useEffect } from "react";
-import { useResizeObserver } from "~/hooks/deviceContext";
+import scrollama from "scrollama";
 import { TourContext } from "~/contexts/TourContext";
+import { useResizeObserver } from "~/hooks/deviceContext";
 import MainContent from "../shared/MainContent";
-import { ScrollamaContext } from "~/contexts/scrollamaContext";
 import Gallery from "../shared/ModalGallery";
-import type { ScrollamaInstance } from "scrollama";
 import type { ReactNode } from "react";
+import type { ScrollamaInstance } from "scrollama";
 
 interface Props {
   className: string;
@@ -26,7 +25,8 @@ const StopList = ({ className, intro }: Props) => {
   const { documentSize, mainContentSize } = useResizeObserver();
 
   useEffect(() => {
-    history.replaceState({}, "", `/${tour?.slug}/${currentStop?.slug ?? ""}`);
+    if (!scrollerRef.current || !currentStop || !tour) return;
+    history.replaceState({}, "", `/${tour.slug}/${currentStop.slug}`);
   }, [currentStop, tour]);
 
   useEffect(() => {
@@ -38,7 +38,8 @@ const StopList = ({ className, intro }: Props) => {
         step: ".stop",
       })
       .onStepEnter(({ index }) => {
-        setCurrentStop(tour.stops.find((stop) => stop.position == index));
+        const enteredStop = tour.stops.find((stop) => stop.position == index);
+        if (enteredStop && enteredStop.slug) setCurrentStop(enteredStop);
       });
 
     const scrollerRefCopy = scrollerRef.current;
@@ -53,27 +54,21 @@ const StopList = ({ className, intro }: Props) => {
     scrollerRef.current?.resize();
   }, [documentSize, mainContentSize]);
 
-  const resize = () => {
-    scrollerRef.current?.resize();
-  };
-
   if (!tour || !tour.stops) return <></>;
 
   if (tour && tour.stops) {
     return (
-      <ScrollamaContext.Provider value={{ resize }}>
-        <div
-          ref={scrollerContainerRef}
-          className={`otb-desktop-content ${className}`}
-        >
-          {intro}
-          {tour &&
-            tour.stops.map((stop) => {
-              return <MainContent key={stop.slug} content={stop} />;
-            })}
-          <div className="h-12"></div>
-        </div>
-      </ScrollamaContext.Provider>
+      <div
+        ref={scrollerContainerRef}
+        className={`otb-desktop-content ${className}`}
+      >
+        {intro}
+        {tour &&
+          tour.stops.map((stop) => {
+            return <MainContent key={stop.slug} content={stop} />;
+          })}
+        <div className="h-12"></div>
+      </div>
     );
   }
 

@@ -1,12 +1,8 @@
-import { useState } from "react";
-import { Carousel } from "nuka-carousel";
-import Medium from "./Medium";
-import type { TTourMedium } from "~/types/TTour";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faArrowUpRightFromSquare,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   CloseButton,
   Dialog,
@@ -14,7 +10,11 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { Carousel } from "nuka-carousel";
+import { useState } from "react";
 import Embed from "./Embed";
+import Medium from "./Medium";
+import type { TTourMedium } from "~/types";
 
 interface Props {
   media?: TTourMedium[];

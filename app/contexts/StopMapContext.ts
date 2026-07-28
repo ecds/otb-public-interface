@@ -1,24 +1,30 @@
 import { createContext } from "react";
 import { travelModes } from "~/mappings";
-import type { TTravelMode } from "~/types/TTravelMode";
 import type { Dispatch, SetStateAction } from "react";
+import type { TTravelMode, TPreferenceName } from "~/types";
 
 interface Context {
   travelMode: TTravelMode;
-  deviceLocation: google.maps.LatLngLiteral | undefined;
   stopLocation: google.maps.LatLngLiteral | undefined;
   parkingLocation: google.maps.LatLngLiteral | undefined;
-  setSelectedTravelMode: Dispatch<SetStateAction<TTravelMode | undefined>>;
+  setTravelMode: Dispatch<SetStateAction<TTravelMode>>;
+  gMaps: boolean;
+  locationAllowed: boolean;
+  realtimeLocation: boolean;
+  addPreference: (pref: TPreferenceName) => void;
+  removePreference: (pref: TPreferenceName) => void;
 }
 
 export const StopMapContext = createContext<Context>({
   travelMode: travelModes[1],
-  deviceLocation: undefined,
   stopLocation: undefined,
   parkingLocation: undefined,
-  setSelectedTravelMode: (_: SetStateAction<TTravelMode | undefined>) => {
-    console.error(
-      "setSelectedTravelMode not implemented. Did you pass it to context?"
-    );
+  setTravelMode: (_: SetStateAction<TTravelMode>) => {
+    console.error("setTravelMode not implemented. Did you pass it to context?");
   },
+  gMaps: false,
+  locationAllowed: false,
+  realtimeLocation: false,
+  addPreference: () => {},
+  removePreference: () => {},
 });

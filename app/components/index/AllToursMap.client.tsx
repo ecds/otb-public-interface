@@ -1,38 +1,61 @@
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import MapMarker from "../MapMarker";
-import type { TTourSetTour } from "~/types/TTourSet";
+import * as maplibregl from "maplibre-gl";
+import { useEffect, useRef, useState } from "react";
+import { baseStyle } from "~/map_styles";
+import TourMarker from "../shared/TourMarker";
+import "maplibre-gl/dist/maplibre-gl.css";
+import type { TTourSetTour , TContextRequest } from "~/types";
 
 interface Props {
   tours: TTourSetTour[];
+  request: TContextRequest;
 }
 
-const AllToursMap = ({ tours }: Props) => {
-  const position = { lat: 32.6620411, lng: -83.4375901 };
+const AllToursMap = ({ tours, request }: Props) => {
+  const mapContainerRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<maplibregl.Map | undefined>(undefined);
+
+  useEffect(() => {
+    if (!tours || !mapContainerRef.current) return;
+    const _map = new maplibregl.Map({
+      container: mapContainerRef.current,
+      style: baseStyle,
+      center: new maplibregl.LngLat(-83.4375901, 32.6620411),
+      zoom: 5,
+      renderWorldCopies: false,
+    });
+
+    _map.addControl(
+      new maplibregl.FullscreenControl({ container: mapContainerRef.current }),
+    );
+
+    setMap(_map);
+
+    return () => {
+      _map.remove();
+      setMap(undefined);
+    };
+  }, [tours]);
 
   return (
-    <div className="w-full max-w-screen h-[50vh]">
-      <APIProvider apiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-        <Map
-          defaultCenter={position}
-          defaultZoom={6}
-          disableDefaultUI
-          mapId={"bf51a910020fa25a"}
-          fullscreenControl
-          // fullscreenControlOptions={{ position: ControlPosition.TOP_LEFT }}
-        >
-          {tours.map((tour) => {
-            return (
-              <MapMarker
-                key={tour.slug}
-                position={tour.center}
-                title={tour.title}
+    <div
+      id="all-tour-maps"
+      ref={mapContainerRef}
+      className="w-full max-w-screen h-[50vh]"
+    >
+      {tours.map((tour) => {
+        if (map) {
+          return (
+            <TourMarker key={tour.slug} map={map} tour={tour}>
+              <a
+                className="focus-visible:border-0 focus-visible:outline-0 text-lg text-blue-500 hover:text-blue-700 underline"
+                href={`${request.protocol}://${tour.tenant}.${request.host}/${tour.slug}`}
               >
                 {tour.title}
-              </MapMarker>
-            );
-          })}
-        </Map>
-      </APIProvider>
+              </a>
+            </TourMarker>
+          );
+        }
+      })}
     </div>
   );
 };

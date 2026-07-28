@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef } from "react";
 import { Outlet, useParams } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import type { TStop } from "~/types/TStop";
+import type { TStop } from "~/types";
 
 const TourStop = () => {
   const { currentStop, tour, setCurrentStop } = useContext(TourContext);
@@ -11,7 +11,7 @@ const TourStop = () => {
   const currentStopRef = useRef<TStop>(currentStop);
 
   useEffect(() => {
-    if (!params.stop || !tour) return;
+    if (!params.stop || !tour || !isMobile) return;
 
     if (tour.stops) {
       const foundStop = tour.stops.find((stop) => stop.slug === params.stop);
@@ -21,16 +21,7 @@ const TourStop = () => {
         setCurrentStop(foundStop);
       }
     }
-  }, [params, tour, setCurrentStop]);
-
-  useEffect(() => {
-    if (!currentStop || isMobile) return;
-
-    const element = document.getElementById(currentStop.slug);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  }, [params.stop, currentStop, isMobile]);
+  }, [params, tour, setCurrentStop, isMobile]);
 
   if (isMobile)
     return (

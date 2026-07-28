@@ -1,20 +1,19 @@
 import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
 import { useContext, useEffect, useState } from "react";
 import Directions from "~/components/mobile/Directions";
+import GrantLocationAccess from "~/components/mobile/location/LocationServices";
 import DeviceLocationMarker from "~/components/mobile/mapMarkers/DeviceLocation";
 import ParkingMarker from "~/components/mobile/mapMarkers/Parking";
 import StopMarker from "~/components/mobile/mapMarkers/Stop";
-import MobileStopGMap from "~/components/mobile/MobileStopGMap";
+import StopGMap from "~/components/mobile/StopGMap";
 import StopMap from "~/components/mobile/StopMap";
 import TravelModeSelector from "~/components/mobile/TravelModeSelector";
 import MapOverlay from "~/components/shared/MapOverlay";
-import { PermissionsContext } from "~/contexts/PermissionsContext";
 import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
-import { useDeviceLocation } from "~/hooks/deviceLocation";
-import type { TTravelMode } from "~/types/TTravelMode";
-
-const MODE_COOKIE_NAME = "transportation-mode";
+import { usePreferences } from "~/hooks";
+import { useLocationPermission } from "~/hooks/locationPermission";
+import type { TTravelMode } from "~/types";
 
 const WALKING: TTravelMode = {
   title: "WALKING",
@@ -23,45 +22,77 @@ const WALKING: TTravelMode = {
 };
 
 const StopMapRoute = () => {
-  const locationAllowed = true;
-  const { tour, currentStop } = useContext(TourContext);
-  const { setShowPermissionsModal } = useContext(PermissionsContext);
-  const { gMaps } = useContext(PermissionsContext);
+  const { tour, currentStop, setShowPermissionsModal } =
+    useContext(TourContext);
+  const {
+    gMaps,
+    locationAllowed,
+    removePreference,
+    addPreference,
+    realtimeLocation,
+  } = usePreferences();
+  const locationPermission = useLocationPermission();
 
-  // const [stopLocation, setStopLocation] = useState<
-  //   google.maps.LatLngLiteral | undefined
-  // >();
+  const [stopLocation, setStopLocation] = useState<
+    google.maps.LatLngLiteral | undefined
+  >();
 
-  // const [parkingLocation, setParkingLocation] = useState<
-  //   google.maps.LatLngLiteral | undefined
-  // >(undefined);
+  const [parkingLocation, setParkingLocation] = useState<
+    google.maps.LatLngLiteral | undefined
+  >(undefined);
 
-  // const [selectedTravelMode, setSelectedTravelMode] = useState<
-  //   TTravelMode | undefined
-  // >(undefined);
+  const [travelMode, setTravelMode] = useState<TTravelMode>(WALKING);
 
-  // useEffect(() => {
-  //   if (!currentStop) return;
+  useEffect(() => {
+    if (!tour) return;
+    const storedTravelMode = tour.modes.find(
+      (mode) => mode.title === localStorage.getItem(tour.slug),
+    );
+    setTravelMode(storedTravelMode ?? tour.mode);
+  }, [tour]);
 
-  //   const lat = currentStop.lat;
-  //   const lng = currentStop.lng;
+  useEffect(() => {
+    if (!currentStop) return;
 
-  //   if (isNaN(lat) || isNaN(lng)) return;
+    const lat = currentStop.lat;
+    const lng = currentStop.lng;
 
-  //   setStopLocation({ lat, lng });
+    if (isNaN(lat) || isNaN(lng)) return;
 
-  //   if (currentStop.parking_lat && currentStop.parking_lng) {
-  //     setParkingLocation({
-  //       lat: currentStop.parking_lat,
-  //       lng: currentStop.parking_lng,
-  //     });
-  //   }
-  // }, [currentStop]);
+    setStopLocation({ lat, lng });
+
+    if (currentStop.parking_lat && currentStop.parking_lng) {
+      setParkingLocation({
+        lat: currentStop.parking_lat,
+        lng: currentStop.parking_lng,
+      });
+    }
+  }, [currentStop]);
+
+  if (locationPermission === "denied" && locationAllowed)
+    return (
+      <GrantLocationAccess
+        dismiss={removePreference}
+        locationAllowed={locationAllowed}
+      />
+    );
 
   return (
-    <>
+    <StopMapContext.Provider
+      value={{
+        stopLocation,
+        parkingLocation,
+        travelMode,
+        setTravelMode,
+        locationAllowed,
+        gMaps,
+        realtimeLocation,
+        removePreference,
+        addPreference,
+      }}
+    >
       {gMaps ? (
-        <MobileStopGMap>
+        <StopGMap>
           <MapOverlay />
           <ParkingMarker />
           <StopMarker />
@@ -81,7 +112,7 @@ const StopMapRoute = () => {
               {currentStop?.position}: {currentStop?.title}
             </div>
           </MapControl>
-        </MobileStopGMap>
+        </StopGMap>
       ) : (
         <>
           <div className="w-screen h-[calc(100vh-10rem)] md:h-[calc(100vh-8rem)] mt-16">
@@ -95,7 +126,7 @@ const StopMapRoute = () => {
           </button>
         </>
       )}
-    </>
+    </StopMapContext.Provider>
   );
 };
 

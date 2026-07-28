@@ -1,14 +1,14 @@
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useContext } from "react";
-import { StopMapContext } from "~/contexts/StopMapContext";
+import { usePreferences } from "~/hooks";
+import { useDeviceLocation } from "~/hooks/deviceLocation";
 
 const DeviceLocationMarker = () => {
-  const { deviceLocation } = useContext(StopMapContext);
-  const locationAllowed = true;
+  const { deviceLocation } = useDeviceLocation();
+  const { locationAllowed } = usePreferences();
 
-  if (deviceLocation && locationAllowed) {
+  if (locationAllowed) {
     return (
       <AdvancedMarker position={deviceLocation}>
         <FontAwesomeIcon

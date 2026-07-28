@@ -1,7 +1,7 @@
-const ImagePlaceholder = () => {
+const ImagePlaceholder = ({ className }: { className?: string }) => {
   return (
     <svg
-      className="w-64 h-64 text-gray-200 justify-self-center"
+      className={className ?? "w-64 h-64 text-gray-200 justify-self-center"}
       aria-hidden="true"
       xmlns="http://www.w3.org/2000/svg"
       fill="currentColor"

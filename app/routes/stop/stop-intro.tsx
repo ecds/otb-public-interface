@@ -1,7 +1,7 @@
 import { useContext } from "react";
+import MainContent from "~/components/shared/MainContent";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import MainContent from "~/components/shared/MainContent";
 
 const StopIntroRoute = () => {
   const { currentStop } = useContext(TourContext);

@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
-import type { TTourStop } from "~/types/TTour";
+import type { TTourStop } from "~/types";
 
 interface Props {
   stop: TTourStop;

@@ -1,4 +1,4 @@
-import type { TTourMedium } from "./TTour";
+import type { TTourMedium, TVoiceOver } from "./TTour";
 
 export type TStop = {
   address: string;
@@ -17,6 +17,7 @@ export type TStop = {
   parking_lng: number | undefined;
   sanitized_description: string;
   slug: string;
+  slugs: string[];
   splash: {
     caption: string;
     title: string;
@@ -26,4 +27,5 @@ export type TStop = {
   type: "stop";
   video_embed: string | undefined;
   video_poster: string | undefined;
+  voice_overs: TVoiceOver[];
 };

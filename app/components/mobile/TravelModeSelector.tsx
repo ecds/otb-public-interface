@@ -5,19 +5,24 @@ import {
   ListboxOption,
   ListboxOptions,
 } from "@headlessui/react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
 
 const TravelModeSelector = () => {
   const { tour } = useContext(TourContext);
-  const { travelMode, setSelectedTravelMode } = useContext(StopMapContext);
+  const { travelMode, setTravelMode } = useContext(StopMapContext);
+
+  useEffect(() => {
+    if (!tour) return;
+    localStorage.setItem(tour.slug, travelMode.title);
+  }, [tour, travelMode]);
 
   if (!tour || !tour.modes) return <></>;
 
   return (
     <div className="m-6 p-2 bg-black/45 rounded-md text-white text-lg">
-      <Listbox value={travelMode} onChange={setSelectedTravelMode}>
+      <Listbox value={travelMode} onChange={setTravelMode}>
         <ListboxButton>
           <FontAwesomeIcon icon={travelMode.icon} /> {travelMode.title}
         </ListboxButton>

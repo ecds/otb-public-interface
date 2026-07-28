@@ -1,8 +1,8 @@
 import ClientOnly from "~/components/ClientOnly";
-import Gallery from "../shared/ModalGallery";
 import TextToSpeechButton from "~/components/shared/TextToSpeechButton";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import type { TTour, TTourStop } from "~/types/TTour";
+import Gallery from "../shared/ModalGallery";
+import type { TTour, TTourStop } from "~/types";
 
 interface Props {
   content: TTourStop | TTour;
@@ -48,7 +48,10 @@ const MainContent = ({ content }: Props) => {
             </div>
           )}
           <div className="tracking-wide leading-6 relative px-6 stop mb-24 md:mb-0 box-content flow-root">
-            <TextToSpeechButton text={content.sanitized_description} />
+            <TextToSpeechButton
+              text={content.sanitized_description}
+              voiceOverUrl={content.voice_overs?.[0]?.source_url}
+            />
             <div
               className="otb-content"
               dangerouslySetInnerHTML={{

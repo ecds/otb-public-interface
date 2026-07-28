@@ -1,4 +1,5 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { usePreferences } from "./usePreferences";
 
 const geoOpts = {
   enableHighAccuracy: true,
@@ -7,15 +8,14 @@ const geoOpts = {
 };
 
 export const useDeviceLocation = () => {
-  const locationAllowed = true;
-  const setLocationAllowed = true;
-  const locationUpdateAllowed = true;
   const [deviceLocation, setDeviceLocation] = useState<
     google.maps.LatLngLiteral | undefined
   >(undefined);
 
+  const { locationAllowed, realtimeLocation } = usePreferences();
+
   useEffect(() => {
-    if (typeof locationAllowed === "undefined") return;
+    if (!locationAllowed) return;
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -26,15 +26,14 @@ export const useDeviceLocation = () => {
         });
       },
       (error) => {
-        setLocationAllowed(false);
         console.warn(error.message);
       },
       geoOpts,
     );
-  }, [locationAllowed, setLocationAllowed]);
+  }, [locationAllowed]);
 
   useEffect(() => {
-    if (!locationUpdateAllowed) return;
+    if (!realtimeLocation) return;
 
     const watcherId = navigator.geolocation.watchPosition(
       (position) => {
@@ -53,7 +52,7 @@ export const useDeviceLocation = () => {
     return () => {
       navigator.geolocation.clearWatch(watcherId);
     };
-  }, [locationUpdateAllowed]);
+  }, [realtimeLocation]);
 
   return { deviceLocation };
 };

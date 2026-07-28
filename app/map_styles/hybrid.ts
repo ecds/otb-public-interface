@@ -1,6 +1,6 @@
 import type { StyleSpecification } from "maplibre-gl";
 
-export const hybrid: StyleSpecification = {
+export const hybrid = {
   version: 8,
   name: "orto",
   metadata: {},
@@ -39,11 +39,12 @@ export const hybrid: StyleSpecification = {
       ],
       tileSize: 256,
       minzoom: 13.1,
-      maxzoom: 20,
+      maxzoom: 18,
     },
     openmaptiles: {
       type: "vector",
       url: "https://geoserveis.icgc.cat/contextmaps/basemap.json",
+      maxzoom: 13,
     },
   },
   sprite: "https://geoserveis.icgc.cat/contextmaps/sprites/sprite@1",
@@ -59,7 +60,7 @@ export const hybrid: StyleSpecification = {
       id: "ortoEsri",
       type: "raster",
       source: "ortoEsri",
-      maxzoom: 16,
+      // maxzoom: 16,
       layout: { visibility: "visible" },
     },
     {
@@ -67,14 +68,14 @@ export const hybrid: StyleSpecification = {
       type: "raster",
       source: "ortoICGC",
       minzoom: 13.1,
-      maxzoom: 19,
+      // maxzoom: 18,
       layout: { visibility: "visible" },
     },
     {
       id: "ortoInstaMaps",
       type: "raster",
       source: "ortoInstaMaps",
-      maxzoom: 13,
+      // maxzoom: 13,
       layout: { visibility: "visible" },
     },
     {
@@ -2525,4 +2526,4 @@ export const hybrid: StyleSpecification = {
     },
   ],
   id: "qebnlkra6",
-};
+} as unknown as StyleSpecification;

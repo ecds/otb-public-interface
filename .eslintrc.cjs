@@ -20,7 +20,8 @@ module.exports = {
 
   rules: {
     "no-console": ["warn", { allow: ["warn", "error"] }],
-    "@typescript-eslint/consistent-type-imports": "warn",
+    "@typescript-eslint/consistent-type-imports": ["warn", { fixStyle: "separate-type-imports" }],
+    "import/consistent-type-specifier-style": ["warn", "prefer-top-level"],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-unused-vars": [
       "warn",
@@ -29,11 +30,28 @@ module.exports = {
         args: "after-used",
         argsIgnorePattern: "^_",
         varsIgnorePattern: "^_",
+        caughtErrorsIgnorePattern: "^_",
       },
     ],
     "import/no-unresolved": [
       "error",
       { ignore: ["virtual:react-router/server-build"] },
+    ],
+    "import/order": [
+      "warn",
+      {
+        groups: [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "type",
+        ],
+        "newlines-between": "never",
+        alphabetize: { order: "asc", caseInsensitive: true },
+      },
     ],
   },
 

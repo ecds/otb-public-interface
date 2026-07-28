@@ -1,4 +1,4 @@
-import type { TTourMedium } from "~/types/TTour";
+import type { TTourMedium } from "~/types";
 
 interface Props {
   medium: TTourMedium;

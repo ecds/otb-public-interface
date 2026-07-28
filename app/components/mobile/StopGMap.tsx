@@ -1,11 +1,11 @@
-import { useContext } from "react";
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import type { ReactNode } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { useContext } from "react";
 import { TourContext } from "~/contexts/TourContext";
+import type { ReactNode } from "react";
 
-const MobileStopGMap = ({ children }: { children: ReactNode }) => {
+const StopGMap = ({ children }: { children: ReactNode }) => {
   const { currentStop } = useContext(TourContext);
   // useEffect(() => {
   //   if (!currentStop) return;
@@ -55,4 +55,4 @@ const MobileStopGMap = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default MobileStopGMap;
+export default StopGMap;

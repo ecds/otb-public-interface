@@ -1,19 +1,20 @@
+import { faCircle, faLocationPin } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as maplibregl from "maplibre-gl";
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { TourContext } from "~/contexts/TourContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLocationPin } from "@fortawesome/free-solid-svg-icons";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import type { AddLayerObject, Map, SourceSpecification } from "maplibre-gl";
-import type { TTourStop } from "~/types/TTour";
 import PopUpContent from "../mobile/PopUpContent";
+import type { AddLayerObject, Map, SourceSpecification } from "maplibre-gl";
+import type { TTourStop } from "~/types";
 
 interface Props {
   stop: TTourStop;
   map: Map | undefined;
+  fitBounds?: boolean;
 }
 
-const MapMarker = ({ map, stop }: Props) => {
+const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
   const { currentStop, setCurrentStop } = useContext(TourContext);
   const [isCurrent, setIsCurrent] = useState<boolean>(false);
   const markerRef = useRef<HTMLDivElement>(null);
@@ -26,7 +27,6 @@ const MapMarker = ({ map, stop }: Props) => {
 
   const navigateToStop = useCallback(() => {
     if (isMobile) return;
-
     setCurrentStop(stop);
     document.getElementById(stop.slug)?.scrollIntoView({ behavior: "instant" });
   }, [stop, setCurrentStop, isMobile]);
@@ -43,9 +43,11 @@ const MapMarker = ({ map, stop }: Props) => {
       .setLngLat([stop.lng, stop.lat])
       .addTo(map);
 
-    map.fitBounds(map.getBounds().extend([stop.lng, stop.lat]), {
-      padding: 50,
-    });
+    if (fitBounds) {
+      map.fitBounds(map.getBounds().extend([stop.lng, stop.lat]), {
+        padding: 50,
+      });
+    }
 
     if (isMobile) marker.setPopup(popup);
 
@@ -134,6 +136,8 @@ const MapMarker = ({ map, stop }: Props) => {
               width: isCurrent ? "48px" : "32px",
               height: isCurrent ? "48px" : "32px",
               cursor: "pointer",
+              filter:
+                "drop-shadow(0.25px 0 0 black) drop-shadow(-0.25px 0 0 black) drop-shadow(0 0.25px 0 black) drop-shadow(0 -0.25px 0 black)",
             }}
           />
           <span
@@ -141,7 +145,14 @@ const MapMarker = ({ map, stop }: Props) => {
               isCurrent ? "text-xl" : "text-base"
             }`}
           >
-            {stop.position}
+            {stop.position === 0 ? (
+              <FontAwesomeIcon
+                icon={faCircle}
+                className="text-xs text-black/35"
+              />
+            ) : (
+              <>{stop.position}</>
+            )}
           </span>
         </div>
         <div ref={popContainerRef} id={`${stop.slug}-popup`}>

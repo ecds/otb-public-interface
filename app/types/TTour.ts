@@ -1,11 +1,14 @@
 import type { TStop } from "./TStop";
+import type { TTourFlatPage } from "./TTourFlatPage";
 import type { TTravelMode } from "./TTravelMode";
 
-export type TTourFlatPage = {
-  title: string;
-  position: number;
-  slug: string;
-  body: string;
+export type { TTourFlatPage };
+
+export type TVoiceOver = {
+  id: number;
+  filename: string;
+  language: string;
+  source_url: string;
 };
 
 export type TTourMedium = {
@@ -63,6 +66,7 @@ export type TTour = {
     | undefined;
   map_type: "satellite" | "road" | "hybrid";
   media: TTourMedium[];
+  mode: TTravelMode;
   modes: TTravelMode[];
   restrict_bounds: boolean;
   restrict_bounds_to_overlay: boolean;
@@ -73,6 +77,7 @@ export type TTour = {
     url: string;
   };
   slug: string;
+  slugs: string[];
   stop_count: number;
   stops: TTourStop[];
   tenant: string;
@@ -80,4 +85,5 @@ export type TTour = {
   theme: { id: number; title: string };
   type: "tour";
   use_directions: boolean;
+  voice_overs: TVoiceOver[];
 };

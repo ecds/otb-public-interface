@@ -1,12 +1,14 @@
 import { Suspense, useContext } from "react";
 import { Await } from "react-router";
+import MainContent from "~/components/shared/MainContent";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import MainContent from "~/components/shared/MainContent";
 
 export default function Tour() {
-  const { tour } = useContext(TourContext);
+  const { tour, setCurrentStop } = useContext(TourContext);
   const { isMobile } = useDeviceContext();
+
+  setCurrentStop(undefined);
 
   if (tour && isMobile) {
     return (

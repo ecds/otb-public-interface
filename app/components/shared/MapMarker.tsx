@@ -7,8 +7,8 @@ import {
 import { useCallback, useContext, useState } from "react";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import type { TTourStop } from "~/types/TTour";
 import PopUpContent from "../mobile/PopUpContent";
+import type { TTourStop } from "~/types";
 
 const MapMarker = ({
   stop,

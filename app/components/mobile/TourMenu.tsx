@@ -1,17 +1,20 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
 import { Link } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import { PermissionsContext } from "~/contexts/PermissionsContext";
 
 const TourMenu = () => {
   const { isDesktop } = useDeviceContext();
-  const { tour, setCurrentFlatPage, showMenu, setShowMenu } =
-    useContext(TourContext);
-
-  const { setShowPermissionsModal } = useContext(PermissionsContext);
+  const {
+    tour,
+    setCurrentFlatPage,
+    setCurrentStop,
+    showMenu,
+    setShowMenu,
+    setShowPermissionsModal,
+  } = useContext(TourContext);
 
   const handleLinkClick = () => {
     setShowMenu(false);
@@ -19,6 +22,7 @@ const TourMenu = () => {
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
+    setCurrentStop(undefined);
   };
 
   if (isDesktop) return <></>;
@@ -60,6 +64,15 @@ const TourMenu = () => {
                 onClick={handleLinkClick}
               >
                 All Tours
+              </Link>
+            </li>
+            <li>
+              <Link
+                to={`/${tour?.slug}/stops`}
+                className="block text-gray-300 hover:text-white rounded hover:bg-gray-700"
+                onClick={handleLinkClick}
+              >
+                Stops
               </Link>
             </li>
             <li>

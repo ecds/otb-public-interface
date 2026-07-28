@@ -1,6 +1,6 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
-import type { TTourMedium } from "~/types/TTour";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { TTourMedium } from "~/types";
 
 interface Props {
   medium: TTourMedium;
@@ -9,13 +9,6 @@ interface Props {
 }
 
 const Medium = ({ medium, onClick, index = 0 }: Props) => {
-  // const { resize } = useContext(ScrollamaContext);
-  // const [loaded, setLoaded] = useState<boolean>(false);
-
-  // useEffect(() => {
-  //   if (resize && loaded) resize();
-  // }, [resize, loaded]);
-
   const handleClick = () => {
     if (onClick) onClick(index);
   };

@@ -1,3 +1,5 @@
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Dialog,
   DialogBackdrop,
@@ -8,82 +10,37 @@ import {
   DisclosurePanel,
   Switch,
 } from "@headlessui/react";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { AnimatePresence, easeOut, motion } from "framer-motion";
-
-import { Fragment, useContext } from "react";
+import { Fragment, useContext, useEffect } from "react";
+import { TourContext } from "~/contexts/TourContext";
+import { usePreferences } from "~/hooks";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { cookies, setPreferences } from "~/utils/cookies";
-import type { TCookieName } from "~/types/TCookies";
-import type { Dispatch, SetStateAction } from "react";
-import { PermissionsContext } from "~/contexts/PermissionsContext";
+import { cookies } from "~/utils/cookies";
 
 const PermissionsModal = () => {
+  const { showPermissionsModal, setShowPermissionsModal, setShowMenu } =
+    useContext(TourContext);
+
   const {
-    showPermissionsModal,
-    setShowPermissionsModal,
-    analyticsAllowed,
-    setAnalyticsAllowed,
-    gMaps,
-    setGMaps,
-    locationAllowed,
-    setLocationAllowed,
-    realtimeLocation,
-    setRealtimeLocation,
-    functional,
-    setFunctional,
-  } = useContext(PermissionsContext);
-
-  const setters: { [Key in TCookieName]: Dispatch<SetStateAction<boolean>> } = {
-    analyticsAllowed: setAnalyticsAllowed,
-    gMaps: setGMaps,
-    locationAllowed: setLocationAllowed,
-    realtimeLocation: setRealtimeLocation,
-    functional: setFunctional,
-  };
-
-  const currentPrefs: { [Key in TCookieName]: boolean } = {
-    analyticsAllowed,
-    gMaps,
-    locationAllowed,
-    realtimeLocation,
-    functional,
-  };
+    preferences,
+    acceptAll,
+    denyAll,
+    addPreference,
+    removePreference,
+    refresh,
+  } = usePreferences();
 
   const { isMobile } = useDeviceContext();
 
-  const handleAcceptAll = () => {
-    for (const setter in setters) {
-      setters[setter as TCookieName](true);
-    }
-    setShowPermissionsModal(false);
-  };
-
-  const handleSave = () => {
-    setPreferences(
-      "OpenTour",
-      (Object.keys(currentPrefs) as TCookieName[]).filter(
-        (p) => currentPrefs[p],
-      ),
-    );
-    setShowPermissionsModal(false);
-  };
-
-  const handleDecline = () => {
-    for (const setter in setters) {
-      setters[setter as TCookieName](false);
-    }
-    setFunctional(true);
-    setPreferences("OpenTour", ["functional"]);
-    setShowPermissionsModal(false);
-  };
+  useEffect(() => {
+    if (showPermissionsModal) refresh();
+  }, [refresh, showPermissionsModal]);
 
   if (isMobile) {
     return (
       <Dialog
         open={showPermissionsModal}
-        onClose={() => {}}
+        onClose={() => setShowMenu(false)}
         className="relative z-50"
       >
         <DialogBackdrop className="fixed inset-0 bg-black/80" />{" "}
@@ -97,20 +54,6 @@ const PermissionsModal = () => {
               third-party feature; no map loads until you enable it. No data is
               sold. No advertising.{" "}
             </p>
-            <div className="flex flex-wrap space-x-2 text-xs space-y-1">
-              <div className="bg-black/10 text-black/75 px-1 py-0.5 border-black/50 border-2 rounded-md">
-                No ads
-              </div>
-              <div className="bg-black/10 text-black/75 px-1 py-0.5 border-black/50 border-2 rounded-md">
-                No data sales
-              </div>
-              <div className="bg-black/10 text-black/75 px-1 py-0.5 border-black/50 border-2 rounded-md">
-                Analytics self-hosted
-              </div>
-              <div className="bg-amber-500/10 text-black/75 px-1 py-0.5 border-black/50 border-2 rounded-md">
-                Google Maps (optional third party)
-              </div>
-            </div>
             <div className="">
               <h1>Cookie Settings</h1>
               {cookies.map((cookie) => {
@@ -153,9 +96,19 @@ const PermissionsModal = () => {
                     </div>
                     <div className="grow-0 justify-self-end">
                       <Switch
-                        checked={currentPrefs[cookie.id]}
-                        disabled={cookie.required}
-                        onChange={setters[cookie.id]}
+                        checked={preferences.includes(cookie.id)}
+                        disabled={
+                          cookie.required ||
+                          (cookie.dependsOn &&
+                            !preferences.includes(cookie.dependsOn))
+                        }
+                        onChange={() => {
+                          if (preferences.includes(cookie.id)) {
+                            removePreference(cookie.id);
+                          } else {
+                            addPreference(cookie.id);
+                          }
+                        }}
                         className="group relative flex h-5 w-10 cursor-pointer rounded-full bg-gray-200 p-1 ease-in-out focus:not-data-focus:outline-none data-checked:bg-blue-500/10 data-focus:outline data-focus:outline-blue-500 justify-self-end decoration-atl-primary disabled:opacity-50"
                       >
                         <span
@@ -170,18 +123,32 @@ const PermissionsModal = () => {
             </div>
             <div className="flex flex-row space-x-1  grow text-xs justify-around">
               <button
-                onClick={handleAcceptAll}
+                onClick={() => {
+                  setShowPermissionsModal(false);
+                  setShowMenu(false);
+                  acceptAll();
+                }}
                 className="bg-blue-500 rounded-md text-white px-1 py-0.5"
               >
                 Accept All
               </button>
               <button
                 className="border-2 px-1 py-0.5 border-black/50 rounded-md"
-                onClick={handleSave}
+                onClick={() => {
+                  setShowPermissionsModal(false);
+                  setShowMenu(false);
+                }}
               >
                 Save Choices
               </button>
-              <button onClick={handleDecline} className="text-black/60">
+              <button
+                onClick={() => {
+                  setShowPermissionsModal(false);
+                  setShowMenu(false);
+                  denyAll();
+                }}
+                className="text-black/60"
+              >
                 Decline Optional
               </button>
             </div>

@@ -1,8 +1,8 @@
-import { useContext } from "react";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { useContext } from "react";
 import { TourContext } from "~/contexts/TourContext";
-import MapOverlay from "../shared/MapOverlay";
 import MapMarker from "../shared/MapMarker";
+import MapOverlay from "../shared/MapOverlay";
 
 const TourGoogleMap = () => {
   const { currentStop, tour } = useContext(TourContext);

@@ -1,8 +1,10 @@
+import { mapAttributions } from "~/map_styles";
+
 const AboutOTB = () => {
   return (
     <div>
-      <h3>About OpenTour</h3>
-      <p>
+      <h3 className="text-lg font-semibold">About OpenTour</h3>
+      <p className="text-sm">
         OpenTour Builder is an open source software platform for building
         geospatial tours that are optimized for mobile devices. OpenTour Builder
         continues to be developed by the{" "}
@@ -13,15 +15,15 @@ const AboutOTB = () => {
         The current version of OpenTour Builder, v. 3.0, was launched in March
         of 2019, and continues to be improved.
       </p>
-      <p>
+      <p className="text-sm">
         With this tool, tour builders can easily create interactive, attractive
-        tours that guide users from stop to stop using their smartphone's GPS
-        and OpenTour Builder's native Google Maps instructions. At each
+        tours that guide users from stop to stop using their smartphone&apos;s
+        GPS and OpenTour Builder&apos;s native Google Maps instructions. At each
         location, the designer can include images, video, text, and external
         links to provide historical and cultural context, tying that information
         to the physical space.
       </p>
-      <p>
+      <p className="text-sm">
         An Emory-supported instance of{" "}
         <a href="https://opentour.site/">OpenTour</a> is now available for those
         who intend to use the technology for educational purposes or the
@@ -35,6 +37,21 @@ const AboutOTB = () => {
         </a>
         .
       </p>
+      <h4 className="font-semibold">Map Providers</h4>
+      <p className="text-sm">Maps are provided by various sources</p>
+      <ul className="text-sm">
+        {mapAttributions.map((attr) => {
+          return (
+            <li
+              key={attr}
+              dangerouslySetInnerHTML={{
+                // @ts-expect-error: mapAttributions is a filter array. None are undefined.
+                __html: attr,
+              }}
+            />
+          );
+        })}
+      </ul>
       <section className="p-12">
         <img
           src="/images/emory-center-for-digital-scholarship-logo-rev.svg"

@@ -1,5 +1,4 @@
 import { createContext } from "react";
-
 import type { Dispatch, SetStateAction } from "react";
 
 type Context = {
@@ -11,6 +10,8 @@ type Context = {
   setLocationAllowed: Dispatch<SetStateAction<boolean>>;
   realtimeLocation: boolean;
   setRealtimeLocation: Dispatch<SetStateAction<boolean>>;
+  thirdPartyEmbeds: boolean;
+  setThirdPartyEmbeds: Dispatch<SetStateAction<boolean>>;
   functional: boolean;
   setFunctional: Dispatch<SetStateAction<boolean>>;
   showPermissionsModal: boolean;
@@ -26,6 +27,8 @@ export const PermissionsContext = createContext<Context>({
   setLocationAllowed: (_: SetStateAction<boolean>) => {},
   realtimeLocation: false,
   setRealtimeLocation: (_: SetStateAction<boolean>) => {},
+  thirdPartyEmbeds: false,
+  setThirdPartyEmbeds: (_: SetStateAction<boolean>) => {},
   functional: false,
   setFunctional: (_: SetStateAction<boolean>) => {},
   showPermissionsModal: false,

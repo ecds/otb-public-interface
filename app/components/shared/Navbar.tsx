@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { Link } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
-import TourMenu from "../mobile/TourMenu";
 import FlatPageLinks from "../desktop/FlatPageLinks";
 import StopMenu from "../desktop/StopMenu";
+import TourMenu from "../mobile/TourMenu";
 import type { ReactNode } from "react";
-import type { TTourSetPreview } from "~/types/TTourSet";
+import type { TTourSetPreview } from "~/types";
 
 const Navbar = ({
   children,

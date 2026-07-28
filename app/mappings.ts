@@ -4,7 +4,7 @@ import {
   faSubway,
   faWalking,
 } from "@fortawesome/free-solid-svg-icons";
-import type { TTravelMode } from "./types/TTravelMode";
+import type { TTravelMode } from "./types";
 
 export const themes = [
   {

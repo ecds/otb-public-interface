@@ -22,7 +22,6 @@ const TourMap = () => {
       container: mapContainerRef.current,
       style: mapStyle,
       bounds,
-      attributionControl: false,
     });
 
     setMap(tourMap);

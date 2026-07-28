@@ -20,26 +20,10 @@ export const satellite: StyleSpecification = {
       tiles: [
         "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
       ],
+      // scheme: "tms",
       tileSize: 256,
-      maxzoom: 18,
+      maxzoom: 19,
       attribution: "ESRI &copy; <a href='http://www.esri.com'>ESRI</a>",
-    },
-    ortoInstaMaps: {
-      type: "raster",
-      tiles: [
-        "https://tilemaps.icgc.cat/mapfactory/wmts/orto_8_12/CAT3857/{z}/{x}/{y}.png",
-      ],
-      tileSize: 256,
-      maxzoom: 13,
-    },
-    ortoICGC: {
-      type: "raster",
-      tiles: [
-        "https://geoserveis.icgc.cat/icc_mapesmultibase/noutm/wmts/orto/GRID3857/{z}/{x}/{y}.jpeg",
-      ],
-      tileSize: 256,
-      minzoom: 13.1,
-      maxzoom: 20,
     },
   },
   layers: [
@@ -54,26 +38,6 @@ export const satellite: StyleSpecification = {
       id: "ortoEsri",
       type: "raster",
       source: "ortoEsri",
-      maxzoom: 16,
-      layout: {
-        visibility: "visible",
-      },
-    },
-    {
-      id: "ortoICGC",
-      type: "raster",
-      source: "ortoICGC",
-      minzoom: 13.1,
-      maxzoom: 19,
-      layout: {
-        visibility: "visible",
-      },
-    },
-    {
-      id: "ortoInstaMaps",
-      type: "raster",
-      source: "ortoInstaMaps",
-      maxzoom: 13,
       layout: {
         visibility: "visible",
       },

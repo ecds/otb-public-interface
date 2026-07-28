@@ -6,9 +6,11 @@ import fs from "node:fs";
 import https from "node:https";
 import http from "node:http";
 import path from "node:path";
+import { RouterContextProvider } from "react-router";
+import { requestContext, tenantContext } from "./app/context.js";
 
 const minSubdomainCount = () => {
-  if (process.env.NODE_ENV === "staging") {
+  if (process.env.NODE_ENV === "production") {
     return 1;
   }
   return 0;
@@ -20,27 +22,23 @@ const viteDevServer =
     : await import("vite").then((vite) =>
         vite.createServer({
           server: { middlewareMode: true },
-        })
+        }),
       );
 
 const handler = createRequestHandler({
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule("virtual:react-router/server-build")
     : await import("./build/server/index.js"),
-  getLoadContext: (req, res) => {
+  getLoadContext: (req) => {
     const host = req.get("Host");
     const tenant =
       req.subdomains.length > minSubdomainCount()
         ? req.subdomains.pop()
         : undefined;
-    const port = host.split(":").pop();
-    const request = {
-      protocol: req.protocol,
-      host,
-      subdomains: req.subdomains,
-      port,
-    };
-    return { tenant, res, request };
+    const context = new RouterContextProvider();
+    context.set(tenantContext, tenant);
+    context.set(requestContext, { protocol: req.protocol, host });
+    return context;
   },
 });
 
@@ -58,7 +56,7 @@ if (viteDevServer) {
   // Vite fingerprints its assets so we can cache forever.
   app.use(
     "/assets",
-    express.static("build/client/assets", { immutable: true, maxAge: "1y" })
+    express.static("build/client/assets", { immutable: true, maxAge: "1y" }),
   );
 }
 
@@ -90,10 +88,10 @@ const startedMessage = () => {
   console.warn(
     `🚀 ${protocol.toUpperCase()} server running at ${protocol}://0.0.0.0:${port} (pid: ${
       process.pid
-    })`
+    })`,
   );
   console.warn(
-    `For local subdomains, use a fully qualified domain (e.g. ${protocol}://lvh.me:${port}).`
+    `For local subdomains, use a fully qualified domain (e.g. ${protocol}://lvh.me:${port}).`,
   );
 };
 

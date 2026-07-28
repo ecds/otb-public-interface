@@ -7,16 +7,12 @@ import {
   useLoaderData,
 } from "react-router";
 import TourSiteContext from "./contexts/tourSiteContext";
+import { requestContext, tenantContext } from "./context";
 import { getTourSet } from "./data";
-import type { MetaFunction, LinksFunction } from "react-router";
-import type { TLoaderContext } from "./types/TLoaderContext";
-
-import styles from "./index.css?url";
 import { useDeviceContext } from "./hooks/deviceContext";
+import styles from "./index.css?url";
+import type { MetaFunction, LinksFunction, LoaderFunctionArgs } from "react-router";
 
-interface LoaderProps {
-  context: TLoaderContext;
-}
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const meta: MetaFunction = () => {
@@ -27,8 +23,9 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ context }: LoaderProps) => {
-  const { tenant, request } = context;
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  const tenant = context.get(tenantContext);
+  const request = context.get(requestContext);
   if (tenant && tenant !== "otb") {
     const tourSet = await getTourSet(tenant);
     return { tourSet, request };
@@ -56,7 +53,7 @@ export default function App() {
         </head>
         <body>
           {(isMobile || isDesktop) && <Outlet />}
-          <ScrollRestoration />
+          {isMobile && <ScrollRestoration />}
           <Scripts />
         </body>
       </html>

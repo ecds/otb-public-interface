@@ -1,5 +1,3 @@
-import { useContext, useEffect, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAngleLeft,
   faAngleRight,
@@ -7,7 +5,8 @@ import {
   faList,
   faMap,
 } from "@fortawesome/free-solid-svg-icons";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext, useEffect, useState } from "react";
 import { NavLink } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
 

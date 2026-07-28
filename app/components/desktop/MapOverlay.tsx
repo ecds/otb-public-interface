@@ -38,8 +38,12 @@ const MapOverlay = ({ map }: Props) => {
     });
 
     return () => {
-      if (map && map.getLayer(id)) map.removeLayer(id);
-      if (map && map.getSource(id)) map.removeSource(id);
+      try {
+        if (map && map.getLayer(id)) map.removeLayer(id);
+        if (map && map.getSource(id)) map.removeSource(id);
+      } catch (_) {
+        // map already destroyed
+      }
     };
   }, [map, tour]);
 

@@ -1,10 +1,10 @@
-import type { MetaFunction } from "react-router";
-import { getTourSets } from "~/data";
 import { redirect, useLoaderData } from "react-router";
-import AllToursMap from "~/components/index/AllToursMap.client";
 import ClientOnly from "~/components/ClientOnly";
-import type { TTourSet } from "~/types/TTourSet";
-import type { TLoaderContext } from "~/types/TLoaderContext";
+import AllToursMap from "~/components/index/AllToursMap.client";
+import { requestContext, tenantContext } from "~/context";
+import { getTourSets } from "~/data";
+import type { MetaFunction, LoaderFunctionArgs } from "react-router";
+import type { TTourSet } from "~/types";
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,8 +13,9 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-export const loader = async ({ context }: { context: TLoaderContext }) => {
-  const { tenant, request } = context;
+export const loader = async ({ context }: LoaderFunctionArgs) => {
+  const tenant = context.get(tenantContext);
+  const request = context.get(requestContext);
   if (tenant && tenant !== "otb") {
     if (request.host.includes(tenant)) {
       throw redirect("/tours");
@@ -32,14 +33,21 @@ export default function Index() {
     <div>
       <ClientOnly>
         <AllToursMap
-          tours={tourSets.map((ts: TTourSet) => ts.mapable_tours).flat()}
+          tours={tourSets
+            .map((ts: TTourSet) =>
+              ts.mapable_tours.map((tour) => {
+                return { ...tour, tenant: ts.subdir };
+              }),
+            )
+            .flat()}
+          request={request}
         />
       </ClientOnly>
       <div className="m-8">
         <ul className="grid grid-cols-1 w-full md:px-16">
           {tourSets?.map((ts: TTourSet) => {
             return (
-              <li key={ts.id} className="grid mb-8">
+              <li key={ts.subdir} className="grid mb-8">
                 <a
                   className="bg-gray-300 text-xl px-2 py-1"
                   href={`${request.protocol}://${ts.subdir}.${request.host}`}
@@ -48,15 +56,17 @@ export default function Index() {
                 </a>
                 <ul className="list-disc">
                   {ts.published_tours.map((tour) => {
-                    return (
-                      <li key={tour.slug} className="ml-8 text-small">
-                        <a
-                          href={`${request.protocol}://${ts.subdir}.${request.host}/${tour.slug}`}
-                        >
-                          {tour.title}
-                        </a>
-                      </li>
-                    );
+                    if (tour) {
+                      return (
+                        <li key={tour.slug} className="ml-8 text-small">
+                          <a
+                            href={`${request.protocol}://${ts.subdir}.${request.host}/${tour.slug}`}
+                          >
+                            {tour.title}
+                          </a>
+                        </li>
+                      );
+                    }
                   })}
                 </ul>
               </li>

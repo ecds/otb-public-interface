@@ -25,14 +25,8 @@ const MapOverlay = () => {
     }
 
     const bounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(
-        parseFloat(tour.map_overlay.south),
-        parseFloat(tour.map_overlay.west),
-      ),
-      new google.maps.LatLng(
-        parseFloat(tour.map_overlay.north),
-        parseFloat(tour.map_overlay.east),
-      ),
+      new google.maps.LatLng(tour.map_overlay.south, tour.map_overlay.west),
+      new google.maps.LatLng(tour.map_overlay.north, tour.map_overlay.east),
     );
 
     const overlay = new google.maps.GroundOverlay(

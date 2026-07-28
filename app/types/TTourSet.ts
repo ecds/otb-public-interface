@@ -1,7 +1,12 @@
 export type TTourSetTour = {
   title: string;
   slug: string;
+  tenant: string;
   center: {
+    lat: number;
+    lng: number;
+  };
+  location: {
     lat: number;
     lng: number;
   };

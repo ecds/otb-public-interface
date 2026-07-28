@@ -1,10 +1,9 @@
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useContext } from "react";
 import { TourContext } from "~/contexts/TourContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-
-import type { TTourFlatPage } from "~/types/TTourFlatPage";
 import AboutOTB from "./AboutOTB";
+import type { TTourFlatPage } from "~/types";
 
 interface Props {
   flatPage: TTourFlatPage | string;

@@ -11,13 +11,6 @@ const fetchData = async (url: string) => {
   return data;
 };
 
-// export const getStop = async (tenant: string, stop: number) => {
-//   const response = await fetchData(
-//     `https://api.opentour.site/${tenant}/v4/public/stops/${stop}`
-//   );
-//   return response.data;
-// };
-
 export const getTourSets = async () => {
   const response = await fetchData(
     "https://api.opentour.site/public/v4/public/tour-sets",

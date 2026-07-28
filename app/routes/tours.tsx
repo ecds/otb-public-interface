@@ -1,15 +1,16 @@
-import { getTours, isSignedIn } from "~/data";
+import { useEffect } from "react";
 import { Link, useLoaderData, redirect, useNavigate } from "react-router";
+import { requestContext, tenantContext } from "~/context";
+import { getTours, isSignedIn } from "~/data";
 import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
 } from "react-router";
-import type { TTour } from "~/types/TTour";
-import type { TTourSetPreview } from "~/types/TTourSet";
-import { useEffect } from "react";
+import type { TTour , TTourSetPreview } from "~/types";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
-  const { tenant, request } = context;
+  const tenant = context.get(tenantContext);
+  const request = context.get(requestContext);
   if (!tenant) {
     throw redirect(`${request.protocol}://${process?.env.HOST}`);
   }
@@ -29,10 +30,6 @@ export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
 }
 
 clientLoader.hydrate = true as const;
-
-// export const meta = ({ data }: { data: { tours: TTour[] } }) => {
-//   return [{ title: data?.tours?.[0]?.tenant || "Tours" }];
-// };
 
 const TourCard = ({ tour }: { tour: TTour }) => {
   return (

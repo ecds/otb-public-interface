@@ -1,5 +1,5 @@
-import type { StyleSpecification } from "maplibre-gl";
 import { transportation } from "./transportation";
+import type { StyleSpecification } from "maplibre-gl";
 
 export const baseStyle: StyleSpecification = {
   version: 8,
@@ -15,6 +15,8 @@ export const baseStyle: StyleSpecification = {
     openmaptiles: {
       type: "vector",
       url: "https://tiles.openfreemap.org/planet",
+      attribution:
+        '<a href="https://openfreemap.org" target="_blank">OpenFreeMap</a>',
     },
   },
   sprite: "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
