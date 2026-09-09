@@ -3,11 +3,13 @@ import { Await, useLoaderData, Outlet, redirect } from "react-router";
 import StopList from "~/components/desktop/StopList";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
 import TourMap from "~/components/desktop/TourMap";
+import ConsentSheet from "~/components/mobile/ConsentSheet";
 import MobileNav from "~/components/mobile/Nav";
 import PermissionsModal from "~/components/mobile/PermissionsModal";
 import FlatPage from "~/components/shared/FlatPage";
 import MainContent from "~/components/shared/MainContent";
 import Navbar from "~/components/shared/Navbar";
+import { hasSetPreferences } from "~/utils/cookies";
 import { requestContext, tenantContext } from "~/context";
 import { TourContext } from "~/contexts/TourContext";
 import { getTour, isSignedIn } from "~/data";
@@ -72,7 +74,14 @@ export default function Tour() {
   const [mapStyle, setMapStyle] = useState<StyleSpecification>(baseStyle);
   const [showPermissionsModal, setShowPermissionsModal] =
     useState<boolean>(false);
+  const [showConsentSheet, setShowConsentSheet] = useState<boolean>(false);
   const stopParamRef = useRef<string | undefined>(stopParam);
+
+  useEffect(() => {
+    if (isMobile && !hasSetPreferences()) {
+      setShowConsentSheet(true);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     if (!stopParamRef.current || !tour) return;
@@ -164,6 +173,14 @@ export default function Tour() {
                 <>
                   <MobileNav />
                   <Outlet />
+                  <ConsentSheet
+                    open={showConsentSheet}
+                    onDone={() => setShowConsentSheet(false)}
+                    onManage={() => {
+                      setShowConsentSheet(false);
+                      setShowPermissionsModal(true);
+                    }}
+                  />
                   <PermissionsModal />
                   <TourFlatPages />
                   <FlatPage flatPage="about" />

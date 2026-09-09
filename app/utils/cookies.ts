@@ -1,54 +1,44 @@
-import type { TCookie, TCookieName } from "~/types";
+import type { TPreference, TPreferenceList, TPreferenceName } from "~/types";
 
-export const sitePreferences = () => {
-  const sitePrefs = preferences("OpenTour");
-  if (sitePrefs) {
-    return sitePrefs;
-  } else {
-    return setPreferences("OpenTour", []);
-  }
-};
+const STORAGE_KEY = "OpenTour";
 
-export const preferences = (storeKey: string) => {
+export const getPreferences = (): TPreferenceName[] => {
   try {
-    const raw = localStorage.getItem(storeKey);
+    const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) return JSON.parse(raw);
   } catch {
     console.warn("Could not access local storage");
   }
-
-  return null;
+  return ["functional"];
 };
 
-export const setPreferences = (storeKey: string, preferences: TCookie) => {
+export const hasSetPreferences = (): boolean => {
   try {
-    localStorage.setItem(storeKey, JSON.stringify(preferences));
-    return preferences;
+    return localStorage.getItem(STORAGE_KEY) !== null;
+  } catch {
+    return false;
+  }
+};
+
+export const savePreferences = (prefs: TPreferenceList): TPreferenceList => {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(prefs));
   } catch {
     console.warn("Could not access local storage");
   }
-
-  return null;
+  return prefs;
 };
 
-export const cookies: {
-  id: TCookieName;
-  label: string;
-  required: boolean;
-  description: string;
-  detail?: string;
-  thirdParty?: boolean | undefined;
-  dependsOn?: TCookieName | undefined;
-}[] = [
+export const cookies: TPreference[] = [
   {
-    id: "functional" as TCookieName,
+    id: "functional",
     label: "Functional",
     required: true,
     description:
       "Remembers that you've made a cookie choice so this banner doesn't reappear. No personal data is collected.",
   },
   {
-    id: "analyticsAllowed" as TCookieName,
+    id: "analyticsAllowed",
     label: "Anonymous analytics",
     required: false,
     description:
@@ -57,7 +47,7 @@ export const cookies: {
     thirdParty: false,
   },
   {
-    id: "gMaps" as TCookieName,
+    id: "gMaps",
     label: "Google Maps",
     required: false,
     description:
@@ -66,7 +56,7 @@ export const cookies: {
     thirdParty: true,
   },
   {
-    id: "locationAllowed" as TCookieName,
+    id: "locationAllowed",
     label: "Share location",
     required: false,
     description:
@@ -74,7 +64,7 @@ export const cookies: {
     thirdParty: false,
   },
   {
-    id: "realtimeLocation" as TCookieName,
+    id: "realtimeLocation",
     label: "Real-time location updates",
     required: false,
     description:
@@ -83,7 +73,7 @@ export const cookies: {
     thirdParty: false,
   },
   {
-    id: "thirdPartyEmbeds" as TCookieName,
+    id: "thirdPartyEmbeds",
     label: "3rd Party Embeds",
     required: false,
     description:
@@ -91,3 +81,5 @@ export const cookies: {
     thirdParty: true,
   },
 ];
+
+export const allPreferenceNames: TPreferenceName[] = cookies.map((c) => c.id);

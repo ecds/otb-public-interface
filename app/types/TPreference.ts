@@ -12,6 +12,8 @@ export type TPreference = {
   required: boolean;
   description: string;
   detail?: string;
-  thirdParty?: boolean | undefined;
-  dependsOn?: TPreferenceName | undefined;
+  thirdParty?: boolean;
+  dependsOn?: TPreferenceName;
 };
+
+export type TPreferenceList = TPreferenceName[];

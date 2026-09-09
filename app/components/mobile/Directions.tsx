@@ -18,6 +18,7 @@ const Directions = () => {
     parkingLocation,
     travelMode,
     locationAllowed,
+    realtimeLocation,
     addPreference,
     removePreference,
   } = useContext(StopMapContext);
@@ -193,6 +194,17 @@ const Directions = () => {
         {locationAllowed ? (
           <>
             <div className="text-right m-2 text-lg"></div>
+            {!realtimeLocation && (
+              <div className="flex items-center justify-between gap-3 px-3 py-2 mx-2 mb-1 rounded-lg bg-blue-50 text-xs text-blue-800">
+                <span>Enable real-time location to keep directions current as you move.</span>
+                <button
+                  onClick={() => addPreference("realtimeLocation")}
+                  className="shrink-0 bg-blue-500 text-white rounded-md px-3 py-1"
+                >
+                  Enable
+                </button>
+              </div>
+            )}
             <TabGroup className="p-2 sticky">
               <TabList className="flex mb-2 text-lg space-x-4">
                 {(currentStop?.direction_intro ||

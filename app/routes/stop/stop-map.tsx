@@ -6,6 +6,7 @@ import GrantLocationAccess from "~/components/mobile/location/LocationServices";
 import DeviceLocationMarker from "~/components/mobile/mapMarkers/DeviceLocation";
 import ParkingMarker from "~/components/mobile/mapMarkers/Parking";
 import StopMarker from "~/components/mobile/mapMarkers/Stop";
+import MapNudge from "~/components/mobile/MapNudge";
 import StopGMap from "~/components/mobile/StopGMap";
 import StopMap from "~/components/mobile/StopMap";
 import TravelModeSelector from "~/components/mobile/TravelModeSelector";
@@ -116,15 +117,14 @@ const StopMapRoute = () => {
         </StopGMap>
       ) : (
         <>
-          <div className="w-screen h-[calc(100vh-10rem)] md:h-[calc(100vh-8rem)] mt-16">
+          <div className="w-screen h-[calc(100vh-12rem)] md:h-[calc(100vh-8rem)] mt-16">
             <StopMap />
           </div>
-          <button
-            className="md:hidden text-xs text-center w-full my-auto underline"
-            onClick={() => setShowPermissionsModal(true)}
-          >
-            Allow Google Maps and location to see directions.
-          </button>
+          <MapNudge
+            gMaps={gMaps}
+            locationAllowed={locationAllowed}
+            addPreference={addPreference}
+          />
         </>
       )}
     </StopMapContext.Provider>

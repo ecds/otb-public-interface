@@ -3,14 +3,13 @@ import ClientOnly from "~/components/ClientOnly";
 import TourMap from "~/components/desktop/TourMap";
 import TourGoogleMap from "~/components/mobile/TourMap.client";
 import { TourContext } from "~/contexts/TourContext";
-import { sitePreferences } from "~/utils/cookies";
-
-const currentPrefs = sitePreferences();
+import { usePreferences } from "~/hooks";
 
 const TourMapRoute = () => {
   const { tour } = useContext(TourContext);
+  const { gMaps } = usePreferences();
 
-  if (currentPrefs.includes("gMap") && tour?.use_directions) {
+  if (gMaps && tour?.use_directions) {
     return (
       <div className="w-screen h-[calc(100vh-8rem)] mt-16">
         <ClientOnly>

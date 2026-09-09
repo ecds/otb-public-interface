@@ -1,66 +1,33 @@
 import { useCallback, useEffect, useState } from "react";
+import { allPreferenceNames, getPreferences, savePreferences } from "~/utils/cookies";
 import type { TPreferenceName } from "~/types";
 
-const STORAGE_KEY = "OpenTour";
-const currentPrefs = () => {
-  const currentPrefStr = localStorage.getItem(STORAGE_KEY);
-  return currentPrefStr ? JSON.parse(currentPrefStr) : ["functional"];
-};
-
 export const usePreferences = () => {
-  const [preferences, setPreferences] =
-    useState<TPreferenceName[]>(currentPrefs());
-  const [analyticsAllowed, setAnalyticsAllowed] = useState<boolean>(
-    currentPrefs().includes("analyticsAllowed"),
-  );
-  const [gMaps, setGMaps] = useState<boolean>(currentPrefs().includes("gMaps"));
-  const [locationAllowed, setLocationAllowed] = useState<boolean>(
-    currentPrefs().includes("locationAllowed"),
-  );
-  const [realtimeLocation, setRealtimeLocation] = useState<boolean>(
-    currentPrefs().includes("realtimeLocation"),
-  );
-  const [thirdPartyEmbeds, setThirdPartyEmbeds] = useState<boolean>(
-    currentPrefs().includes("thirdPartyEmbeds"),
-  );
+  const [preferences, setPreferences] = useState<TPreferenceName[]>(getPreferences);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(preferences));
-    setAnalyticsAllowed(preferences.includes("analyticsAllowed"));
-    setGMaps(preferences.includes("gMaps"));
-    setLocationAllowed(preferences.includes("locationAllowed"));
-    setRealtimeLocation(preferences.includes("realtimeLocation"));
-    setThirdPartyEmbeds(preferences.includes("thirdPartyEmbeds"));
+    savePreferences(preferences);
   }, [preferences]);
 
-  const addPreference = (pref: TPreferenceName) => {
-    setPreferences([...new Set([...currentPrefs(), pref])]);
-  };
+  const addPreference = useCallback((pref: TPreferenceName) => {
+    setPreferences((prev) => [...new Set([...prev, pref])]);
+  }, []);
 
-  const removePreference = (pref: TPreferenceName) => {
-    setPreferences(
-      currentPrefs().filter(
-        (currentPref: TPreferenceName) => currentPref !== pref,
-      ),
-    );
-  };
+  const removePreference = useCallback((pref: TPreferenceName) => {
+    setPreferences((prev) => prev.filter((p) => p !== pref));
+  }, []);
 
-  const acceptAll = () => {
-    setPreferences([
-      "analyticsAllowed",
-      "functional",
-      "gMaps",
-      "locationAllowed",
-      "realtimeLocation",
-      "thirdPartyEmbeds",
-    ]);
-  };
+  const acceptAll = useCallback(() => {
+    setPreferences(allPreferenceNames);
+  }, []);
 
-  const denyAll = () => {
+  const denyAll = useCallback(() => {
     setPreferences(["functional"]);
-  };
+  }, []);
 
-  const refresh = useCallback(() => setPreferences(currentPrefs()), []);
+  const refresh = useCallback(() => {
+    setPreferences(getPreferences());
+  }, []);
 
   return {
     preferences,
@@ -68,11 +35,12 @@ export const usePreferences = () => {
     removePreference,
     acceptAll,
     denyAll,
-    analyticsAllowed,
-    gMaps,
-    locationAllowed,
-    realtimeLocation,
     refresh,
-    thirdPartyEmbeds,
+    functional: preferences.includes("functional"),
+    analyticsAllowed: preferences.includes("analyticsAllowed"),
+    gMaps: preferences.includes("gMaps"),
+    locationAllowed: preferences.includes("locationAllowed"),
+    realtimeLocation: preferences.includes("realtimeLocation"),
+    thirdPartyEmbeds: preferences.includes("thirdPartyEmbeds"),
   };
 };
