@@ -18,13 +18,18 @@ const viteDevServer =
         }),
       );
 
+const ENVIRONMENT_SUBDOMAINS = new Set(["dev", "staging", "www"]);
+
+const getTenant = (req) =>
+  req.subdomains.find((s) => !ENVIRONMENT_SUBDOMAINS.has(s));
+
 const handler = createRequestHandler({
   build: viteDevServer
     ? () => viteDevServer.ssrLoadModule("virtual:react-router/server-build")
     : await import("./build/server/index.js"),
   getLoadContext: (req) => {
     const host = req.get("Host");
-    const tenant = req.subdomains.at(-1);
+    const tenant = getTenant(req);
     const context = new RouterContextProvider();
     context.set(tenantContext, tenant);
     context.set(requestContext, { protocol: req.protocol, host });
@@ -49,7 +54,7 @@ app.get("/robots.txt", (req, res) => {
 });
 
 app.get("/sitemap.xml", async (req, res) => {
-  const tenant = req.subdomains.at(-1);
+  const tenant = getTenant(req);
 
   if (!tenant) {
     res.status(404).end();
