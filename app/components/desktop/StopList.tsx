@@ -1,4 +1,5 @@
 import { useRef, useContext, useEffect } from "react";
+import { useSearchParams } from "react-router";
 import scrollama from "scrollama";
 import { TourContext } from "~/contexts/TourContext";
 import { useResizeObserver } from "~/hooks/deviceContext";
@@ -23,11 +24,13 @@ const StopList = ({ className, intro }: Props) => {
   const scrollerRef = useRef<ScrollamaInstance | undefined>(undefined);
   const scrollerContainerRef = useRef<HTMLDivElement>(null);
   const { documentSize, mainContentSize } = useResizeObserver();
+  const [searchParams, _] = useSearchParams();
 
   useEffect(() => {
     if (!scrollerRef.current || !currentStop || !tour) return;
-    history.replaceState({}, "", `/${tour.slug}/${currentStop.slug}`);
-  }, [currentStop, tour]);
+    const params = searchParams.size > 0 ? `?${searchParams.toString()}` : "";
+    history.replaceState({}, "", `/${tour.slug}/${currentStop.slug}${params}`);
+  }, [currentStop, tour, searchParams]);
 
   useEffect(() => {
     if (!tour || !tour.stops) return;
