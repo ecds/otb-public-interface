@@ -10,8 +10,19 @@ import { getTours, isSignedIn } from "~/data";
 import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
+  MetaFunction,
 } from "react-router";
 import type { TTour, TTourSetPreview } from "~/types";
+
+export const meta: MetaFunction = ({ matches }) => {
+  const data = matches.find((m) => m.id === "routes/tours")?.loaderData as
+    | { tour_set?: TTourSetPreview }
+    | undefined;
+  return [
+    { title: data?.tour_set?.name ?? "Tours" },
+    { name: "description", content: data?.tour_set?.description ?? "" },
+  ];
+};
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const tenant = context.get(tenantContext);

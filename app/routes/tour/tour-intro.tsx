@@ -2,6 +2,22 @@ import { useContext, useEffect } from "react";
 import MainContent from "~/components/shared/MainContent";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
+import type { MetaFunction } from "react-router";
+import type { TTour } from "~/types";
+
+export const meta: MetaFunction = ({ matches }) => {
+  const data = matches.find((m) => m.id === "routes/tour")?.loaderData as
+    | { tour?: TTour }
+    | undefined;
+  return [
+    { title: data?.tour?.title ?? "Tour" },
+    { name: "description", content: data?.tour?.sanitized_description ?? "" },
+    {
+      property: "og:image",
+      content: data?.tour?.splash?.url ?? "/images/otblogo.png",
+    },
+  ];
+};
 
 export default function Tour() {
   const { tour, setCurrentStop } = useContext(TourContext);
