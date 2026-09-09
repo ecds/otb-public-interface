@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import ConsentSheet from "./ConsentSheet";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { resetPreferencesStore } from "~/hooks/usePreferences";
+import ConsentSheet from "./ConsentSheet";
 
 const mockStorage = (() => {
   let store: Record<string, string> = {};
@@ -20,11 +20,6 @@ beforeEach(() => {
   mockStorage.clear();
   resetPreferencesStore();
 });
-
-const seed = (prefs: string[]) => {
-  mockStorage.setItem("OpenTour", JSON.stringify(prefs));
-  resetPreferencesStore();
-};
 
 const setup = (props: Partial<Parameters<typeof ConsentSheet>[0]> = {}) => {
   const onDone = vi.fn();

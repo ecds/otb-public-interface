@@ -3,7 +3,6 @@ import { usePreferences } from "./usePreferences";
 
 const geoOpts = {
   enableHighAccuracy: true,
-  timeout: 5000,
   maximumAge: 0,
 };
 

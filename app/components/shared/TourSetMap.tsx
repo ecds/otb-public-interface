@@ -1,11 +1,11 @@
 import * as maplibregl from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
-import { baseStyle } from "~/map_styles";
-import TourMarker from "../shared/TourMarker";
-import "maplibre-gl/dist/maplibre-gl.css";
 import { Link } from "react-router";
-import type { TTour, TContextRequest } from "~/types";
+import "maplibre-gl/dist/maplibre-gl.css";
+import { baseStyle } from "~/map_styles";
 import TourCard from "./TourCard";
+import TourMarker from "./TourMarker";
+import type { TTour } from "~/types";
 
 interface Props {
   tours: TTour[];
@@ -55,7 +55,6 @@ const calcBounds = (tours: TTour[]) => {
 };
 
 const TourSetMap = ({ tours }: Props) => {
-  console.log("🚀 ~ TourSetMap ~ tours:", tours);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<maplibregl.Map | undefined>(undefined);
 

@@ -25,7 +25,7 @@ const Navbar = ({
       <>
         <div className="h-full flex items-center justify-between mx-auto px-4">
           {/* Desktop */}
-          <div className="flex flex-shrink-0 items-center w-screen md:w-auto">
+          <div className="flex shrink-0 items-center w-screen md:w-auto">
             <Link className="hidden md:block" to="/">
               <img
                 className="h-16 w-auto p-2"

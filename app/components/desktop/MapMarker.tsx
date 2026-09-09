@@ -57,7 +57,7 @@ const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
       marker.off("click", navigateToStop);
       marker.remove();
     };
-  }, [stop, map, navigateToStop, isMobile]);
+  }, [stop, map, navigateToStop, isMobile, fitBounds]);
 
   useEffect(() => {
     if (!map || !stop.map_icon) return;

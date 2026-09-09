@@ -1,10 +1,10 @@
-import { useState } from "react";
-import type { ReactNode } from "react";
 import {
   AdvancedMarker,
   InfoWindow,
   useAdvancedMarkerRef,
 } from "@vis.gl/react-google-maps";
+import { useState } from "react";
+import type { ReactNode } from "react";
 
 interface Props {
   title: string;

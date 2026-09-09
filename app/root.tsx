@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Links,
   Meta,
@@ -6,9 +7,8 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "react-router";
-import { useMemo } from "react";
-import TourSiteContext from "./contexts/tourSiteContext";
 import { requestContext, tenantContext } from "./context";
+import TourSiteContext from "./contexts/tourSiteContext";
 import { getTourSet } from "./data";
 import { DeviceContextProvider, useDeviceContext } from "./hooks/deviceContext";
 import styles from "./index.css?url";

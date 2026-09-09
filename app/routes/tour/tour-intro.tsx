@@ -1,5 +1,4 @@
-import { Suspense, useContext, useEffect } from "react";
-import { Await } from "react-router";
+import { useContext, useEffect } from "react";
 import MainContent from "~/components/shared/MainContent";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
@@ -13,13 +12,7 @@ export default function Tour() {
   }, [setCurrentStop]);
 
   if (tour && isMobile) {
-    return (
-      <Suspense fallback={<div>Loading tour...</div>}>
-        <Await resolve={tour}>
-          <MainContent content={tour} />
-        </Await>
-      </Suspense>
-    );
+    return <MainContent content={tour} />;
   }
 
   return (

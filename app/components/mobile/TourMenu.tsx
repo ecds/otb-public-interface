@@ -10,7 +10,6 @@ const TourMenu = () => {
   const {
     tour,
     setCurrentFlatPage,
-    setCurrentStop,
     showMenu,
     setShowMenu,
     setShowPermissionsModal,
@@ -22,7 +21,6 @@ const TourMenu = () => {
 
   const handleMenuClick = () => {
     setShowMenu(!showMenu);
-    setCurrentStop(undefined);
   };
 
   if (isDesktop) return <></>;

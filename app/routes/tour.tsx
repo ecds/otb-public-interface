@@ -1,5 +1,5 @@
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { Await, useLoaderData, Outlet, redirect } from "react-router";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useLoaderData, Outlet, redirect } from "react-router";
 import StopList from "~/components/desktop/StopList";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
 import TourMap from "~/components/desktop/TourMap";
@@ -55,8 +55,6 @@ export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
   } else {
     return { ...serverData };
   }
-
-  throw new Response(null, { status: 404, statusText: "Not found" });
 }
 
 clientLoader.hydrate = true as const;
@@ -100,10 +98,11 @@ export default function Tour() {
   }, [isMobile]);
 
   useEffect(() => {
-    if (!stopParamRef.current || !tour) return;
+    if (!stopParam || !tour) return;
+    stopParamRef.current = stopParam;
     setCurrentStop(
       tour.stops.find((stop: TTourStop) =>
-        stop.slugs.includes(stopParamRef.current ?? ""),
+        stop.slugs.includes(stopParam),
       ),
     );
   }, [stopParam, tour]);
@@ -152,49 +151,41 @@ export default function Tour() {
     }
   }, [tour]);
 
-  if (tour) {
-    return (
-      <TourContext.Provider value={tourContextValue}>
-        <>
-          <Navbar tour_set={tour_set} />
-          <Suspense fallback={<div>Loading tour...</div>}>
-            <Await resolve={tour}>
-              {isDesktop && tour && tour.stops && (
-                <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-16rem)] grid-flow-row auto-rows-max">
-                  <StopList
-                    className="text-black/80 leading-6"
-                    intro={<MainContent content={tour} />}
-                  />
-                  <div className="fixed right-0 w-1/2 h-full mt-16 pb-16">
-                    <TourMap />
-                  </div>
-                  <TourFlatPages />
-                  <FlatPage flatPage="about" />
-                </div>
-              )}
-              {isMobile && (
-                <>
-                  <MobileNav />
-                  <Outlet />
-                  <ConsentSheet
-                    open={showConsentSheet}
-                    onDone={() => setShowConsentSheet(false)}
-                    onManage={() => {
-                      setShowConsentSheet(false);
-                      setShowPermissionsModal(true);
-                    }}
-                  />
-                  <PermissionsModal />
-                  <TourFlatPages />
-                  <FlatPage flatPage="about" />
-                </>
-              )}
-            </Await>
-          </Suspense>
-        </>
-      </TourContext.Provider>
-    );
-  }
+  if (!tour) return <></>;
 
-  return <></>;
+  return (
+    <TourContext.Provider value={tourContextValue}>
+      <Navbar tour_set={tour_set} />
+      {isDesktop && tour.stops && (
+        <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-16rem)] grid-flow-row auto-rows-max">
+          <StopList
+            className="text-black/80 leading-6"
+            intro={<MainContent content={tour} />}
+          />
+          <div className="fixed right-0 w-1/2 h-full mt-16 pb-16">
+            <TourMap />
+          </div>
+          <TourFlatPages />
+          <FlatPage flatPage="about" />
+        </div>
+      )}
+      {isMobile && (
+        <>
+          <MobileNav />
+          <Outlet />
+          <ConsentSheet
+            open={showConsentSheet}
+            onDone={() => setShowConsentSheet(false)}
+            onManage={() => {
+              setShowConsentSheet(false);
+              setShowPermissionsModal(true);
+            }}
+          />
+          <PermissionsModal />
+          <TourFlatPages />
+          <FlatPage flatPage="about" />
+        </>
+      )}
+    </TourContext.Provider>
+  );
 }

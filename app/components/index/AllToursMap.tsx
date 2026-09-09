@@ -11,7 +11,6 @@ interface Props {
 }
 
 const AllToursMap = ({ tours, request }: Props) => {
-  console.log("🚀 ~ AllToursMap ~ request:", tours);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<maplibregl.Map | undefined>(undefined);
 

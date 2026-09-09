@@ -7,23 +7,6 @@ import type { ReactNode } from "react";
 
 const StopGMap = ({ children }: { children: ReactNode }) => {
   const { currentStop } = useContext(TourContext);
-  // useEffect(() => {
-  //   if (!currentStop) return;
-
-  //   const lat = currentStop.lat;
-  //   const lng = currentStop.lng;
-
-  //   if (isNaN(lat) || isNaN(lng)) return;
-
-  //   setStopLocation({ lat, lng });
-
-  //   if (currentStop.parking_lat && currentStop.parking_lng) {
-  //     setParkingLocation({
-  //       lat: currentStop.parking_lat,
-  //       lng: currentStop.parking_lng,
-  //     });
-  //   }
-  // }, [currentStop]);
 
   if (!currentStop) {
     return (
