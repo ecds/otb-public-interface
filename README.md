@@ -1,44 +1,53 @@
-# Welcome to Remix!
+# OTB Public Interface
 
-- [Remix Docs](https://remix.run/docs)
+React Router v8 / Express frontend for OpenTourBuilder. Multi-tenant: the subdomain determines which tour set is loaded.
+
+## Domain structure
+
+| Environment | Root URL | Tenant URL |
+|---|---|---|
+| Production | `opentour.site` | `<tenant>.opentour.site` |
+| Staging | `dev.opentour.site` | `<tenant>.dev.opentour.site` |
+| Local | `lvh.me:4200` | `<tenant>.lvh.me:4200` |
+
+The server resolves the tenant by finding the leftmost subdomain that is not a known environment label (`dev`, `staging`, `www`). Requests with no tenant (e.g. the root domain) are served the tour set index.
 
 ## Development
 
-Start the Remix development asset server and the Express server by running:
+Start the dev server:
 
 ```sh
 npm run dev
 ```
 
-This starts your app in development mode, which will purge the server require cache when Remix rebuilds assets so you don't need a process manager restarting the express server.
-
-If you need to run with https for testing location services, start the server with
+To test location services (requires HTTPS):
 
 ```sh
 PROTOCOL=https npm run dev
 ```
 
-See [this article](https://medium.com/@hjblokland/how-to-create-self-signed-wildcard-ssl-certificates-with-mkcert-on-macos-a6a3663aa157) for adding certs for local development.
+See [this article](https://medium.com/@hjblokland/how-to-create-self-signed-wildcard-ssl-certificates-with-mkcert-on-macos-a6a3663aa157) for generating local wildcard certs.
+
+## Tests
+
+```sh
+npm test
+```
 
 ## Deployment
 
-First, build your app for production:
+Deployments are automated via GitHub Actions on push to `develop` or `main`.
+
+| Branch | Image tag | `NODE_ENV` | ECS target |
+|---|---|---|---|
+| `develop` | `latest` | `staging` | `otb-pub-dev` |
+| `main` | `stable` | `production` | `otb-pub-prod` |
+
+The workflow builds a Docker image, pushes it to ECR, and force-restarts the ECS service. The registry URI is stored in the `ECR_REGISTRY` GitHub secret.
+
+To deploy manually:
 
 ```sh
 npm run build
-```
-
-Then run the app in production mode:
-
-```sh
 npm start
 ```
-
-Now you'll need to pick a host to deploy it to.
-
-### DIY
-
-If you're familiar with deploying express applications you should be right at home just make sure to deploy the output of `remix build`
-
-- `build/`
-- `public/build/`

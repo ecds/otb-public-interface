@@ -13,14 +13,14 @@ docker build \
 
 echo "Logging in to AWS"
 aws ecr get-login-password --region us-east-1 |
-       docker login --username AWS --password-stdin 310867200447.dkr.ecr.us-east-1.amazonaws.com
+       docker login --username AWS --password-stdin *****.dkr.ecr.us-east-1.amazonaws.com
 echo "Logged in successfully"
 
 echo "Tagging image with latest"
-docker tag otb_public_ui 310867200447.dkr.ecr.us-east-1.amazonaws.com/otb_public_ui:latest
+docker tag otb_public_ui *****.dkr.ecr.us-east-1.amazonaws.com/otb_public_ui:latest
 
 echo "Pushing image"
-docker push 310867200447.dkr.ecr.us-east-1.amazonaws.com/otb_public_ui:latest
+docker push *****.dkr.ecr.us-east-1.amazonaws.com/otb_public_ui:latest
 
 echo "Force update service"
 aws ecs update-service --cluster otb-pub-dev --service otb-pub-dev --force-new-deployment --region us-east-1
