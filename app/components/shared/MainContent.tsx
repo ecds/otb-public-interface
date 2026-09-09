@@ -27,7 +27,7 @@ const MainContent = ({ content }: Props) => {
               </h2>
             </div>
           )}
-          {!content.media && <Gallery />}
+          {!content.media && <Gallery path={content.slug} />}
           {content.media && (
             <ClientOnly>
               <Gallery media={content.media} />

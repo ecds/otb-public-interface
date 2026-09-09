@@ -3,19 +3,26 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 
 interface Props {
-  filename: string;
   className?: string;
+  filename: string;
+  path: string;
 }
 
-const CopyMediumLink = ({ filename, className = "text-blue-500 hover:text-blue-800" }: Props) => {
+const CopyMediumLink = ({
+  filename,
+  className = "text-blue-500 hover:text-blue-800",
+  path,
+}: Props) => {
   const [directLink, setDirectLink] = useState<string>();
   const [isCopied, setIsCopied] = useState<boolean>(false);
 
   useEffect(() => {
     if (!window) return;
-    const { protocol, host, pathname } = window.location;
-    setDirectLink(`${protocol}//${host}${pathname}?${filename}`);
-  }, [filename]);
+    const { protocol, host } = window.location;
+    let { pathname } = window.location;
+    if (!pathname.includes(path)) pathname += `/${path}`;
+    setDirectLink(`${protocol}//${host}${pathname}?image=${filename}`);
+  }, [filename, path]);
 
   const handleClick = async () => {
     if (!directLink) return;

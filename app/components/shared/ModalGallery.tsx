@@ -22,6 +22,7 @@ import type { TTourMedium } from "~/types";
 
 interface Props {
   media?: TTourMedium[];
+  path?: string;
 }
 
 interface CarouselProps {
@@ -53,7 +54,9 @@ const EmblaCarousel = ({
       onSelect?.(i);
     };
     emblaApi.on("select", handler);
-    return () => { emblaApi.off("select", handler); };
+    return () => {
+      emblaApi.off("select", handler);
+    };
   }, [emblaApi, onSelect]);
 
   useEffect(() => {
@@ -71,7 +74,10 @@ const EmblaCarousel = ({
         <div ref={emblaRef} className="overflow-hidden">
           <div className="flex">
             {media.map((medium, index) => (
-              <div className={`shrink-0 ${slideClassName}`} key={medium.files.desktop}>
+              <div
+                className={`shrink-0 ${slideClassName}`}
+                key={medium.files.desktop}
+              >
                 {children(medium, index)}
               </div>
             ))}
@@ -112,7 +118,7 @@ const EmblaCarousel = ({
   );
 };
 
-const Gallery = ({ media }: Props) => {
+const Gallery = ({ media, path }: Props) => {
   const [showModal, setShowModal] = useState(false);
   const [activeMedium, setActiveMedium] = useState(0);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -163,7 +169,10 @@ const Gallery = ({ media }: Props) => {
           <div className="flex min-h-full items-center justify-center">
             <DialogPanel className="w-screen md:w-[50vw] bg-gray-900 rounded-lg overflow-hidden">
               <div className="flex items-start justify-between px-4 py-2">
-                <DialogTitle as="h3" className="text-white/85 text-sm md:text-lg text-left grow">
+                <DialogTitle
+                  as="h3"
+                  className="text-white/85 text-sm md:text-lg text-left grow"
+                >
                   {currentMedium?.title}
                 </DialogTitle>
                 <CloseButton className="text-white/75 hover:text-white shrink-0 ms-4">
@@ -206,6 +215,7 @@ const Gallery = ({ media }: Props) => {
                       <CopyMediumLink
                         filename={medium.filename}
                         className="text-blue-400 hover:text-blue-300"
+                        path={path ?? ""}
                       />
                     </div>
                   </figure>
