@@ -1,57 +1,44 @@
-# otb-public
+# Welcome to Remix!
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+- [Remix Docs](https://remix.run/docs)
 
-## Prerequisites
+## Development
 
-You will need the following things properly installed on your computer.
+Start the Remix development asset server and the Express server by running:
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with npm)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+```sh
+npm run dev
+```
 
-## Installation
+This starts your app in development mode, which will purge the server require cache when Remix rebuilds assets so you don't need a process manager restarting the express server.
 
-* `git clone <repository-url>` this repository
-* `cd otb-public`
-* `npm install`
+If you need to run with https for testing location services, start the server with
 
-## Running / Development
+```sh
+PROTOCOL=https npm run dev
+```
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+See [this article](https://medium.com/@hjblokland/how-to-create-self-signed-wildcard-ssl-certificates-with-mkcert-on-macos-a6a3663aa157) for adding certs for local development.
 
-### Code Generators
+## Deployment
 
-Make use of the many generators for code, try `ember help generate` for more details
+First, build your app for production:
 
-### Running Tests
+```sh
+npm run build
+```
 
-* `ember test`
-* `ember test --server`
+Then run the app in production mode:
 
-### Linting
+```sh
+npm start
+```
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+Now you'll need to pick a host to deploy it to.
 
-### Building
+### DIY
 
-* `ember build` (development)
-* `ember build --environment production` (production)
+If you're familiar with deploying express applications you should be right at home just make sure to deploy the output of `remix build`
 
-### Deploying
-
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+- `build/`
+- `public/build/`

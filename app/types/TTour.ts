@@ -1,0 +1,89 @@
+import type { TStop } from "./TStop";
+import type { TTourFlatPage } from "./TTourFlatPage";
+import type { TTravelMode } from "./TTravelMode";
+
+export type { TTourFlatPage };
+
+export type TVoiceOver = {
+  id: number;
+  filename: string;
+  language: string;
+  source_url: string;
+};
+
+export type TTourMedium = {
+  caption: string;
+  desktop_width: number;
+  embed: string | undefined;
+  filename: string;
+  files: {
+    lqip: string;
+    mobile: string;
+    tablet: string;
+    desktop: string;
+  };
+  lqip_width: number | undefined;
+  mobile_width: number;
+  original_image: string;
+  position: number;
+  provider: string | undefined;
+  tablet_width: undefined;
+  title: string;
+  video: string | undefined;
+};
+
+export type TTourStop = TStop & {
+  next: { id: number; slug: string; title: string } | undefined;
+  position: number;
+  previous: { id: number; slug: string; title: string } | undefined;
+};
+
+export type TTour = {
+  blank_map: boolean;
+  bounds: {
+    south: number;
+    north: number;
+    east: number;
+    west: number;
+    centerLat: number;
+    centerLng: number;
+  };
+  default_lng: string;
+  description: string;
+  est_time: string | undefined;
+  flat_pages: TTourFlatPage[];
+  is_geo: boolean;
+  link_address: string | undefined;
+  link_text: string | undefined;
+  map_overlay:
+    | {
+        east: number;
+        image_url: string;
+        north: number;
+        south: number;
+        west: number;
+      }
+    | undefined;
+  map_type: "satellite" | "road" | "hybrid";
+  media: TTourMedium[];
+  mode: TTravelMode;
+  modes: TTravelMode[];
+  restrict_bounds: boolean;
+  restrict_bounds_to_overlay: boolean;
+  sanitized_description: string;
+  splash: {
+    title: string;
+    caption: string;
+    url: string;
+  };
+  slug: string;
+  slugs: string[];
+  stop_count: number;
+  stops: TTourStop[];
+  tenant: string;
+  title: string;
+  theme: { id: number; title: string };
+  type: "tour";
+  use_directions: boolean;
+  voice_overs: TVoiceOver[];
+};

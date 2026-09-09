@@ -1,0 +1,231 @@
+/* Fixed index.css for Tailwind v4 */
+
+/* Use standard Tailwind directives - remove non-standard imports */
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* 
+  Border color compatibility layer for v4
+  This helps maintain consistent styling with v3
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@theme {
+  --color-default-primary: #212121;
+  --color-default-secondary: #ffffff;
+  --color-default-accent-text: #ffffff;
+  --color-default-accent: #fe5455;
+  --color-blue-primary: #0081ba;
+  --color-blue-accent-text: #ffffff;
+  --color-blue-secondary: #ffffff;
+  --color-blue-accent: #d32730;
+  --color-bright-blue-primary: #0700ff;
+  --color-bright-blue-accent-text: #ffffff;
+  --color-bright-blue-secondary: #ffffff;
+  --color-bright-blue-accent: #fe5455;
+  --color-atl-primary: #003f75;
+  --color-atl-secondary: #ffffff;
+  --color-atl-accent-text: #ffffff;
+  --color-atl-accent: #cd3648;
+  --color-red-primary: #ff3d57;
+  --color-red-secondary: #ffffff;
+  --color-red-accent-text: #ffffff;
+  --color-red-accent: #23307e;
+  --color-dark-blue-primary: #2a3f74;
+  --color-dark-blue-secondary: #ffffff;
+  --color-dark-blue-accent-text: #ffffff;
+  --color-dark-blue-accent: #5577d1;
+  --color-purple-primary: #5a23b4;
+  --color-purple-secondary: #ffffff;
+  --color-purple-accent-text: #ffffff;
+  --color-purple-accent: #ff00e9;
+  --color-green-primary: #78b953;
+  --color-green-secondary: #ffffff;
+  --color-green-accent-text: #ffffff;
+  --color-green-accent: #f38c03;
+  --color-orange-primary: #ff4601;
+  --color-orange-secondary: #ffffff;
+  --color-orange-accent-text: #ffffff;
+  --color-orange-accent: #0700ff;
+  --color-dark-green-primary: #227b39;
+  --color-dark-green-secondary: #ffffff;
+  --color-dark-green-accent-text: #ffffff;
+  --color-dark-green-accent: #d74442;
+  --color-dark-mode-primary: #4a4a4a;
+  --color-dark-mode-secondary: #ffffff;
+  --color-dark-mode-accent-text: #ffffff;
+  --color-dark-mode-accent: #e30000;
+  --color-austrian-primary: #ed2536;
+  --color-austrian-secondary: #ffffff;
+  --color-austrian-accent-text: #000000;
+  --color-austrian-accent: #fae205;
+  --color-emory-primary: #012169;
+  --color-emory-secondary: #ffffff;
+  --color-emory-accent-text: #ffffff;
+  --color-emory-accent: #f2a900;
+  --color-gsu-primary: #0239a6;
+  --color-gsu-secondary: #ffffff;
+  --color-gsu-accent-text: #ffffff;
+  --color-gsu-accent: #c60d30;
+  --color-gatech-primary: #003057;
+  --color-gatech-secondary: #ffffff;
+  --color-gatech-accent-text: #ffffff;
+  --color-gatech-accent: #b3a369;
+  --color-uga-primary: #ba0d2f;
+  --color-uga-secondary: #ffffff;
+  --color-uga-accent-text: #ffffff;
+  --color-uga-accent: #000000;
+  --color-ksu-primary: #000000;
+  --color-ksu-secondary: #ffffff;
+  --color-ksu-accent-text: #ffffff;
+  --color-ksu-accent: #febc13;
+}
+
+@source inline('bg-default-{primary,secondary,accent}');
+@source inline('text-default-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-default-{accent-text/45}');
+@source inline('bg-blue-{primary,secondary,accent}');
+@source inline('text-blue-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-blue-{accent-text/45}');
+@source inline('bg-bright-blue-{primary,secondary,accent}');
+@source inline('text-bright-blue-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-bright-blue-{accent-text/45}');
+@source inline('bg-atl-{primary,secondary,accent}');
+@source inline('text-atl-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-atl-{accent-text/45}');
+@source inline('bg-red-{primary,secondary,accent}');
+@source inline('text-red-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-red-{accent-text/45}');
+@source inline('bg-dark-blue-{primary,secondary,accent}');
+@source inline('text-dark-blue-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-dark-blue-{accent-text/45}');
+@source inline('bg-purple-{primary,secondary,accent}');
+@source inline('text-purple-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-purple-{accent-text/45}');
+@source inline('bg-green-{primary,secondary,accent}');
+@source inline('text-green-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-green-{accent-text/45}');
+@source inline('bg-orange-{primary,secondary,accent}');
+@source inline('text-orange-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-orange-{accent-text/45}');
+@source inline('bg-dark-green-{primary,secondary,accent}');
+@source inline('text-dark-green-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-dark-green-{accent-text/45}');
+@source inline('bg-dark-mode-{primary,secondary,accent}');
+@source inline('text-dark-mode-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-dark-mode-{accent-text/45}');
+@source inline('bg-austrian-{primary,secondary,accent}');
+@source inline('text-austrian-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-austrian-{accent-text/45}');
+@source inline('bg-emory-{primary,secondary,accent}');
+@source inline('text-emory-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-emory-{accent-text/45}');
+
+@source inline('bg-gsu-{primary,secondary,accent}');
+@source inline('text-gsu-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-gsu-{accent-text/45}');
+@source inline('bg-gatech-{primary,secondary,accent}');
+@source inline('text-gatech-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-gatech-{accent-text/45}');
+@source inline('bg-uga-{primary,secondary,accent}');
+@source inline('text-uga-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-uga-{accent-text/45}');
+@source inline('bg-ksu-{primary,secondary,accent}');
+@source inline('text-ksu-{accent-text,primary,secondary}');
+@source inline('aria-disabled:text-ksu-{accent-text/45}');
+
+/* @layer utilities {
+  .theme-default;
+} */
+
+/* Custom component styles */
+@layer components {
+  button.paging-item {
+    padding: 2px;
+  }
+
+  .nuka-nav-button.nuka-nav-button-prev {
+    left: 1rem !important;
+  }
+
+  .nuka-nav-button.nuka-nav-button-next {
+    right: 1rem !important;
+  }
+}
+
+/* Mobile-specific styles to add to existing index.css */
+
+@layer utilities {
+  /* Line clamp utility for text truncation */
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+}
+
+/* Mobile tour interface specific styles */
+@layer components {
+  .mobile-tour-container {
+    height: 100vh;
+    height: 100dvh;
+    /* Use dynamic viewport height on mobile */
+  }
+
+  /* Touch-friendly button styles */
+  .mobile-touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Smooth transitions for mobile tabs */
+  .mobile-tab-transition {
+    transition: all 0.2s ease-in-out;
+  }
+
+  /* Mobile map container */
+  .mobile-map-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  /* Mobile stops list item hover states */
+  .mobile-stop-item {
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  .mobile-stop-item:active {
+    background-color: rgb(243 244 246);
+    /* gray-100 */
+    transform: scale(0.98);
+    transition: all 0.1s ease-in-out;
+  }
+
+  .adp-placemark img.adp-marker2 {
+    display: none;
+  }
+
+  td.adp-text {
+    padding: 0.25rem;
+  }
+}

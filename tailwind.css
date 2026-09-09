@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+/* Theme customizations */
+@theme {
+  --color-default-primary: oklch(14.36% 0.007 274.6);
+  --color-default-secondary: oklch(100% 0 0);
+  --color-default-accent-text: oklch(100% 0 0);
+  --color-default-accent: oklch(65.18% 0.177 24.64);
+  --color-blue-primary: oklch(50.41% 0.126 244.33);
+  --color-blue-accent-text: oklch(100% 0 0);
+  --color-blue-secondary: oklch(100% 0 0);
+  --color-blue-accent: oklch(47.66% 0.111 25.13);
+  --color-bright-blue-primary: oklch(34.29% 0.22 284.15);
+  --color-bright-blue-accent-text: oklch(100% 0 0);
+  --color-bright-blue-secondary: oklch(100% 0 0);
+  --color-bright-blue-accent: oklch(65.18% 0.177 24.64);
+  --color-atl-primary: oklch(21.46% 0.082 278.38);
+  --color-atl-secondary: oklch(100% 0 0);
+  --color-atl-accent-text: oklch(100% 0 0);
+  --color-atl-accent: oklch(49.88% 0.134 25.04);
+  --color-red-primary: oklch(50.11% 0.16 28.52);
+  --color-red-secondary: oklch(100% 0 0);
+  --color-red-accent-text: oklch(100% 0 0);
+  --color-red-accent: oklch(26.6% 0.065 264.4);
+  --color-dark-blue-primary: oklch(28.42% 0.076 270.36);
+  --color-dark-blue-secondary: oklch(100% 0 0);
+  --color-dark-blue-accent-text: oklch(100% 0 0);
+  --color-dark-blue-accent: oklch(53.64% 0.113 268.04);
+  --color-purple-primary: oklch(35.5% 0.161 306.91);
+  --color-purple-secondary: oklch(100% 0 0);
+  --color-purple-accent-text: oklch(100% 0 0);
+  --color-purple-accent: oklch(52.75% 0.191 324.94);
+  --color-green-primary: oklch(67.74% 0.092 135.53);
+  --color-green-secondary: oklch(100% 0 0);
+  --color-green-accent-text: oklch(100% 0 0);
+  --color-green-accent: oklch(77.58% 0.127 75.31);
+  --color-orange-primary: oklch(55.22% 0.194 51.58);
+  --color-orange-secondary: oklch(100% 0 0);
+  --color-orange-accent-text: oklch(100% 0 0);
+  --color-orange-accent: oklch(34.29% 0.22 284.15);
+  --color-dark-green-primary: oklch(39.11% 0.073 147.16);
+  --color-dark-green-secondary: oklch(100% 0 0);
+  --color-dark-green-accent-text: oklch(100% 0 0);
+  --color-dark-green-accent: oklch(49.82% 0.108 26.54);
+  --color-dark-mode-primary: oklch(35.34% 0.007 274.6);
+  --color-dark-mode-secondary: oklch(100% 0 0);
+  --color-dark-mode-accent-text: oklch(100% 0 0);
+  --color-dark-mode-accent: oklch(47.4% 0.141 27.68);
+  --color-austrian-primary: oklch(50.45% 0.137 25.59);
+  --color-austrian-secondary: oklch(100% 0 0);
+  --color-austrian-accent-text: oklch(0% 0 0);
+  --color-austrian-accent: oklch(88.62% 0.124 99.8);
+  --color-emory-primary: oklch(21.49% 0.084 272.77);
+  --color-emory-secondary: oklch(100% 0 0);
+  --color-emory-accent-text: oklch(100% 0 0);
+  --color-emory-accent: oklch(77.6% 0.134 81.33);
+  --color-gsu-primary: oklch(27.42% 0.116 270.36);
+  --color-gsu-secondary: oklch(100% 0 0);
+  --color-gsu-accent-text: oklch(100% 0 0);
+  --color-gsu-accent: oklch(49.25% 0.143 27.05);
+  --color-gatech-primary: oklch(20.31% 0.071 268.04);
+  --color-gatech-secondary: oklch(100% 0 0);
+  --color-gatech-accent-text: oklch(100% 0 0);
+  --color-gatech-accent: oklch(71.05% 0.083 88.08);
+  --color-uga-primary: oklch(41.13% 0.138 27.68);
+  --color-uga-secondary: oklch(100% 0 0);
+  --color-uga-accent-text: oklch(100% 0 0);
+  --color-uga-accent: oklch(0% 0 0);
+  --color-ksu-primary: oklch(0% 0 0);
+  --color-ksu-secondary: oklch(100% 0 0);
+  --color-ksu-accent-text: oklch(100% 0 0);
+  --color-ksu-accent: oklch(79.03% 0.116 88.24);
+}
+
+/* Custom utilities */
+@layer base {
+  html .stop a {
+    color: #1d4ed8;
+    text-decoration-line: underline;
+  }
+
+  html .stop a:hover {
+    color: #4338ca;
+  }
+
+  /* Border color compatibility with v3 */
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+@safelist {
+  grid-cols-3,
+  bg-gsu-accent
+}
