@@ -46,14 +46,13 @@ const TourMarker = ({ map, tour, children }: Props) => {
               width: "32px",
               height: "32px",
               cursor: "pointer",
-              filter:
-                "drop-shadow(0.25px 0 0 black) drop-shadow(-0.25px 0 0 black) drop-shadow(0 0.25px 0 black) drop-shadow(0 -0.25px 0 black)",
+              filter: "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4))",
             }}
           />
-          <span className={`fa-stack-1x fa-inverse text-center "text-base"`}>
+          <span className={`fa-stack-1x fa-inverse text-center`}>
             <FontAwesomeIcon
               icon={faCircle}
-              className="text-xs text-black/35"
+              className="text-[0.5rem] text-white/75"
             />
           </span>
         </div>

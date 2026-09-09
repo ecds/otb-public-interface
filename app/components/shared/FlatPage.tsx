@@ -18,7 +18,7 @@ const RenderFlatPage = ({ flatPage }: Props) => {
     <>
       <h3 className="text-2xl">{flatPage.title}</h3>
       <div
-        className="text-white"
+        className="prose prose-invert"
         dangerouslySetInnerHTML={{
           __html: flatPage.body,
         }}
@@ -34,7 +34,7 @@ const FlatPage = ({ flatPage }: Props) => {
     <div
       className={`otb-flat-page fixed -top-16 z-50 md:top-auto left-0 md:left-auto md:right-0 w-full md:w-1/2 h-full mt-16 bg-black md:bg-black/85 text-gray-300 overflow-scroll transition-transform duration-700 ${
         currentFlatPage === flatPage
-          ? "-translate-x-0 md:-translate-x"
+          ? "translate-x-0 md:-translate-x"
           : "-translate-x-full md:translate-x-full"
       }`}
     >

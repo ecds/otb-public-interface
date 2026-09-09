@@ -1,6 +1,6 @@
 import { redirect, useLoaderData } from "react-router";
 import ClientOnly from "~/components/ClientOnly";
-import AllToursMap from "~/components/index/AllToursMap.client";
+import AllToursMap from "~/components/index/AllToursMap";
 import { requestContext, tenantContext } from "~/context";
 import { getTourSets } from "~/data";
 import type { MetaFunction, LoaderFunctionArgs } from "react-router";

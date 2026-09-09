@@ -2,6 +2,7 @@
 
 /* Use standard Tailwind directives - remove non-standard imports */
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 /* 
   Border color compatibility layer for v4
@@ -147,18 +148,6 @@
 
 /* Custom component styles */
 @layer components {
-  /* Content area typography */
-  .otb-content p,
-  .otb-flat-page p {
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-  }
-
-  .otb-flat-page a {
-    font-weight: 700;
-    text-decoration: underline;
-  }
-
   button.paging-item {
     padding: 2px;
   }

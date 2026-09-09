@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { baseStyle } from "~/map_styles";
 import TourMarker from "../shared/TourMarker";
 import "maplibre-gl/dist/maplibre-gl.css";
-import type { TTourSetTour , TContextRequest } from "~/types";
+import type { TTourSetTour, TContextRequest } from "~/types";
 
 interface Props {
   tours: TTourSetTour[];
@@ -11,6 +11,7 @@ interface Props {
 }
 
 const AllToursMap = ({ tours, request }: Props) => {
+  console.log("🚀 ~ AllToursMap ~ request:", tours);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<maplibregl.Map | undefined>(undefined);
 

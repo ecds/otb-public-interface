@@ -11,7 +11,11 @@ import { requestContext, tenantContext } from "./context";
 import { getTourSet } from "./data";
 import { useDeviceContext } from "./hooks/deviceContext";
 import styles from "./index.css?url";
-import type { MetaFunction, LinksFunction, LoaderFunctionArgs } from "react-router";
+import type {
+  MetaFunction,
+  LinksFunction,
+  LoaderFunctionArgs,
+} from "react-router";
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -51,7 +55,7 @@ export default function App() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <Meta />
         </head>
-        <body>
+        <body className="">
           {(isMobile || isDesktop) && <Outlet />}
           {isMobile && <ScrollRestoration />}
           <Scripts />

@@ -6,7 +6,7 @@ export type TTourSetTour = {
     lat: number;
     lng: number;
   };
-  location: {
+  location?: {
     lat: number;
     lng: number;
   };

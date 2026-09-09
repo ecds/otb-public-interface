@@ -136,8 +136,7 @@ const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
               width: isCurrent ? "48px" : "32px",
               height: isCurrent ? "48px" : "32px",
               cursor: "pointer",
-              filter:
-                "drop-shadow(0.25px 0 0 black) drop-shadow(-0.25px 0 0 black) drop-shadow(0 0.25px 0 black) drop-shadow(0 -0.25px 0 black)",
+              filter: "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4))",
             }}
           />
           <span

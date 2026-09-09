@@ -14,7 +14,7 @@ const MainContent = ({ content }: Props) => {
   return (
     <div key={content.slug} className="mb-12" id={content.slug}>
       <div className="md:relative w-full mt-16 md:mt-0">
-        <div className="flex flex-col">
+        <div className="flex flex-col ">
           {isDesktop && (
             <div
               className={
@@ -47,13 +47,13 @@ const MainContent = ({ content }: Props) => {
               </div>
             </div>
           )}
-          <div className="tracking-wide leading-6 relative px-6 stop mb-24 md:mb-0 box-content flow-root">
+          <div className="relative px-6 stop mb-24 md:mb-0 box-content flow-root">
             <TextToSpeechButton
               text={content.sanitized_description}
               voiceOverUrl={content.voice_overs?.[0]?.source_url}
             />
             <div
-              className="otb-content"
+              className="prose mx-auto"
               dangerouslySetInnerHTML={{
                 __html: content.description,
               }}

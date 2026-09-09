@@ -6,7 +6,6 @@ echo "Building image"
 
 docker build \
        --platform linux/amd64 \
-       --build-arg NODE_ENV=staging \
        --build-arg VITE_GOOGLE_MAPS_API_KEY=AIzaSyD-G_lDtvChv-P3nchtQYHoCLfFzn9ylr8 \
        -t otb_public_ui \
        --no-cache \

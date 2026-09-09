@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import { useEffect, useState } from "react";
 import { Link, useLoaderData, redirect, useNavigate } from "react-router";
 import { requestContext, tenantContext } from "~/context";
 import { getTours, isSignedIn } from "~/data";
@@ -6,7 +7,11 @@ import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
 } from "react-router";
-import type { TTour , TTourSetPreview } from "~/types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faList, faMap, faTable } from "@fortawesome/free-solid-svg-icons";
+import TourSetMap from "~/components/shared/TourSetMap";
+import TourCard from "~/components/shared/TourCard";
+import type { TTour, TTourSetPreview } from "~/types";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
   const tenant = context.get(tenantContext);
@@ -23,57 +28,33 @@ export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
   const { tenant, tour_set, tours } = await serverLoader<typeof loader>();
   const signedIn = await isSignedIn();
   if (signedIn) {
-    const { tours: allTours }: { tours: TTour[] } = await getTours(tenant);
-    return { tour_set, tours: allTours };
+    const { tours: allTours, tour_set: myTourSet } = await getTours(tenant);
+    return { tours: allTours, tour_set: myTourSet };
   }
   return { tour_set, tours };
 }
 
 clientLoader.hydrate = true as const;
 
-const TourCard = ({ tour }: { tour: TTour }) => {
-  return (
-    <div className="w-full h-80 border rounded-lg shadow bg-gray-800 border-gray-700 cursor-pointer overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <Link to={`/${tour.slug}`} className="h-full flex flex-col">
-        {/* Fixed height image container */}
-        <div className="h-48 w-full overflow-hidden rounded-t-lg flex-shrink-0">
-          <img
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-            src={tour.splash?.url ?? "/images/otblogo.png"}
-            alt={tour.title}
-          />
-        </div>
-
-        {/* Fixed height content container */}
-        <div className="h-32 p-4 flex flex-col justify-between">
-          <h5 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight">
-            {tour.title}
-          </h5>
-          <div className="flex items-center justify-between w-full text-gray-200 text-sm mt-auto">
-            <div>{tour.stop_count} Stops</div>
-            <div>{tour.est_time}</div>
-          </div>
-        </div>
-      </Link>
-    </div>
-  );
-};
-
 const Tours = () => {
   const { tour_set, tours } = useLoaderData<typeof loader>();
+  const [introExpanded, setIntroExpanded] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (tours.length === 1) navigate(`/${tours[0].slug}`);
+    if (tours && tours.length === 1) navigate(`/${tours[0].slug}`);
   }, [tours, navigate]);
 
+  if (!tour_set) return <></>;
+
   return (
-    <div className="min-h-screen py-20 md:py-32 bg-gray-800/50">
+    <div className="min-h-screen py-20 md:py-24 bg-gray-800/50">
       {/* <Navbar /> */}
       <nav className={`bg-default-primary h-16 fixed top-0 w-screen z-50`}>
         <div className="flex items-center justify-between mx-auto px-4">
           {/* Desktop */}
-          <div className="flex flex-shrink-0 items-center">
+          <div className="flex shrink-0 items-center">
             <Link className="" to="/">
               <img
                 className="h-16 w-auto p-2"
@@ -87,31 +68,71 @@ const Tours = () => {
           </div>
         </div>
       </nav>
-      {/* <div className="px-4 md:px-16 mb-8">
-        <h1 className="text-3xl font-bold text-white text-center mb-2">
-          Explore Tours
-        </h1>
-        <p className="text-gray-300 text-center">
-          Discover {tours?.length || 0} amazing tours
-        </p>
-      </div> */}
 
-      {/* RESPONSIVE GRID WITH FIXED SIZE CARDS */}
-      <div className="px-4 md:px-16">
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-          {tours?.map((tour) => (
-            <TourCard tour={tour} key={tour.slug} />
-          ))}
-        </div>
+      <div className="w-full">
+        <TabGroup>
+          <TabList
+            className={`flex gap-4 px-4 md:px-0 mb-4 md:mb-6 prose mx-auto`}
+          >
+            <Tab
+              className={`flex flex-row gap-2 items-center text-sm py-1 md:py-0 md:text-lg cursor-pointer bg-white text-gray-800 rounded-md px-2 data-selected:bg-gray-800 data-selected:text-white opacity-80 data-selected:opacity-100 hover:bg-gray-500 hover:text-white`}
+            >
+              <FontAwesomeIcon icon={faList} className="md:hidden!" />
+              <FontAwesomeIcon
+                icon={faTable}
+                className="hidden! md:block!"
+              />{" "}
+              List
+            </Tab>
+            <Tab
+              className={`flex flex-row gap-2 items-center text-sm py-1 md:py-0 md:text-lg cursor-pointer bg-white text-gray-800 rounded-md px-2 data-selected:bg-gray-800 data-selected:text-white opacity-80 data-selected:opacity-100 hover:bg-gray-500 hover:text-white`}
+            >
+              <FontAwesomeIcon icon={faMap} /> Map
+            </Tab>
+          </TabList>
+          <TabPanels className="px-4 md:px-16">
+            {/* RESPONSIVE GRID WITH FIXED SIZE CARDS */}
+            <TabPanel className={``}>
+              <div
+                className={`mx-auto bg-white rounded-md p-4 md:p-6 mb-4 md:mb-6 max-w-[65ch] ${!tour_set.description ? "hidden" : ""}`}
+              >
+                <div
+                  className={`prose ${introExpanded ? "max-h-full overflow-auto" : "max-h-[12ch] overflow-hidden"} md:max-h-full md:overflow-auto`}
+                  dangerouslySetInnerHTML={{
+                    __html: tour_set.description,
+                  }}
+                />
+                <button
+                  className={`block md:hidden bg-blue-500 px-1 text-white rounded-md`}
+                  onClick={() => setIntroExpanded(!introExpanded)}
+                >
+                  {introExpanded ? "Show Less" : "Show More"}
+                </button>
+              </div>
+              <div
+                className={`prose grid gap-6 grid-cols-1 ${"sm:grid-cols-2"} ${tours.length >= 2 ? "md:grid-cols-2" : "md:grid-cols-1"} mx-auto content-center`}
+              >
+                {tours?.map((tour) => (
+                  <TourCard tour={tour} key={tour.slug} />
+                ))}
+              </div>
 
-        {/* Empty State */}
-        {(!tours || tours.length === 0) && (
-          <div className="text-center py-12">
-            <div className="text-gray-400 text-lg">
-              No tours available at the moment.
-            </div>
-          </div>
-        )}
+              {/* Empty State */}
+              {(!tours || tours.length === 0) && (
+                <div className="text-center py-12">
+                  <div className="text-gray-400 text-lg">
+                    No tours available at the moment.
+                  </div>
+                </div>
+              )}
+            </TabPanel>
+            <TabPanel>
+              {tours && (
+                <TourSetMap tours={tours.filter((tour) => tour.bounds)} />
+              )}
+            </TabPanel>
+          </TabPanels>
+        </TabGroup>
       </div>
     </div>
   );

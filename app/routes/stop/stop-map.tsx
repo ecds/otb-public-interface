@@ -1,3 +1,4 @@
+import { faWalking } from "@fortawesome/free-solid-svg-icons";
 import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
 import { useContext, useEffect, useState } from "react";
 import Directions from "~/components/mobile/Directions";
@@ -17,7 +18,7 @@ import type { TTravelMode } from "~/types";
 
 const WALKING: TTravelMode = {
   title: "WALKING",
-  icon: "walking",
+  icon: faWalking,
   default: true,
 };
 

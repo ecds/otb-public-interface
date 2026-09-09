@@ -71,22 +71,22 @@ export const themes = [
 
 export const travelModes: TTravelMode[] = [
   {
-    id: "1",
+    id: 1,
     title: "BICYCLING",
     icon: faBicycle,
   },
   {
-    id: "2",
+    id: 2,
     title: "DRIVING",
     icon: faCar,
   },
   {
-    id: "3",
+    id: 3,
     title: "TRANSIT",
     icon: faSubway,
   },
   {
-    id: "4",
+    id: 4,
     title: "WALKING",
     icon: faWalking,
   },
