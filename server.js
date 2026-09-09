@@ -1,20 +1,13 @@
+import fs from "node:fs";
+import http from "node:http";
+import https from "node:https";
+import path from "node:path";
 import { createRequestHandler } from "@react-router/express";
 import compression from "compression";
 import express from "express";
 import morgan from "morgan";
-import fs from "node:fs";
-import https from "node:https";
-import http from "node:http";
-import path from "node:path";
 import { RouterContextProvider } from "react-router";
 import { requestContext, tenantContext } from "./app/context.js";
-
-const minSubdomainCount = () => {
-  if (process.env.NODE_ENV === "production") {
-    return 1;
-  }
-  return 0;
-};
 
 const viteDevServer =
   process.env.NODE_ENV === "production"
@@ -31,10 +24,7 @@ const handler = createRequestHandler({
     : await import("./build/server/index.js"),
   getLoadContext: (req) => {
     const host = req.get("Host");
-    const tenant =
-      req.subdomains.length > minSubdomainCount()
-        ? req.subdomains.pop()
-        : undefined;
+    const tenant = req.subdomains.at(-1);
     const context = new RouterContextProvider();
     context.set(tenantContext, tenant);
     context.set(requestContext, { protocol: req.protocol, host });
@@ -48,6 +38,55 @@ app.use(compression());
 
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable("x-powered-by");
+
+app.get("/robots.txt", (req, res) => {
+  const origin = `${req.protocol}://${req.get("Host")}`;
+  const body =
+    process.env.NODE_ENV === "production"
+      ? `User-agent: *\nSitemap: ${origin}/sitemap.xml\n`
+      : `User-agent: *\nDisallow: /\n`;
+  res.set("Content-Type", "text/plain").send(body);
+});
+
+app.get("/sitemap.xml", async (req, res) => {
+  const tenant = req.subdomains.at(-1);
+
+  if (!tenant) {
+    res.status(404).end();
+    return;
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.opentour.site/${tenant}/v4/public/tours`,
+      {
+        referrerPolicy: "strict-origin-when-cross-origin",
+        method: "GET",
+        mode: "cors",
+        credentials: "include",
+      },
+    );
+    const { tours } = await response.json();
+    const origin = `${req.protocol}://${req.get("Host")}`;
+
+    const urls = [
+      origin,
+      ...tours.flatMap((tour) => [
+        `${origin}/${tour.slug}`,
+        ...tour.stops.map((stop) => `${origin}/${tour.slug}/${stop.slug}`),
+      ]),
+    ];
+
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((loc) => `  <url><loc>${loc}</loc></url>`).join("\n")}
+</urlset>`;
+
+    res.set("Content-Type", "application/xml").send(xml);
+  } catch {
+    res.status(500).end();
+  }
+});
 
 // handle asset requests
 if (viteDevServer) {
