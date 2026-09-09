@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Await, useLoaderData, Outlet, redirect } from "react-router";
 import StopList from "~/components/desktop/StopList";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
@@ -9,12 +9,12 @@ import PermissionsModal from "~/components/mobile/PermissionsModal";
 import FlatPage from "~/components/shared/FlatPage";
 import MainContent from "~/components/shared/MainContent";
 import Navbar from "~/components/shared/Navbar";
-import { hasSetPreferences } from "~/utils/cookies";
 import { requestContext, tenantContext } from "~/context";
 import { TourContext } from "~/contexts/TourContext";
 import { getTour, isSignedIn } from "~/data";
 import { useDeviceContext } from "~/hooks/deviceContext";
 import { baseStyle, blank, hybrid, satellite } from "~/map_styles";
+import { hasSetPreferences } from "~/utils/cookies";
 import type { StyleSpecification } from "maplibre-gl";
 import type {
   ClientLoaderFunctionArgs,
@@ -77,6 +77,22 @@ export default function Tour() {
   const [showConsentSheet, setShowConsentSheet] = useState<boolean>(false);
   const stopParamRef = useRef<string | undefined>(stopParam);
 
+  const tourContextValue = useMemo(
+    () => ({
+      currentFlatPage,
+      currentStop,
+      setCurrentFlatPage,
+      setCurrentStop,
+      setShowMenu,
+      showMenu,
+      tour,
+      mapStyle,
+      showPermissionsModal,
+      setShowPermissionsModal,
+    }),
+    [currentFlatPage, currentStop, showMenu, tour, mapStyle, showPermissionsModal],
+  );
+
   useEffect(() => {
     if (isMobile && !hasSetPreferences()) {
       setShowConsentSheet(true);
@@ -138,20 +154,7 @@ export default function Tour() {
 
   if (tour) {
     return (
-      <TourContext.Provider
-        value={{
-          currentFlatPage,
-          currentStop,
-          setCurrentFlatPage,
-          setCurrentStop,
-          setShowMenu,
-          showMenu,
-          tour,
-          mapStyle,
-          showPermissionsModal,
-          setShowPermissionsModal,
-        }}
-      >
+      <TourContext.Provider value={tourContextValue}>
         <>
           <Navbar tour_set={tour_set} />
           <Suspense fallback={<div>Loading tour...</div>}>

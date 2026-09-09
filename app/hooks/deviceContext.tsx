@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 
 type TWindowSize = {
   width: number | undefined;
@@ -39,19 +40,9 @@ const calcDocumentWidth = () => {
 
 export function useResizeObserver() {
   const [viewportSize, setViewportSize] = useState<TViewportSize>({
-    windowSize: {
-      width: undefined,
-      height: undefined,
-    },
-    documentSize: {
-      width: undefined,
-      height: undefined,
-    },
-    mainContentSize: {
-      width: undefined,
-      height: undefined,
-      topOffset: undefined,
-    },
+    windowSize: { width: undefined, height: undefined },
+    documentSize: { width: undefined, height: undefined },
+    mainContentSize: { width: undefined, height: undefined, topOffset: undefined },
   });
 
   useEffect(() => {
@@ -93,7 +84,17 @@ export function useResizeObserver() {
   return viewportSize;
 }
 
-export function useDeviceContext() {
+type TDeviceContext = {
+  isMobile: boolean | undefined;
+  isDesktop: boolean | undefined;
+};
+
+const DeviceContext = createContext<TDeviceContext>({
+  isMobile: undefined,
+  isDesktop: undefined,
+});
+
+export function DeviceContextProvider({ children }: { children: ReactNode }) {
   const { windowSize } = useResizeObserver();
   const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
   const [isDesktop, setIsDesktop] = useState<boolean | undefined>(undefined);
@@ -117,10 +118,16 @@ export function useDeviceContext() {
     }
   }, [windowSize, isHydrated]);
 
-  // Return undefined during SSR/hydration to prevent mismatch
-  if (!isHydrated || isMobile === undefined) {
-    return { isMobile: undefined, isDesktop: undefined };
-  }
+  const value: TDeviceContext =
+    !isHydrated || isMobile === undefined
+      ? { isMobile: undefined, isDesktop: undefined }
+      : { isMobile, isDesktop };
 
-  return { isMobile, isDesktop };
+  return (
+    <DeviceContext.Provider value={value}>{children}</DeviceContext.Provider>
+  );
+}
+
+export function useDeviceContext() {
+  return useContext(DeviceContext);
 }

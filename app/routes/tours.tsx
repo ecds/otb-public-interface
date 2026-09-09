@@ -1,16 +1,16 @@
+import { faList, faMap, faTable } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { Link, useLoaderData, redirect, useNavigate } from "react-router";
+import TourCard from "~/components/shared/TourCard";
+import TourSetMap from "~/components/shared/TourSetMap";
 import { requestContext, tenantContext } from "~/context";
 import { getTours, isSignedIn } from "~/data";
 import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
 } from "react-router";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faList, faMap, faTable } from "@fortawesome/free-solid-svg-icons";
-import TourSetMap from "~/components/shared/TourSetMap";
-import TourCard from "~/components/shared/TourCard";
 import type { TTour, TTourSetPreview } from "~/types";
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {

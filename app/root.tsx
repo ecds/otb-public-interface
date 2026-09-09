@@ -6,10 +6,11 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "react-router";
+import { useMemo } from "react";
 import TourSiteContext from "./contexts/tourSiteContext";
 import { requestContext, tenantContext } from "./context";
 import { getTourSet } from "./data";
-import { useDeviceContext } from "./hooks/deviceContext";
+import { DeviceContextProvider, useDeviceContext } from "./hooks/deviceContext";
 import styles from "./index.css?url";
 import type {
   MetaFunction,
@@ -41,13 +42,14 @@ export default function App() {
   const { tourSet } = useLoaderData<typeof loader>();
   const { isMobile, isDesktop } = useDeviceContext();
 
+  const tourSiteContextValue = useMemo(
+    () => ({ currentSite: tourSet, tenant: tourSet?.attributes.subdir }),
+    [tourSet],
+  );
+
   return (
-    <TourSiteContext.Provider
-      value={{
-        currentSite: tourSet,
-        tenant: tourSet?.attributes.subdir,
-      }}
-    >
+    <DeviceContextProvider>
+    <TourSiteContext.Provider value={tourSiteContextValue}>
       <html lang="en">
         <head>
           <Links />
@@ -62,5 +64,6 @@ export default function App() {
         </body>
       </html>
     </TourSiteContext.Provider>
+    </DeviceContextProvider>
   );
 }

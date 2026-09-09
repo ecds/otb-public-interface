@@ -4,12 +4,18 @@ export const useLocationPermission = () => {
   const [state, setState] = useState("pending");
 
   useEffect(() => {
-    navigator.permissions.query({ name: "geolocation" }).then((status) => {
-      setState(status.state);
-      const handler = () => setState(status.state);
-      status.addEventListener("change", handler);
-      return () => status.removeEventListener("change", handler);
+    let status: PermissionStatus | undefined;
+    const handler = () => setState(status!.state);
+
+    navigator.permissions.query({ name: "geolocation" }).then((s) => {
+      status = s;
+      setState(s.state);
+      s.addEventListener("change", handler);
     });
+
+    return () => {
+      status?.removeEventListener("change", handler);
+    };
   }, []);
 
   return state; // 'granted' | 'denied' | 'prompt' | 'pending'

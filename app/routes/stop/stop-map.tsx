@@ -1,6 +1,6 @@
 import { faWalking } from "@fortawesome/free-solid-svg-icons";
 import { ControlPosition, MapControl } from "@vis.gl/react-google-maps";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Directions from "~/components/mobile/Directions";
 import GrantLocationAccess from "~/components/mobile/location/LocationServices";
 import DeviceLocationMarker from "~/components/mobile/mapMarkers/DeviceLocation";
@@ -24,8 +24,7 @@ const WALKING: TTravelMode = {
 };
 
 const StopMapRoute = () => {
-  const { tour, currentStop, setShowPermissionsModal } =
-    useContext(TourContext);
+  const { tour, currentStop } = useContext(TourContext);
   const {
     gMaps,
     locationAllowed,
@@ -44,6 +43,21 @@ const StopMapRoute = () => {
   >(undefined);
 
   const [travelMode, setTravelMode] = useState<TTravelMode>(WALKING);
+
+  const stopMapContextValue = useMemo(
+    () => ({
+      stopLocation,
+      parkingLocation,
+      travelMode,
+      setTravelMode,
+      locationAllowed,
+      gMaps,
+      realtimeLocation,
+      removePreference,
+      addPreference,
+    }),
+    [stopLocation, parkingLocation, travelMode, locationAllowed, gMaps, realtimeLocation, removePreference, addPreference],
+  );
 
   useEffect(() => {
     if (!tour) return;
@@ -80,19 +94,7 @@ const StopMapRoute = () => {
     );
 
   return (
-    <StopMapContext.Provider
-      value={{
-        stopLocation,
-        parkingLocation,
-        travelMode,
-        setTravelMode,
-        locationAllowed,
-        gMaps,
-        realtimeLocation,
-        removePreference,
-        addPreference,
-      }}
-    >
+    <StopMapContext.Provider value={stopMapContextValue}>
       {gMaps ? (
         <StopGMap>
           <MapOverlay />

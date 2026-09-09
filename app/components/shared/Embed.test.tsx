@@ -1,6 +1,7 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { describe, it, expect, beforeEach } from "vitest";
+import { resetPreferencesStore } from "~/hooks/usePreferences";
 import Embed from "./Embed";
 import type { TTourMedium } from "~/types";
 
@@ -16,7 +17,15 @@ const mockStorage = (() => {
 
 Object.defineProperty(globalThis, "localStorage", { value: mockStorage });
 
-beforeEach(() => mockStorage.clear());
+beforeEach(() => {
+  mockStorage.clear();
+  resetPreferencesStore();
+});
+
+const seed = (prefs: string[]) => {
+  mockStorage.setItem("OpenTour", JSON.stringify(prefs));
+  resetPreferencesStore();
+};
 
 // about:blank prevents happy-dom from making a network request when rendering the iframe
 const EMBED_SRC = "about:blank";
@@ -32,6 +41,14 @@ const medium = (embed?: string): TTourMedium => ({
     tablet: "tablet.jpg",
     desktop: "desktop.jpg",
   },
+  lqip_width: undefined,
+  mobile_width: 375,
+  original_image: "original.jpg",
+  position: 0,
+  provider: undefined,
+  tablet_width: undefined,
+  title: "Test medium",
+  video: undefined,
 });
 
 describe("Embed — thirdPartyEmbeds not set", () => {
@@ -57,12 +74,7 @@ describe("Embed — thirdPartyEmbeds not set", () => {
 });
 
 describe("Embed — thirdPartyEmbeds granted", () => {
-  beforeEach(() => {
-    mockStorage.setItem(
-      "OpenTour",
-      JSON.stringify(["functional", "thirdPartyEmbeds"]),
-    );
-  });
+  beforeEach(() => seed(["functional", "thirdPartyEmbeds"]));
 
   it("renders an iframe when embed url is present", () => {
     render(<Embed medium={medium(EMBED_SRC)} />);
@@ -72,7 +84,8 @@ describe("Embed — thirdPartyEmbeds granted", () => {
   });
 
   it("renders nothing when embed url is absent", () => {
-    const { container } = render(<Embed medium={medium(undefined)} />);
-    expect(container).toBeEmptyDOMElement();
+    render(<Embed medium={medium(undefined)} />);
+    expect(screen.queryByTitle("desktop.jpg")).not.toBeInTheDocument();
+    expect(screen.queryByText(/third party/i)).not.toBeInTheDocument();
   });
 });

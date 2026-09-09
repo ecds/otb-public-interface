@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ConsentSheet from "./ConsentSheet";
+import { resetPreferencesStore } from "~/hooks/usePreferences";
 
 const mockStorage = (() => {
   let store: Record<string, string> = {};
@@ -15,7 +16,15 @@ const mockStorage = (() => {
 
 Object.defineProperty(globalThis, "localStorage", { value: mockStorage });
 
-beforeEach(() => mockStorage.clear());
+beforeEach(() => {
+  mockStorage.clear();
+  resetPreferencesStore();
+});
+
+const seed = (prefs: string[]) => {
+  mockStorage.setItem("OpenTour", JSON.stringify(prefs));
+  resetPreferencesStore();
+};
 
 const setup = (props: Partial<Parameters<typeof ConsentSheet>[0]> = {}) => {
   const onDone = vi.fn();
@@ -28,9 +37,7 @@ const setup = (props: Partial<Parameters<typeof ConsentSheet>[0]> = {}) => {
 
 describe("ConsentSheet", () => {
   it("renders nothing when open is false", () => {
-    render(
-      <ConsentSheet open={false} onDone={vi.fn()} onManage={vi.fn()} />,
-    );
+    render(<ConsentSheet open={false} onDone={vi.fn()} onManage={vi.fn()} />);
     expect(screen.queryByText("Cookie preferences")).not.toBeInTheDocument();
   });
 

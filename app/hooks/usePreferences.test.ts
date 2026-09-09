@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect, beforeEach } from "vitest";
-import { usePreferences } from "./usePreferences";
+import { usePreferences, resetPreferencesStore } from "./usePreferences";
 
 const mockStorage = (() => {
   let store: Record<string, string> = {};
@@ -20,7 +20,17 @@ const mockStorage = (() => {
 
 Object.defineProperty(globalThis, "localStorage", { value: mockStorage });
 
-beforeEach(() => mockStorage.clear());
+// Clear storage and re-sync the module-level store before every test.
+// Tests that pre-seed storage must call resetPreferencesStore() after seeding.
+beforeEach(() => {
+  mockStorage.clear();
+  resetPreferencesStore();
+});
+
+const seed = (prefs: string[]) => {
+  mockStorage.setItem("OpenTour", JSON.stringify(prefs));
+  resetPreferencesStore();
+};
 
 describe("usePreferences — initial state", () => {
   it("defaults to ['functional'] when storage is empty", () => {
@@ -29,7 +39,7 @@ describe("usePreferences — initial state", () => {
   });
 
   it("reads existing preferences from storage", () => {
-    mockStorage.setItem("OpenTour", JSON.stringify(["functional", "gMaps"]));
+    seed(["functional", "gMaps"]);
     const { result } = renderHook(() => usePreferences());
     expect(result.current.preferences).toEqual(["functional", "gMaps"]);
     expect(result.current.gMaps).toBe(true);
@@ -37,10 +47,7 @@ describe("usePreferences — initial state", () => {
   });
 
   it("exposes correct boolean flags from stored preferences", () => {
-    mockStorage.setItem(
-      "OpenTour",
-      JSON.stringify(["functional", "analyticsAllowed", "locationAllowed"]),
-    );
+    seed(["functional", "analyticsAllowed", "locationAllowed"]);
     const { result } = renderHook(() => usePreferences());
     expect(result.current.functional).toBe(true);
     expect(result.current.analyticsAllowed).toBe(true);
@@ -60,7 +67,7 @@ describe("addPreference", () => {
   });
 
   it("does not add duplicates", () => {
-    mockStorage.setItem("OpenTour", JSON.stringify(["functional", "gMaps"]));
+    seed(["functional", "gMaps"]);
     const { result } = renderHook(() => usePreferences());
     act(() => result.current.addPreference("gMaps"));
     expect(
@@ -78,7 +85,7 @@ describe("addPreference", () => {
 
 describe("removePreference", () => {
   it("removes a preference from the list", () => {
-    mockStorage.setItem("OpenTour", JSON.stringify(["functional", "gMaps"]));
+    seed(["functional", "gMaps"]);
     const { result } = renderHook(() => usePreferences());
     act(() => result.current.removePreference("gMaps"));
     expect(result.current.preferences).not.toContain("gMaps");
@@ -92,7 +99,7 @@ describe("removePreference", () => {
   });
 
   it("persists to localStorage", () => {
-    mockStorage.setItem("OpenTour", JSON.stringify(["functional", "gMaps"]));
+    seed(["functional", "gMaps"]);
     const { result } = renderHook(() => usePreferences());
     act(() => result.current.removePreference("gMaps"));
     const stored = JSON.parse(mockStorage.getItem("OpenTour")!);
@@ -115,10 +122,7 @@ describe("acceptAll", () => {
 
 describe("denyAll", () => {
   it("reduces preferences to only functional", () => {
-    mockStorage.setItem(
-      "OpenTour",
-      JSON.stringify(["functional", "gMaps", "analyticsAllowed"]),
-    );
+    seed(["functional", "gMaps", "analyticsAllowed"]);
     const { result } = renderHook(() => usePreferences());
     act(() => result.current.denyAll());
     expect(result.current.preferences).toEqual(["functional"]);
@@ -129,10 +133,11 @@ describe("denyAll", () => {
 });
 
 describe("refresh", () => {
-  it("reloads preferences from localStorage", () => {
+  it("reloads preferences from localStorage when storage was written externally", () => {
     const { result } = renderHook(() => usePreferences());
     expect(result.current.gMaps).toBe(false);
 
+    // Write directly to storage without going through store.set (simulates another tab)
     mockStorage.setItem("OpenTour", JSON.stringify(["functional", "gMaps"]));
     act(() => result.current.refresh());
 
