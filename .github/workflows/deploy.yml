@@ -11,7 +11,7 @@ permissions:
   contents: read
 
 env:
-  ECR_REGISTRY: 310867200447.dkr.ecr.us-east-1.amazonaws.com
+  ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
   ECR_REPOSITORY: otb_public_ui
   AWS_REGION: us-east-1
 
