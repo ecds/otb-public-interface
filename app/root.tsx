@@ -38,9 +38,20 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
   return { tourSet: null, request, tenant };
 };
 
+function AppShell() {
+  const { isMobile } = useDeviceContext();
+
+  return (
+    <body className="">
+      <Outlet />
+      {isMobile && <ScrollRestoration />}
+      <Scripts />
+    </body>
+  );
+}
+
 export default function App() {
   const { tourSet } = useLoaderData<typeof loader>();
-  const { isMobile, isDesktop } = useDeviceContext();
 
   const tourSiteContextValue = useMemo(
     () => ({ currentSite: tourSet, tenant: tourSet?.attributes.subdir }),
@@ -49,21 +60,17 @@ export default function App() {
 
   return (
     <DeviceContextProvider>
-    <TourSiteContext.Provider value={tourSiteContextValue}>
-      <html lang="en">
-        <head>
-          <Links />
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <Meta />
-        </head>
-        <body className="">
-          {(isMobile || isDesktop) && <Outlet />}
-          {isMobile && <ScrollRestoration />}
-          <Scripts />
-        </body>
-      </html>
-    </TourSiteContext.Provider>
+      <TourSiteContext.Provider value={tourSiteContextValue}>
+        <html lang="en">
+          <head>
+            <Links />
+            <meta charSet="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <Meta />
+          </head>
+          <AppShell />
+        </html>
+      </TourSiteContext.Provider>
     </DeviceContextProvider>
   );
 }
