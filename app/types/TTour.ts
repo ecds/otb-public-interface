@@ -50,7 +50,6 @@ export type TTour = {
   };
   default_lng: string;
   description: string;
-  est_time: string | undefined;
   flat_pages: TTourFlatPage[];
   is_geo: boolean;
   link_address: string | undefined;
@@ -68,6 +67,8 @@ export type TTour = {
   media: TTourMedium[];
   mode: TTravelMode;
   modes: TTravelMode[];
+  published: boolean;
+  read_duration: string | undefined;
   restrict_bounds: boolean;
   restrict_bounds_to_overlay: boolean;
   sanitized_description: string;
@@ -83,6 +84,7 @@ export type TTour = {
   tenant: string;
   title: string;
   theme: { id: number; title: string };
+  travel_duration: string | undefined;
   type: "tour";
   use_directions: boolean;
   voice_overs: TVoiceOver[];

@@ -1,10 +1,3 @@
-import {
-  faBicycle,
-  faCar,
-  faStop,
-  faSubway,
-  faWalking,
-} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Listbox,
@@ -15,22 +8,7 @@ import {
 import { useContext, useEffect } from "react";
 import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
-import type { TTravelModeTitle } from "~/types";
-
-const modeIcon = (mode: TTravelModeTitle) => {
-  switch (mode) {
-    case "BICYCLING":
-      return faBicycle;
-    case "DRIVING":
-      return faCar;
-    case "TRANSIT":
-      return faSubway;
-    case "WALKING":
-      return faWalking;
-    default:
-      return faStop;
-  }
-};
+import { modeIcon } from "~/utils/modeIcon";
 
 const TravelModeSelector = () => {
   const { tour } = useContext(TourContext);

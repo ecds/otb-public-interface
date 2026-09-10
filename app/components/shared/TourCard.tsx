@@ -1,4 +1,7 @@
+import { faBookOpen, faMapMarker } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router";
+import { modeIcon } from "~/utils/modeIcon";
 import type { TTour } from "~/types";
 
 interface Props {
@@ -26,9 +29,23 @@ const TourCard = ({ tour, className }: Props) => {
           <h5 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight">
             {tour.title}
           </h5>
-          <div className="flex items-center justify-between w-full text-gray-200 text-sm mt-auto">
-            <div>{tour.stop_count} Stops</div>
-            <div>{tour.est_time}</div>
+          <div className="flex flex-col items-start justify-between w-full text-gray-200 text-xs mt-auto">
+            <div>
+              <FontAwesomeIcon icon={faMapMarker} /> {tour.stop_count} Stops
+            </div>
+            {tour.published ? (
+              <>
+                <div>
+                  <FontAwesomeIcon icon={modeIcon(tour.mode.title)} />{" "}
+                  {tour.travel_duration}
+                </div>
+                <div>
+                  <FontAwesomeIcon icon={faBookOpen} /> {tour.read_duration}
+                </div>
+              </>
+            ) : (
+              <div>UNPUBLISHED</div>
+            )}
           </div>
         </div>
       </Link>
