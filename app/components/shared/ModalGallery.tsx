@@ -1,7 +1,7 @@
 import {
-  faArrowLeft,
-  faArrowRight,
   faArrowUpRightFromSquare,
+  faCircleChevronLeft,
+  faCircleChevronRight,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -87,17 +87,17 @@ const EmblaCarousel = ({
           <>
             <button
               onClick={scrollPrev}
-              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
               aria-label="Previous"
             >
-              <FontAwesomeIcon icon={faArrowLeft} />
+              <FontAwesomeIcon icon={faCircleChevronLeft} />
             </button>
             <button
               onClick={scrollNext}
-              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
               aria-label="Next"
             >
-              <FontAwesomeIcon icon={faArrowRight} />
+              <FontAwesomeIcon icon={faCircleChevronRight} />
             </button>
           </>
         )}

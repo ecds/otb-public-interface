@@ -1,3 +1,4 @@
+import { config } from "@fortawesome/fontawesome-svg-core";
 import { useMemo } from "react";
 import {
   Links,
@@ -12,11 +13,17 @@ import TourSiteContext from "./contexts/tourSiteContext";
 import { getTourSet } from "./data";
 import { DeviceContextProvider, useDeviceContext } from "./hooks/deviceContext";
 import styles from "./index.css?url";
+// https://stackoverflow.com/a/59429852/1792144
+// The following import prevents a Font Awesome icon server-side rendering bug,
+// where the icons flash from a very large icon down to a properly sized one:
+import "@fortawesome/fontawesome-svg-core/styles.css";
 import type {
   MetaFunction,
   LinksFunction,
   LoaderFunctionArgs,
 } from "react-router";
+// Prevent fontawesome from adding its CSS since we did it manually above:
+config.autoAddCss = false;
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
@@ -65,7 +72,10 @@ export default function App() {
           <head>
             <Links />
             <meta charSet="utf-8" />
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1"
+            />
             <Meta />
           </head>
           <AppShell />

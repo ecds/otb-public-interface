@@ -36,7 +36,7 @@ const MainContent = ({ content }: Props) => {
           {isMobile && (
             <div
               className={
-                "sticky top-14 bg-white z-10 w-full h-fit pt-4 mb-4 drop-shadow-sm"
+                "sticky top-14 bg-white z-10 w-full h-fit pt-4 mb-4 shadow-sm"
               }
             >
               <div className="px-6 py-2 flex items-center justify-between">
@@ -53,7 +53,7 @@ const MainContent = ({ content }: Props) => {
               voiceOverUrl={content.voice_overs?.[0]?.source_url}
             />
             <div
-              className="prose mx-auto"
+              className="prose mx-auto break-words"
               dangerouslySetInnerHTML={{
                 __html: content.description,
               }}

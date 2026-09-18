@@ -14,9 +14,9 @@ const Medium = ({ medium, onClick, index = 0 }: Props) => {
   };
 
   return (
-    <div className={`relative flex items-baseline h-64 md:h-[33vh]`}>
+    <div className={`relative flex items-baseline h-64 md:h-[45vh]`}>
       <button
-        className={`m-auto h-full w-5/6 bg-contain bg-center bg-no-repeat flex flex-col-reverse cursor-pointer`}
+        className={`m-auto h-full w-full bg-contain bg-center bg-no-repeat flex flex-col-reverse cursor-pointer`}
         style={{ backgroundImage: `url(${medium.files.mobile})` }}
         onClick={handleClick}
         onKeyDown={(e) => {
@@ -26,7 +26,7 @@ const Medium = ({ medium, onClick, index = 0 }: Props) => {
         }}
       >
         <img src={medium.files.lqip} alt={medium.caption} className="sr-only" />
-        {medium.title && (
+        {medium.title && medium.title !== medium.filename && (
           <div className="w-full bg-black/60 text-white py-1 rounded-md">
             {medium.title}
           </div>

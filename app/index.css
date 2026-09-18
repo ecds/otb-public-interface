@@ -9,6 +9,7 @@
   This helps maintain consistent styling with v3
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -87,6 +88,11 @@
   --color-ksu-secondary: #ffffff;
   --color-ksu-accent-text: #ffffff;
   --color-ksu-accent: #febc13;
+  --color-hrcga-primary: oklch(28% 0.05 150.93);
+  --color-hrcga-secondary: oklch(94% 0.02 67.4);
+  --color-hrcga-accent-text: oklch(94% 0.02 67.4);
+  --color-hrcga-accent: #58191b;
+
 }
 
 @source inline('bg-default-{primary,secondary,accent}');
@@ -140,6 +146,8 @@
 @source inline('aria-disabled:text-uga-{accent-text/45}');
 @source inline('bg-ksu-{primary,secondary,accent}');
 @source inline('text-ksu-{accent-text,primary,secondary}');
+@source inline('bg-hrcga-{primary,secondary,accent}');
+@source inline('text-hrcga-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-ksu-{accent-text/45}');
 
 /* @layer utilities {
@@ -164,6 +172,7 @@
 /* Mobile-specific styles to add to existing index.css */
 
 @layer utilities {
+
   /* Line clamp utility for text truncation */
   .line-clamp-2 {
     overflow: hidden;

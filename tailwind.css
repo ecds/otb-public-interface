@@ -70,6 +70,10 @@
   --color-ksu-secondary: oklch(100% 0 0);
   --color-ksu-accent-text: oklch(100% 0 0);
   --color-ksu-accent: oklch(79.03% 0.116 88.24);
+  --color-hrcga-primary: oklch(28% 0.05 150.93);
+  --color-hrcga-secondary: oklch(94% 0.02 67.4);
+  --color-hrcga-accent-text: oklch(28% 0.05 150.93);
+  --color-hrcga-accent: oklch(94% 0.02 67.4);
 }
 
 /* Custom utilities */
