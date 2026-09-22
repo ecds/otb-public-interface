@@ -9,21 +9,10 @@
     "**/.client/**/*.tsx",
     "tailwind.config.ts"
   ],
-  "exclude": [
-    "node_modules*",
-    "scripts",
-    "app/entry.server.tsx"
-  ],
+  "exclude": ["node_modules*", "scripts", "app/entry.server.tsx"],
   "compilerOptions": {
-    "lib": [
-      "DOM",
-      "DOM.Iterable",
-      "ES2022"
-    ],
-    "types": [
-      "@react-router/node",
-      "vite/client"
-    ],
+    "lib": ["DOM", "DOM.Iterable", "ES2023"],
+    "types": ["@react-router/node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
@@ -36,9 +25,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "paths": {
-      "~/*": [
-        "./app/*"
-      ]
+      "~/*": ["./app/*"]
     },
     // Vite takes care of building everything, not tsc.
     "noEmit": true

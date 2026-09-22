@@ -19,36 +19,19 @@ const calcBounds = (tours: TTour[]) => {
     );
   }
 
-  if (tours.length === 2) {
-    return new maplibregl.LngLatBounds(
-      new maplibregl.LngLat(
-        tours[0].bounds.centerLng,
-        tours[0].bounds.centerLat,
-      ),
-      new maplibregl.LngLat(
-        tours[1].bounds.centerLng,
-        tours[1].bounds.centerLat,
-      ),
-    );
-  }
-
-  const firstTwo = tours.splice(0, 2);
-
   const bounds = new maplibregl.LngLatBounds(
-    new maplibregl.LngLat(
-      firstTwo[0].bounds.centerLng,
-      firstTwo[0].bounds.centerLat,
-    ),
-    new maplibregl.LngLat(
-      firstTwo[1].bounds.centerLng,
-      firstTwo[1].bounds.centerLat,
-    ),
+    new maplibregl.LngLat(tours[0].bounds.centerLng, tours[0].bounds.centerLat),
+    new maplibregl.LngLat(tours[1].bounds.centerLng, tours[1].bounds.centerLat),
   );
 
-  for (const tour of tours) {
-    bounds.extend(
-      new maplibregl.LngLat(tour.bounds.centerLng, tour.bounds.centerLat),
-    );
+  if (tours.length > 2) {
+    const rest = tours.toSpliced(0, 2);
+
+    for (const tour of rest) {
+      bounds.extend(
+        new maplibregl.LngLat(tour.bounds.centerLng, tour.bounds.centerLat),
+      );
+    }
   }
 
   return bounds;
