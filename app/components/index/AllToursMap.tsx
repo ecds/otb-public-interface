@@ -40,7 +40,7 @@ const AllToursMap = ({ tours, request }: Props) => {
     <div
       id="all-tour-maps"
       ref={mapContainerRef}
-      className="w-full max-w-screen h-[50vh]"
+      className="w-full max-w-screen h-[50vh] mt-16"
     >
       {tours.map((tour) => {
         if (map) {

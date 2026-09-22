@@ -30,7 +30,36 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
 export default function Index() {
   const { tourSets, request } = useLoaderData<typeof loader>();
   return (
-    <div>
+    <>
+      <nav className="bg-default-primary text-white/85 h-16 fixed top-0 w-screen px-6 flex justify-between items-center z-50 drop-shadow-md">
+        <div className="flex flex-row space-x-6 items-center ml-6">
+          <img
+            className="h-16 w-auto p-2"
+            src={"/images/otblogo.png"}
+            alt=""
+            role="presentation"
+          />
+          OpenTourBuilder
+        </div>
+        <ul className="flex space-x-8 flex-row">
+          <li>
+            <a
+              href="https://digitalscholarship.emory.edu/opentour-builder-proposal-process/"
+              className="hover:underline hover:text-white"
+            >
+              About
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/ecds/OpenTourBuilder/wiki/How-to-Use-OpenTour-v.-3.0"
+              className="hover:underline hover:text-white"
+            >
+              Documentation
+            </a>
+          </li>
+        </ul>
+      </nav>
       <ClientOnly>
         <AllToursMap
           tours={tourSets
@@ -43,37 +72,39 @@ export default function Index() {
           request={request}
         />
       </ClientOnly>
-      <div className="m-8">
-        <ul className="grid grid-cols-1 w-full md:px-16">
-          {tourSets?.map((ts: TTourSet) => {
-            return (
-              <li key={ts.subdir} className="grid mb-8">
-                <a
-                  className="bg-gray-300 text-xl px-2 py-1"
-                  href={`${request.protocol}://${ts.subdir}.${request.host}`}
-                >
-                  {ts.name}
-                </a>
-                <ul className="list-disc">
-                  {ts.published_tours.map((tour) => {
-                    if (tour) {
-                      return (
-                        <li key={tour.slug} className="ml-8 text-small">
-                          <a
-                            href={`${request.protocol}://${ts.subdir}.${request.host}/${tour.slug}`}
-                          >
-                            {tour.title}
-                          </a>
-                        </li>
-                      );
-                    }
-                  })}
-                </ul>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </div>
+      <main>
+        <div className="m-8">
+          <ul className="grid grid-cols-1 w-full md:px-16">
+            {tourSets?.map((ts: TTourSet) => {
+              return (
+                <li key={ts.subdir} className="grid mb-8">
+                  <a
+                    className="bg-gray-300 text-xl px-2 py-1"
+                    href={`${request.protocol}://${ts.subdir}.${request.host}`}
+                  >
+                    {ts.name}
+                  </a>
+                  <ul className="list-disc">
+                    {ts.published_tours.map((tour) => {
+                      if (tour) {
+                        return (
+                          <li key={tour.slug} className="ml-8 text-small">
+                            <a
+                              href={`${request.protocol}://${ts.subdir}.${request.host}/${tour.slug}`}
+                            >
+                              {tour.title}
+                            </a>
+                          </li>
+                        );
+                      }
+                    })}
+                  </ul>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </main>
+    </>
   );
 }
