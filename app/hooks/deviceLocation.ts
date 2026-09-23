@@ -67,12 +67,7 @@ export const useDeviceLocation = (tourSlug?: string) => {
         const modeTitle = tourSlug
           ? (localStorage.getItem(tourSlug) ?? "").toLowerCase()
           : "";
-        const threshold =
-          DISTANCE_THRESHOLDS[modeTitle] ?? DEFAULT_THRESHOLD;
-
-        // Skip updates where GPS accuracy is worse than the threshold —
-        // the reported position could be anywhere within that circle.
-        if (accuracy > threshold) return;
+        const threshold = DISTANCE_THRESHOLDS[modeTitle] ?? DEFAULT_THRESHOLD;
 
         const last = lastPositionRef.current;
         if (last) {

@@ -268,14 +268,29 @@ describe("useDeviceLocation — distance throttling", () => {
     });
   });
 
-  it("suppresses update when GPS accuracy exceeds the threshold", () => {
+  it("accepts first position regardless of GPS accuracy", () => {
     seed(["functional", "locationAllowed", "realtimeLocation"]);
     mockStorage.setItem(TOUR_SLUG, "WALKING");
     const { result } = renderHook(() => useDeviceLocation(TOUR_SLUG));
 
-    // accuracy=20 > walking threshold of 15 — should be ignored
-    act(() => watchPositionCallback!(positionAt(BASE_LAT, BASE_LNG, 20)));
-    expect(result.current.deviceLocation).toBeUndefined();
+    // accuracy=150 (e.g. DevTools override) should not block the first fix
+    act(() => watchPositionCallback!(positionAt(BASE_LAT, BASE_LNG, 150)));
+    expect(result.current.deviceLocation).toEqual({ lat: BASE_LAT, lng: BASE_LNG });
+  });
+
+  it("accepts large movement regardless of GPS accuracy", () => {
+    seed(["functional", "locationAllowed", "realtimeLocation"]);
+    mockStorage.setItem(TOUR_SLUG, "DRIVING");
+    const { result } = renderHook(() => useDeviceLocation(TOUR_SLUG));
+
+    act(() => watchPositionCallback!(positionAt(BASE_LAT, BASE_LNG, 150)));
+    // Move ~3000 km (Atlanta → San Francisco equivalent) with accuracy=150
+    const far = positionAt(BASE_LAT + latOffset(3_000_000), BASE_LNG, 150);
+    act(() => watchPositionCallback!(far));
+    expect(result.current.deviceLocation).toEqual({
+      lat: BASE_LAT + latOffset(3_000_000),
+      lng: BASE_LNG,
+    });
   });
 
   it("falls back to default threshold (15 m) when no tourSlug is provided", () => {
