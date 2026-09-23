@@ -22,7 +22,7 @@ const Directions = () => {
     addPreference,
     removePreference,
   } = useContext(StopMapContext);
-  const { deviceLocation } = useDeviceLocation();
+  const { deviceLocation } = useDeviceLocation(tour?.slug);
   const directionsContainerRef = useRef<HTMLDivElement>(null);
   const parkingDirectionsContainerRef = useRef<HTMLDivElement>(null);
   const [copyMessage, setCopyMessage] = useState<string | undefined>(undefined);
