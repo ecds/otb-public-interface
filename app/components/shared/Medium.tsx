@@ -1,5 +1,6 @@
 import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useDeviceContext } from "~/hooks/deviceContext";
 import type { TTourMedium } from "~/types";
 
 interface Props {
@@ -9,6 +10,8 @@ interface Props {
 }
 
 const Medium = ({ medium, onClick, index = 0 }: Props) => {
+  const { isMobile } = useDeviceContext();
+
   const handleClick = () => {
     if (onClick) onClick(index);
   };
@@ -17,7 +20,9 @@ const Medium = ({ medium, onClick, index = 0 }: Props) => {
     <div className={`relative flex items-baseline h-64 md:h-[45vh]`}>
       <button
         className={`m-auto h-full w-full bg-contain bg-center bg-no-repeat flex flex-col-reverse cursor-pointer`}
-        style={{ backgroundImage: `url(${medium.files.mobile})` }}
+        style={{
+          backgroundImage: `url(${isMobile ? medium.files.mobile : medium.files.desktop})`,
+        }}
         onClick={handleClick}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
