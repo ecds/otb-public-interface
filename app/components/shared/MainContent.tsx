@@ -12,7 +12,11 @@ const MainContent = ({ content }: Props) => {
   const { isDesktop, isMobile } = useDeviceContext();
 
   return (
-    <div key={content.slug} className="mb-12" id={content.slug}>
+    <div
+      key={content.slug}
+      className={`mb-12 ${content.type !== "stop" ? "mt-12" : ""}`}
+      id={content.slug}
+    >
       <div className="md:relative w-full mt-16 md:mt-0">
         <div className="flex flex-col ">
           {isDesktop && (
