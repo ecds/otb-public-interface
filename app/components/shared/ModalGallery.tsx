@@ -204,7 +204,7 @@ const Gallery = ({ media, path }: Props) => {
                       {!medium?.embed && (
                         <a
                           className="pt-2 text-blue-400 hover:text-blue-300 underline"
-                          href={medium.original_image}
+                          href={medium.files.original}
                           target="_blank"
                           rel="noreferrer"
                         >

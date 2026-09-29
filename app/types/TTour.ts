@@ -21,6 +21,7 @@ export type TTourMedium = {
     mobile: string;
     tablet: string;
     desktop: string;
+    original: string;
   };
   lqip_width: number | undefined;
   mobile_width: number;
