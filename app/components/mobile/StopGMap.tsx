@@ -6,7 +6,7 @@ import { TourContext } from "~/contexts/TourContext";
 import type { ReactNode } from "react";
 
 const StopGMap = ({ children }: { children: ReactNode }) => {
-  const { currentStop } = useContext(TourContext);
+  const { currentStop, tour } = useContext(TourContext);
 
   if (!currentStop) {
     return (
@@ -28,6 +28,7 @@ const StopGMap = ({ children }: { children: ReactNode }) => {
           defaultCenter={{ lat: currentStop.lat, lng: currentStop.lng }}
           defaultZoom={15}
           disableDefaultUI
+          mapTypeId={tour?.map_type ?? "roadmap"}
           mapId={"bf51a910020fa25a"}
           className="w-full h-full"
         >

@@ -21,7 +21,7 @@ const TourGoogleMap = () => {
         maxZoom={tour.blank_map ? 18 : undefined}
         disableDefaultUI
         mapTypeId={tour.map_type ?? "roadmap"}
-        mapId={"bf51a910020fa25a"}
+        mapId={tour.map_type}
         restriction={{
           latLngBounds: {
             north: 84,
