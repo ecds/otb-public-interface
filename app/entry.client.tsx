@@ -7,6 +7,11 @@
 import { startTransition, StrictMode } from "react";
 import { hydrateRoot } from "react-dom/client";
 import { HydratedRouter } from "react-router/dom";
+import * as maplibregl from "maplibre-gl";
+import MaplibreWorker from "maplibre-gl/dist/maplibre-gl-csp-worker?worker";
+
+// maplibre-gl v6 requires explicit worker registration when bundled with Vite
+(maplibregl as unknown as { workerClass: unknown }).workerClass = MaplibreWorker;
 
 startTransition(() => {
   hydrateRoot(
