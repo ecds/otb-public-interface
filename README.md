@@ -1,57 +1,53 @@
-# otb-public
+# OTB Public Interface
 
-This README outlines the details of collaborating on this Ember application.
-A short introduction of this app could easily go here.
+React Router v8 / Express frontend for OpenTourBuilder. Multi-tenant: the subdomain determines which tour set is loaded.
 
-## Prerequisites
+## Domain structure
 
-You will need the following things properly installed on your computer.
+| Environment | Root URL | Tenant URL |
+|---|---|---|
+| Production | `opentour.site` | `<tenant>.opentour.site` |
+| Staging | `dev.opentour.site` | `<tenant>.dev.opentour.site` |
+| Local | `lvh.me:4200` | `<tenant>.lvh.me:4200` |
 
-* [Git](https://git-scm.com/)
-* [Node.js](https://nodejs.org/) (with npm)
-* [Ember CLI](https://ember-cli.com/)
-* [Google Chrome](https://google.com/chrome/)
+The server resolves the tenant by finding the leftmost subdomain that is not a known environment label (`dev`, `staging`, `www`). Requests with no tenant (e.g. the root domain) are served the tour set index.
 
-## Installation
+## Development
 
-* `git clone <repository-url>` this repository
-* `cd otb-public`
-* `npm install`
+Start the dev server:
 
-## Running / Development
+```sh
+npm run dev
+```
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
-* Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+To test location services (requires HTTPS):
 
-### Code Generators
+```sh
+PROTOCOL=https npm run dev
+```
 
-Make use of the many generators for code, try `ember help generate` for more details
+See [this article](https://medium.com/@hjblokland/how-to-create-self-signed-wildcard-ssl-certificates-with-mkcert-on-macos-a6a3663aa157) for generating local wildcard certs.
 
-### Running Tests
+## Tests
 
-* `ember test`
-* `ember test --server`
+```sh
+npm test
+```
 
-### Linting
+## Deployment
 
-* `npm run lint:hbs`
-* `npm run lint:js`
-* `npm run lint:js -- --fix`
+Deployments are automated via GitHub Actions on push to `develop` or `main`.
 
-### Building
+| Branch | Image tag | `NODE_ENV` | ECS target |
+|---|---|---|---|
+| `develop` | `latest` | `staging` | `otb-pub-dev` |
+| `main` | `stable` | `production` | `otb-pub-prod` |
 
-* `ember build` (development)
-* `ember build --environment production` (production)
+The workflow builds a Docker image, pushes it to ECR, and force-restarts the ECS service. The registry URI is stored in the `ECR_REGISTRY` GitHub secret.
 
-### Deploying
+To deploy manually:
 
-Specify what it takes to deploy your app.
-
-## Further Reading / Useful Links
-
-* [ember.js](https://emberjs.com/)
-* [ember-cli](https://ember-cli.com/)
-* Development Browser Extensions
-  * [ember inspector for chrome](https://chrome.google.com/webstore/detail/ember-inspector/bmdblncegkenkacieihfhpjfppoconhi)
-  * [ember inspector for firefox](https://addons.mozilla.org/en-US/firefox/addon/ember-inspector/)
+```sh
+npm run build
+npm start
+```

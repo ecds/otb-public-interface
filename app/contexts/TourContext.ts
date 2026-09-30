@@ -1,0 +1,47 @@
+import { createContext } from "react";
+import { baseStyle } from "~/map_styles";
+import type { StyleSpecification } from "maplibre-gl";
+import type { Dispatch, SetStateAction } from "react";
+import type { TTour, TTourFlatPage, TTourStop } from "~/types";
+
+type Context = {
+  tour: TTour | undefined;
+  currentStop: TTourStop | undefined;
+  setCurrentStop: Dispatch<SetStateAction<TTourStop | undefined>>;
+  currentFlatPage: TTourFlatPage | string | undefined;
+  setCurrentFlatPage: Dispatch<
+    SetStateAction<TTourFlatPage | string | undefined>
+  >;
+  showMenu: boolean;
+  setShowMenu: Dispatch<SetStateAction<boolean>>;
+  mapStyle: StyleSpecification;
+  showPermissionsModal: boolean;
+  setShowPermissionsModal: Dispatch<SetStateAction<boolean>>;
+};
+
+export const TourContext = createContext<Context>({
+  tour: undefined,
+  currentStop: undefined,
+  showMenu: false,
+  setShowMenu: (_: SetStateAction<boolean>) => {
+    console.error("setShowMenu not implemented. Did you pass it to context?");
+  },
+  setCurrentStop: (_: SetStateAction<TTourStop | undefined>) => {
+    console.error(
+      "setCurrentStop not implemented. Did you pass it to context?",
+    );
+  },
+  showPermissionsModal: false,
+  setShowPermissionsModal: (_: SetStateAction<boolean>) => {
+    console.error("setShowMenu not implemented. Did you pass it to context?");
+  },
+  currentFlatPage: undefined,
+  setCurrentFlatPage: (
+    _: SetStateAction<TTourFlatPage | string | undefined>,
+  ) => {
+    console.error(
+      "setCurrentStop not implemented. Did you pass it to context?",
+    );
+  },
+  mapStyle: baseStyle,
+});
