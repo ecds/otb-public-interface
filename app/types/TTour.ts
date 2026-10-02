@@ -23,6 +23,8 @@ export type TTourMedium = {
     desktop: string;
     original: string;
   };
+  // Inline data URI of the lqip image; only sent for a gallery's first medium.
+  lqip_data?: string;
   lqip_width: number | undefined;
   mobile_width: number;
   original_image: string;

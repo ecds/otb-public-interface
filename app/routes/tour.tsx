@@ -1,5 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from "react";
-import { useLoaderData, Outlet, redirect } from "react-router";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useLoaderData,
+  useNavigationType,
+  Outlet,
+  redirect,
+} from "react-router";
 import StopList from "~/components/desktop/StopList";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
 import TourMap from "~/components/desktop/TourMap";
@@ -74,6 +79,16 @@ export default function Tour() {
     useState<boolean>(false);
   const [showConsentSheet, setShowConsentSheet] = useState<boolean>(false);
   const stopParamRef = useRef<string | undefined>(stopParam);
+  const navigationType = useNavigationType();
+  const tourSlug = tour?.slug;
+
+  // Desktop doesn't render <ScrollRestoration> (its post-hydration reset
+  // fights the deep-link scroll to a stop), so reset scroll here when a
+  // link leads to the tour itself. "POP" (fresh load, back/forward) and
+  // stop URLs are left alone.
+  useLayoutEffect(() => {
+    if (navigationType === "PUSH" && !stopParam) window.scrollTo(0, 0);
+  }, [navigationType, stopParam, tourSlug]);
 
   const tourContextValue = useMemo(
     () => ({
@@ -88,7 +103,14 @@ export default function Tour() {
       showPermissionsModal,
       setShowPermissionsModal,
     }),
-    [currentFlatPage, currentStop, showMenu, tour, mapStyle, showPermissionsModal],
+    [
+      currentFlatPage,
+      currentStop,
+      showMenu,
+      tour,
+      mapStyle,
+      showPermissionsModal,
+    ],
   );
 
   useEffect(() => {
@@ -101,9 +123,7 @@ export default function Tour() {
     if (!stopParam || !tour) return;
     stopParamRef.current = stopParam;
     setCurrentStop(
-      tour.stops.find((stop: TTourStop) =>
-        stop.slugs.includes(stopParam),
-      ),
+      tour.stops.find((stop: TTourStop) => stop.slugs.includes(stopParam)),
     );
   }, [stopParam, tour]);
 
