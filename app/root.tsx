@@ -51,7 +51,7 @@ function AppShell() {
   return (
     <body className="">
       <Outlet />
-      {isMobile && <ScrollRestoration />}
+      <ScrollRestoration />
       <Scripts />
     </body>
   );
