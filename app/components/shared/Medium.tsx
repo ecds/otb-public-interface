@@ -84,7 +84,7 @@ const Medium = ({ medium, onClick, index = 0 }: Props) => {
         )}
       </button>
       {medium.video && (
-        <div className="absolute left-1/2 -translate-x-12 top-1/2 -translate-y-12 text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex">
+        <div className="absolute left-1/2 -translate-x-12 top-1/2 -translate-y-12 text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex pointer-events-none">
           <FontAwesomeIcon className="" icon={faCirclePlay} />
         </div>
       )}
