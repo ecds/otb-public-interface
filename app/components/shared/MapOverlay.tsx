@@ -2,6 +2,7 @@ import { useMap } from "@vis.gl/react-google-maps";
 import { useContext, useEffect } from "react";
 import { TourContext } from "~/contexts/TourContext";
 import TourSiteContext from "~/contexts/tourSiteContext";
+import { createMapOverlay } from "~/lib/MapOverlay";
 
 const MapOverlay = () => {
   const { tenant } = useContext(TourSiteContext);
@@ -29,15 +30,17 @@ const MapOverlay = () => {
       new google.maps.LatLng(tour.map_overlay.north, tour.map_overlay.east),
     );
 
-    const overlay = new google.maps.GroundOverlay(
-      tour.map_overlay.image_url,
+    const overlay = createMapOverlay({
       bounds,
-    );
+      imageUrl: tour.map_overlay.image_url,
+      rotation: tour.map_overlay.rotation,
+    });
 
     overlay.setMap(map);
 
     return () => {
       mask.setMap(null);
+      overlay.setMap(null);
     };
   }, [tour, tenant, map]);
 
