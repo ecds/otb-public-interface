@@ -11,7 +11,7 @@ const Analytics = () => {
     setKey(location.key);
     trackerRef.current?.setAttribute(
       "src",
-      "https://matomo.ecdsdev.org/matomo.php?idsite=&rec=1",
+      "https://matomo.ecdsdev.org/matomo.php?idsite=4&rec=1",
     );
   }, [location]);
 
