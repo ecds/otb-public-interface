@@ -11,6 +11,7 @@ import TourMap from "~/components/desktop/TourMap";
 import ConsentSheet from "~/components/mobile/ConsentSheet";
 import MobileNav from "~/components/mobile/Nav";
 import PermissionsModal from "~/components/mobile/PermissionsModal";
+import Analytics from "~/components/shared/Analytics";
 import FlatPage from "~/components/shared/FlatPage";
 import MainContent from "~/components/shared/MainContent";
 import Navbar from "~/components/shared/Navbar";
@@ -206,6 +207,7 @@ export default function Tour() {
           <FlatPage flatPage="about" />
         </>
       )}
+      <Analytics />
     </TourContext.Provider>
   );
 }

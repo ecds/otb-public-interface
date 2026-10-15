@@ -1,6 +1,7 @@
 import { redirect, useLoaderData } from "react-router";
 import ClientOnly from "~/components/ClientOnly";
 import AllToursMap from "~/components/index/AllToursMap";
+import Analytics from "~/components/shared/Analytics";
 import { requestContext, tenantContext } from "~/context";
 import { getTourSets } from "~/data";
 import type { MetaFunction, LoaderFunctionArgs } from "react-router";
@@ -105,6 +106,7 @@ export default function Index() {
           </ul>
         </div>
       </main>
+      <Analytics />
     </>
   );
 }

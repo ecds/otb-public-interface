@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { useEffect, useState } from "react";
 import { Link, useLoaderData, redirect, useNavigate } from "react-router";
+import Analytics from "~/components/shared/Analytics";
 import TourCard from "~/components/shared/TourCard";
 import TourSetMap from "~/components/shared/TourSetMap";
 import { requestContext, tenantContext } from "~/context";
@@ -145,6 +146,7 @@ const Tours = () => {
           </TabPanels>
         </TabGroup>
       </div>
+      <Analytics />
     </div>
   );
 };
