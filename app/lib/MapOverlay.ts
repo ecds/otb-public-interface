@@ -1,73 +1,60 @@
-export class GoogleMapOverlay extends google.maps.OverlayView {
-  private bounds: google.maps.LatLngBounds;
-  private image: string;
-  private div?: HTMLElement;
+type OverlayOptions = {
+  bounds: google.maps.LatLngBounds;
+  imageUrl: string;
+  // Degrees clockwise about the center of `bounds`.
+  rotation?: number | null;
+};
 
-  constructor(bounds: google.maps.LatLngBounds, image: string) {
-    super();
+// GroundOverlay can't rotate, so the image is placed in its own element over
+// the upright bounds and turned with CSS. Google's pixel space is the map's
+// projection, so this matches the admin's rotated corners.
+//
+// The class is built on first use: extending google.maps.OverlayView at
+// module load throws before the Maps script has loaded (and on the server).
+export const createMapOverlay = ({
+  bounds,
+  imageUrl,
+  rotation,
+}: OverlayOptions): google.maps.OverlayView => {
+  class RotatedImageOverlay extends google.maps.OverlayView {
+    private div?: HTMLDivElement;
 
-    this.bounds = bounds;
-    this.image = image;
-  }
+    onAdd() {
+      const div = document.createElement("div");
+      div.style.position = "absolute";
+      div.style.transformOrigin = "center";
+      div.style.transform = `rotate(${rotation ?? 0}deg)`;
+      div.style.pointerEvents = "none";
 
-  /**
-   * onAdd is called when the map's panes are ready and the overlay has been
-   * added to the map.
-   */
-  onAdd() {
-    this.div = document.createElement("div");
-    this.div.style.borderStyle = "none";
-    this.div.style.borderWidth = "0px";
-    this.div.style.position = "absolute";
+      const img = document.createElement("img");
+      img.src = imageUrl;
+      img.alt = "";
+      img.style.position = "absolute";
+      img.style.width = "100%";
+      img.style.height = "100%";
+      div.appendChild(img);
 
-    // Create the img element and attach it to the div.
-    const img = document.createElement("img");
+      this.div = div;
+      this.getPanes()?.overlayLayer.appendChild(div);
+    }
 
-    img.src = this.image;
-    img.style.width = "100%";
-    img.style.height = "100%";
-    img.style.position = "absolute";
-    this.div.appendChild(img);
+    draw() {
+      const projection = this.getProjection();
+      const sw = projection?.fromLatLngToDivPixel(bounds.getSouthWest());
+      const ne = projection?.fromLatLngToDivPixel(bounds.getNorthEast());
+      if (!this.div || !sw || !ne) return;
 
-    // Add the element to the "overlayLayer" pane.
-    const panes = this.getPanes()!;
+      this.div.style.left = `${sw.x}px`;
+      this.div.style.top = `${ne.y}px`;
+      this.div.style.width = `${ne.x - sw.x}px`;
+      this.div.style.height = `${sw.y - ne.y}px`;
+    }
 
-    panes.overlayLayer.appendChild(this.div);
-  }
-
-  draw() {
-    // We use the south-west and north-east
-    // coordinates of the overlay to peg it to the correct position and size.
-    // To do this, we need to retrieve the projection from the overlay.
-    const overlayProjection = this.getProjection();
-
-    // Retrieve the south-west and north-east coordinates of this overlay
-    // in LatLngs and convert them to pixel coordinates.
-    // We'll use these coordinates to resize the div.
-    const sw = overlayProjection.fromLatLngToDivPixel(
-      this.bounds.getSouthWest()
-    )!;
-    const ne = overlayProjection.fromLatLngToDivPixel(
-      this.bounds.getNorthEast()
-    )!;
-
-    // Resize the image's div to fit the indicated dimensions.
-    if (this.div) {
-      this.div.style.left = sw.x + "px";
-      this.div.style.top = ne.y + "px";
-      this.div.style.width = ne.x - sw.x + "px";
-      this.div.style.height = sw.y - ne.y + "px";
+    onRemove() {
+      this.div?.remove();
+      this.div = undefined;
     }
   }
 
-  /**
-   * The onRemove() method will be called automatically from the API if
-   * we ever set the overlay's map property to 'null'.
-   */
-  onRemove() {
-    if (this.div) {
-      (this.div.parentNode as HTMLElement).removeChild(this.div);
-      delete this.div;
-    }
-  }
-}
+  return new RotatedImageOverlay();
+};

@@ -64,6 +64,8 @@ export type TTour = {
         north: number;
         south: number;
         west: number;
+        // Degrees clockwise about the center of the north/south/east/west box.
+        rotation?: number | null;
       }
     | undefined;
   map_type: "satellite" | "road" | "hybrid";
