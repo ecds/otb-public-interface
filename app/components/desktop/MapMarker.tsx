@@ -15,7 +15,7 @@ interface Props {
 }
 
 const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
-  const { currentStop, setCurrentStop } = useContext(TourContext);
+  const { currentStop, setCurrentStop, tour } = useContext(TourContext);
   const [isCurrent, setIsCurrent] = useState<boolean>(false);
   const markerRef = useRef<HTMLDivElement>(null);
   const popContainerRef = useRef<HTMLDivElement>(document.createElement("div"));
@@ -132,7 +132,7 @@ const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
           <FontAwesomeIcon
             icon={faLocationPin}
             style={{
-              color: stop.icon_color ?? "#d32f2f",
+              color: stop.icon_color ?? tour?.icon_color ?? "#d32f2f",
               width: isCurrent ? "48px" : "32px",
               height: isCurrent ? "48px" : "32px",
               cursor: "pointer",

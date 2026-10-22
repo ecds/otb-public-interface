@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router";
 
-const Analytics = () => {
+const Analytics = ({ id = 4 }: { id: number }) => {
   const location = useLocation();
   const trackerRef = useRef<HTMLImageElement>(null);
   const [key, setKey] = useState<string | undefined>(undefined);
@@ -11,9 +11,9 @@ const Analytics = () => {
     setKey(location.key);
     trackerRef.current?.setAttribute(
       "src",
-      "https://matomo.ecdsdev.org/matomo.php?idsite=4&rec=1",
+      `https://matomo.ecdsdev.org/matomo.php?idsite=${id}&rec=1`,
     );
-  }, [location]);
+  }, [location, id]);
 
   if (process.env.NODE_ENV == "production") {
     return (

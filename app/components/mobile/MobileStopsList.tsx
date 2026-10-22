@@ -28,7 +28,11 @@ const MobileStopsList = () => {
         >
           <div className="w-16 h-16 mr-3 shrink-0">
             <img
-              src={stop.splash?.url || "/images/otblogo.png"}
+              src={
+                stop.splash?.url ||
+                stop.media[0]?.files.mobile ||
+                "/images/otblogo.png"
+              }
               alt={stop.title}
               className="w-full h-full object-cover rounded"
             />
