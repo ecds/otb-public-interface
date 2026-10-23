@@ -18,6 +18,7 @@ export type TTourSetPreview = {
   name: string;
   subdir: string;
   logo_url: string | null;
+  matomo_id: number;
 };
 
 export type TTourSet = TTourSetPreview & {

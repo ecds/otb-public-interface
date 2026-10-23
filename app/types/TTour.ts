@@ -54,6 +54,7 @@ export type TTour = {
   default_lng: string;
   description: string;
   flat_pages: TTourFlatPage[];
+  icon_color: string;
   is_geo: boolean;
   link_address: string | undefined;
   link_text: string | undefined;

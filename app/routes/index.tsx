@@ -3,8 +3,12 @@ import ClientOnly from "~/components/ClientOnly";
 import AllToursMap from "~/components/index/AllToursMap";
 import Analytics from "~/components/shared/Analytics";
 import { requestContext, tenantContext } from "~/context";
-import { getTourSets } from "~/data";
-import type { MetaFunction, LoaderFunctionArgs } from "react-router";
+import { getTourSets, isSignedIn } from "~/data";
+import type {
+  MetaFunction,
+  LoaderFunctionArgs,
+  ClientLoaderFunctionArgs,
+} from "react-router";
 import type { TTourSet } from "~/types";
 
 export const meta: MetaFunction = () => {
@@ -27,6 +31,21 @@ export const loader = async ({ context }: LoaderFunctionArgs) => {
   const tourSets = await getTourSets();
   return { tourSets, request, tenant };
 };
+
+export const clientLoader = async ({
+  serverLoader,
+}: ClientLoaderFunctionArgs) => {
+  const signedIn = await isSignedIn();
+  const serverData = await serverLoader<typeof loader>();
+  if (signedIn) {
+    const tourSets = await getTourSets();
+    return { ...serverData, tourSets };
+  } else {
+    return { ...serverData };
+  }
+};
+
+clientLoader.hydrate = true as const;
 
 export default function Index() {
   const { tourSets, request } = useLoaderData<typeof loader>();
@@ -106,7 +125,7 @@ export default function Index() {
           </ul>
         </div>
       </main>
-      <Analytics />
+      <Analytics id={4} />
     </>
   );
 }

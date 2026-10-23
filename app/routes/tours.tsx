@@ -146,7 +146,7 @@ const Tours = () => {
           </TabPanels>
         </TabGroup>
       </div>
-      <Analytics />
+      <Analytics id={tour_set.matomo_id} />
     </div>
   );
 };

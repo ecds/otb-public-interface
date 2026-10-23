@@ -207,7 +207,7 @@ export default function Tour() {
           <FlatPage flatPage="about" />
         </>
       )}
-      <Analytics />
+      <Analytics id={tour_set.matomo_id} />
     </TourContext.Provider>
   );
 }

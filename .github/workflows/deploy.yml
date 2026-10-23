@@ -41,12 +41,12 @@ jobs:
           if [ "${{ github.ref_name }}" = "main" ]; then
             echo "IMAGE_TAG=stable" >> $GITHUB_ENV
             echo "NODE_ENV=production" >> $GITHUB_ENV
-            echo "ECS_CLUSTER=otb-pub-prod" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=OpenTourBuilder" >> $GITHUB_ENV
             echo "ECS_SERVICE=otb-pub-prod" >> $GITHUB_ENV
           else
             echo "IMAGE_TAG=latest" >> $GITHUB_ENV
             echo "NODE_ENV=staging" >> $GITHUB_ENV
-            echo "ECS_CLUSTER=otb-pub-dev" >> $GITHUB_ENV
+            echo "ECS_CLUSTER=OpenTourBuilder" >> $GITHUB_ENV
             echo "ECS_SERVICE=otb-pub-dev" >> $GITHUB_ENV
           fi
 
