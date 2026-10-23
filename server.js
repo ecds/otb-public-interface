@@ -8,6 +8,7 @@ import express from "express";
 import morgan from "morgan";
 import { RouterContextProvider } from "react-router";
 import { requestContext, tenantContext } from "./app/context.js";
+import { adminRedirectUrl } from "./app/utils/adminRedirect.js";
 
 const viteDevServer =
   process.env.NODE_ENV === "production"
@@ -43,6 +44,20 @@ app.use(compression());
 
 // http://expressjs.com/en/advanced/best-practice-security.html#at-a-minimum-disable-x-powered-by-header
 app.disable("x-powered-by");
+
+// /admin on a tenant's site: send them to that site's admin on the main
+// domain. 302 rather than 301 so browsers don't cache it for good.
+app.get(["/admin", "/admin/*"], (req, res, next) => {
+  const location = adminRedirectUrl({
+    tenant: getTenant(req),
+    host: req.get("Host"),
+    url: req.originalUrl,
+    // TLS ends at the load balancer, so the request itself arrives as http.
+    protocol: process.env.NODE_ENV === "production" ? "https" : req.protocol,
+  });
+  if (location) res.redirect(302, location);
+  else next();
+});
 
 app.get("/robots.txt", (req, res) => {
   const origin = `${req.protocol}://${req.get("Host")}`;
