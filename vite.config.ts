@@ -29,6 +29,28 @@ function maplibreWorkerPlugin(): Plugin {
   };
 }
 
+// In dev, serves MapLibre's worker scripts as they are. Vite would otherwise
+// add an import of its HMR client (for the worker's dynamic import()), and
+// that client, running in a worker with no document, throws "document is
+// not defined" whenever a CSS update arrives.
+function maplibreDevWorkerPlugin(): Plugin {
+  const distDir = path.resolve("node_modules/maplibre-gl/dist");
+  const workerScript =
+    /\/maplibre-gl\/dist\/(maplibre-gl-worker(?:-dev)?\.mjs)$/;
+  return {
+    name: "maplibre-dev-worker",
+    apply: "serve",
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const match = req.url?.split("?")[0].match(workerScript);
+        if (!match) return next();
+        res.setHeader("Content-Type", "text/javascript");
+        res.end(fs.readFileSync(path.join(distDir, match[1]), "utf-8"));
+      });
+    },
+  };
+}
+
 export default defineConfig(({ mode }): UserConfig => {
   const env = loadEnv(mode, process.cwd(), "");
 
@@ -54,7 +76,13 @@ export default defineConfig(({ mode }): UserConfig => {
       allowedHosts: [".lvh.me", ".opentour.site", ".dev.opentour.site"],
       ...httpsOptions,
     },
-    plugins: [reactRouter(), tsconfigPaths(), tailwindcss(), maplibreWorkerPlugin()],
+    plugins: [
+      reactRouter(),
+      tsconfigPaths(),
+      tailwindcss(),
+      maplibreWorkerPlugin(),
+      maplibreDevWorkerPlugin(),
+    ],
     optimizeDeps: { exclude: ["maplibre-gl"] },
     build: {
       commonjsOptions: {
