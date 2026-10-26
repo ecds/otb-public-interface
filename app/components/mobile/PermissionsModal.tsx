@@ -40,7 +40,10 @@ const PermissionsModal = () => {
     return (
       <Dialog
         open={showPermissionsModal}
-        onClose={() => setShowMenu(false)}
+        onClose={() => {
+          setShowPermissionsModal(false);
+          setShowMenu(false);
+        }}
         className="relative z-50"
       >
         <DialogBackdrop className="fixed inset-0 bg-black/80" />{" "}

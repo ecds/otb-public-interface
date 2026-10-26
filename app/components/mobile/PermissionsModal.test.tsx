@@ -141,3 +141,11 @@ describe("PermissionsModal — bulk actions", () => {
     expect(JSON.parse(mockStorage.getItem("OpenTour")!)).toContain("gMaps");
   });
 });
+
+describe("PermissionsModal — closing", () => {
+  it("closes on Escape", async () => {
+    setup();
+    await userEvent.keyboard("{Escape}");
+    expect(setShowPermissionsModal).toHaveBeenCalledWith(false);
+  });
+});

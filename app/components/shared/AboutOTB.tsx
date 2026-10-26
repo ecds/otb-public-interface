@@ -1,9 +1,12 @@
+import { DialogTitle } from "@headlessui/react";
 import { mapAttributions } from "~/map_styles";
 
 const AboutOTB = () => {
   return (
     <div className="prose prose-invert">
-      <h2 className="text-lg font-semibold">About OpenTour</h2>
+      <DialogTitle as="h2" className="text-lg font-semibold">
+        About OpenTour
+      </DialogTitle>
       <p>
         OpenTour Builder is an open source software platform for building
         geospatial tours that are optimized for mobile devices. OpenTour Builder
