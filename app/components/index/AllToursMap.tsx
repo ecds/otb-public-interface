@@ -47,7 +47,7 @@ const AllToursMap = ({ tours, request }: Props) => {
           return (
             <TourMarker key={tour.slug} map={map} tour={tour}>
               <a
-                className="focus-visible:border-0 focus-visible:outline-0 text-lg text-blue-500 hover:text-blue-700 underline"
+                className="text-lg text-blue-700 hover:text-blue-900 underline"
                 href={`${request.protocol}://${tour.tenant}.${request.host}/${tour.slug}`}
               >
                 {tour.title}

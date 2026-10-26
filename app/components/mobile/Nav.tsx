@@ -77,17 +77,26 @@ const MobileNav = () => {
         aria-label="Stop"
         className={`grid grid-rows-1 grid-cols-4 bg-${tour.theme.title}-primary text-${tour.theme.title}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
       >
-        <NavLink
-          to={`/${tour.slug}/${currentStop.previous?.slug}/intro`}
-          viewTransition
-          className={classNames(false, isFirst)}
-          aria-disabled={isFirst}
-        >
-          <div>
-            <FontAwesomeIcon icon={faAngleLeft} />
-          </div>
-          <div>Prev</div>
-        </NavLink>
+        {/* No link at the first or last stop, so it can't be followed. */}
+        {currentStop.previous ? (
+          <NavLink
+            to={`/${tour.slug}/${currentStop.previous.slug}/intro`}
+            viewTransition
+            className={classNames(false)}
+          >
+            <div>
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </div>
+            <div>Prev</div>
+          </NavLink>
+        ) : (
+          <span aria-disabled="true" className={classNames(false, true)}>
+            <div>
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </div>
+            <div>Prev</div>
+          </span>
+        )}
         <NavLink
           to={`/${tour.slug}/${currentStop.slug}/intro`}
           viewTransition
@@ -108,17 +117,26 @@ const MobileNav = () => {
           </div>
           <div>map</div>
         </NavLink>
-        <NavLink
-          to={`/${tour.slug}/${currentStop.next?.slug}/intro`}
-          viewTransition
-          className={classNames(false, isLast)}
-          aria-disabled={isLast}
-        >
-          <div>
-            <FontAwesomeIcon icon={faAngleRight} />
-          </div>
-          <div>next</div>
-        </NavLink>
+        {/* No link at the first or last stop, so it can't be followed. */}
+        {currentStop.next ? (
+          <NavLink
+            to={`/${tour.slug}/${currentStop.next.slug}/intro`}
+            viewTransition
+            className={classNames(false)}
+          >
+            <div>
+              <FontAwesomeIcon icon={faAngleRight} />
+            </div>
+            <div>next</div>
+          </NavLink>
+        ) : (
+          <span aria-disabled="true" className={classNames(false, true)}>
+            <div>
+              <FontAwesomeIcon icon={faAngleRight} />
+            </div>
+            <div>next</div>
+          </span>
+        )}
       </nav>
     );
   }

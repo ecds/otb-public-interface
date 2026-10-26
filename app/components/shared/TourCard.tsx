@@ -18,7 +18,7 @@ const TourCard = ({ tour, className }: Props) => {
         {/* Fixed height image container */}
         <div className="h-48 w-full overflow-hidden rounded-t-lg shrink-0">
           <img
-            className="mt-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            className="mt-0 w-full h-full object-cover motion-safe:hover:scale-105 motion-safe:transition-transform duration-300"
             src={tour.splash?.url ?? "/images/otblogo.png"}
             alt=""
           />

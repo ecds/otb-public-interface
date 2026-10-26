@@ -36,7 +36,7 @@ const ConsentSheet = ({ open, onDone, onManage }: Props) => {
                 acceptAll();
                 onDone();
               }}
-              className="w-full bg-blue-500 text-white rounded-lg py-2.5 text-sm font-medium"
+              className="w-full bg-blue-600 text-white rounded-lg py-2.5 text-sm font-medium"
             >
               Accept all
             </button>
@@ -51,7 +51,7 @@ const ConsentSheet = ({ open, onDone, onManage }: Props) => {
             </button>
             <button
               onClick={onManage}
-              className="w-full text-xs text-black/50 py-1 underline"
+              className="w-full text-xs text-black/70 py-1 underline"
             >
               Manage preferences
             </button>

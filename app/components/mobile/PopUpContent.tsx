@@ -21,7 +21,7 @@ const PopUpContent = ({ stop }: Props) => {
       <h3 className="text-base md:text-lg mb-2">{stop.title}</h3>
       <button
         role="link"
-        className="text-blue-500 visited:text-purple-800 underline"
+        className="text-blue-700 visited:text-purple-800 underline"
         onClick={goToStop}
       >
         Go To Stop

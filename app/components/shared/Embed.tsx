@@ -23,7 +23,7 @@ const Embed = ({ medium }: Props) => {
               you to their servers and may set cookies.
             </p>
             <button
-              className="bg-blue-400 rounded-md w-fit mx-auto p-2 mt-4"
+              className="bg-blue-600 text-white rounded-md w-fit mx-auto p-2 mt-4"
               onClick={() => addPreference("thirdPartyEmbeds")}
             >
               View Embedded Content

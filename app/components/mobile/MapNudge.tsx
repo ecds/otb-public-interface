@@ -32,7 +32,7 @@ const MapNudge = ({ gMaps, locationAllowed, addPreference }: Props) => {
       <span>{COPY[key]}</span>
       <button
         onClick={handleEnable}
-        className="shrink-0 bg-blue-500 text-white rounded-md px-3 py-1"
+        className="shrink-0 bg-blue-600 text-white rounded-md px-3 py-1"
       >
         Enable
       </button>

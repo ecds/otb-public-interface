@@ -109,14 +109,17 @@ const Tours = () => {
                 className={`mx-auto bg-white rounded-md p-4 md:p-6 mb-4 md:mb-6 max-w-[65ch] ${!tour_set.description ? "hidden" : ""}`}
               >
                 <div
+                  id="tour-set-intro"
                   className={`prose ${introExpanded ? "max-h-full overflow-auto" : "max-h-[12ch] overflow-hidden"} md:max-h-full md:overflow-auto`}
                   dangerouslySetInnerHTML={{
                     __html: tour_set.description,
                   }}
                 />
                 <button
-                  className={`block md:hidden bg-blue-500 px-1 text-white rounded-md`}
+                  className={`block md:hidden bg-blue-600 px-1 text-white rounded-md`}
                   onClick={() => setIntroExpanded(!introExpanded)}
+                  aria-expanded={introExpanded}
+                  aria-controls="tour-set-intro"
                 >
                   {introExpanded ? "Show Less" : "Show More"}
                 </button>
@@ -131,8 +134,8 @@ const Tours = () => {
 
               {/* Empty State */}
               {(!tours || tours.length === 0) && (
-                <div className="text-center py-12">
-                  <div className="text-gray-400 text-lg">
+                <div className="mx-auto max-w-[65ch] rounded-md bg-white text-center py-12">
+                  <div className="text-gray-700 text-lg">
                     No tours available at the moment.
                   </div>
                 </div>

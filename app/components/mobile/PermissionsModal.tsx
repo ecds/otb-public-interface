@@ -132,7 +132,7 @@ const PermissionsModal = () => {
                   setShowMenu(false);
                   acceptAll();
                 }}
-                className="bg-blue-500 rounded-md text-white px-1 py-0.5"
+                className="bg-blue-600 rounded-md text-white px-1 py-0.5"
               >
                 Accept All
               </button>

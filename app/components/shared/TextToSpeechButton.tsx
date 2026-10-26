@@ -184,7 +184,7 @@ const TextToSpeechButton = ({ text, voiceOverUrl }: Props) => {
       <button
         onClick={narration.toggle}
         className={`inline text-gray-600 hover:text-gray-800 transition-colors duration-200 cursor-pointer ${
-          narration.isReading ? "animate-pulse" : ""
+          narration.isReading ? "motion-safe:animate-pulse" : ""
         }`}
         title={
           narration.isReading

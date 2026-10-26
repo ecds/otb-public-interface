@@ -173,7 +173,7 @@ const Directions = () => {
     if (!currentStop) return;
     try {
       await navigator.clipboard.writeText(currentStop.address);
-      setCopyMessage("Stop addressed copied!");
+      setCopyMessage("Stop address copied");
       setCopySuccess(true);
     } catch {
       setCopyMessage("Address failed to copy");
@@ -231,7 +231,7 @@ const Directions = () => {
                   </span>
                   <button
                     onClick={() => addPreference("realtimeLocation")}
-                    className="shrink-0 bg-blue-500 text-white rounded-md px-3 py-1"
+                    className="shrink-0 bg-blue-600 text-white rounded-md px-3 py-1"
                   >
                     Enable
                   </button>
@@ -292,13 +292,13 @@ const Directions = () => {
                   {locationAllowed && (
                     <TabPanel unmount={false}>
                       <div className="overflow-y-scroll h-[calc(100vh-12rem)]">
-                        {parkingLocation && (
+                        {parkingLocation && travelMode.title === "DRIVING" && (
                           <h3 className="text-lg text-red-500">
                             Driving Directions to Parking
                           </h3>
                         )}
                         <div ref={parkingDirectionsContainerRef}></div>
-                        {parkingLocation && (
+                        {parkingLocation && travelMode.title === "DRIVING" && (
                           <h3 className="text-lg mt-2 text-green-600">
                             Walking Directions from Parking
                           </h3>
@@ -316,7 +316,7 @@ const Directions = () => {
           ) : (
             <div className="flex flex-col items-center justify-center text-lg h-56 mt-36 space-y-8">
               <button
-                className="text-blue-500 underline"
+                className="text-blue-700 underline"
                 onClick={() => {
                   addPreference("locationAllowed");
                   setShowPanel(false);
@@ -327,17 +327,20 @@ const Directions = () => {
               <p className="text-sm">
                 Or{" "}
                 <button
-                  className="text-blue-500 underline"
+                  className="text-blue-700 underline"
                   onClick={handleCopy}
                 >
                   Copy Address to Clipboard.
                 </button>
               </p>
-              {copyMessage ? (
-                <p className={copySuccess ? "text-green-500" : "text-red-400"}>
-                  {copyMessage}
-                </p>
-              ) : (
+              {/* Always present, so screen readers announce the message. */}
+              <p
+                role="status"
+                className={copySuccess ? "text-green-700" : "text-red-700"}
+              >
+                {copyMessage}
+              </p>
+              {!copyMessage && (
                 <button
                   className="text-sm text-black/75 bg-black/10 rounded-sm p-2"
                   onClick={() => removePreference("locationAllowed")}
