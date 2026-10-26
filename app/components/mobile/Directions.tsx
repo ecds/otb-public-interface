@@ -246,8 +246,8 @@ const Directions = () => {
                         <span
                           className={`py-1 px-2 rounded-lg border block drop-shadow-xl ${
                             selected
-                              ? `text-${tour.theme}-accent-text underline bg-${tour.theme}-accent`
-                              : `text-${tour.theme}-secondary bg-${tour.theme}-primary`
+                              ? `text-${tour.theme.title}-accent-text underline bg-${tour.theme.title}-accent`
+                              : `text-${tour.theme.title}-secondary bg-${tour.theme.title}-primary`
                           }`}
                         >
                           Notes
@@ -261,8 +261,8 @@ const Directions = () => {
                         <span
                           className={`py-1 px-2 rounded-lg border drop-shadow-xl ${
                             selected
-                              ? `text-${tour.theme}-accent-text underline bg-${tour.theme}-accent`
-                              : `text-${tour.theme}-secondary bg-${tour.theme}-primary`
+                              ? `text-${tour.theme.title}-accent-text underline bg-${tour.theme.title}-accent`
+                              : `text-${tour.theme.title}-secondary bg-${tour.theme.title}-primary`
                           }`}
                         >
                           Turn by Turn
