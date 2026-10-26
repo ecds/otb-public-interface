@@ -43,7 +43,7 @@ const FlatPage = ({ flatPage }: Props) => {
     >
       <DialogPanel
         transition
-        className="otb-flat-page fixed -top-16 md:top-auto left-0 md:left-auto md:right-0 w-full md:w-1/2 h-full mt-16 bg-black md:bg-black/85 text-gray-300 overflow-scroll transition-transform duration-700 data-closed:-translate-x-full md:data-closed:translate-x-full motion-reduce:transition-none"
+        className="otb-flat-page fixed top-0 md:top-16 left-0 md:left-auto md:right-0 w-full md:w-1/2 h-full md:h-[calc(100dvh-4rem)] bg-black md:bg-black/85 text-gray-300 overflow-scroll transition-transform duration-700 data-closed:-translate-x-full md:data-closed:translate-x-full motion-reduce:transition-none"
       >
         <div className="sticky top-0 w-full bg-black px-6">
           <button
