@@ -41,7 +41,10 @@ const Embed = ({ medium }: Props) => {
           className="m-auto absolute top-0 left-0 border-0"
           width="100%"
           height="100%"
-          title={medium.files.desktop}
+          title={
+            medium.title ||
+            (medium.provider ? `${medium.provider} video` : "Embedded media")
+          }
           src={medium.embed}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
           allowFullScreen

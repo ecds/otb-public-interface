@@ -99,6 +99,7 @@ const PermissionsModal = () => {
                     </div>
                     <div className="grow-0 justify-self-end">
                       <Switch
+                        aria-label={cookie.label}
                         checked={preferences.includes(cookie.id)}
                         disabled={
                           cookie.required ||

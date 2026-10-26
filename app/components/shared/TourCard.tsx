@@ -20,7 +20,7 @@ const TourCard = ({ tour, className }: Props) => {
           <img
             className="mt-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
             src={tour.splash?.url ?? "/images/otblogo.png"}
-            alt={tour.title}
+            alt=""
           />
         </div>
 
@@ -37,10 +37,15 @@ const TourCard = ({ tour, className }: Props) => {
               <>
                 <div>
                   <FontAwesomeIcon icon={modeIcon(tour.mode.title)} />{" "}
+                  <span className="sr-only">
+                    {tour.mode.title.toLowerCase()} time:{" "}
+                  </span>
                   {tour.travel_duration}
                 </div>
                 <div>
-                  <FontAwesomeIcon icon={faBookOpen} /> {tour.read_duration}
+                  <FontAwesomeIcon icon={faBookOpen} />{" "}
+                  <span className="sr-only">Reading time: </span>
+                  {tour.read_duration}
                 </div>
               </>
             ) : (

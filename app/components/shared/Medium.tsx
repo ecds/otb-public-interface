@@ -9,7 +9,24 @@ interface Props {
   medium: TTourMedium;
   onClick?: (index: number) => void;
   index?: number;
+  // How many media are in the gallery, for "image 2 of 5".
+  count?: number;
 }
+
+// Names the button for screen readers. The image is a CSS background, so
+// its title and alt text go in the label.
+export const mediumLabel = (
+  medium: TTourMedium,
+  index: number,
+  count: number,
+) => {
+  const kind = medium.video || medium.embed ? "video" : "image";
+  const position = count > 1 ? ` ${index + 1} of ${count}` : "";
+  const title =
+    medium.title && medium.title !== medium.filename ? medium.title : "";
+  const details = [title, altFor(medium)].filter(Boolean).join(". ");
+  return `View ${kind}${position}${details ? `: ${details}` : ""}`;
+};
 
 // Tracks whether a (CSS background) image has finished loading. Errors count
 // as "done" so a broken image doesn't leave the placeholder pulsing forever.
@@ -35,7 +52,7 @@ const useImageLoaded = (src: string | undefined) => {
   return loaded;
 };
 
-const Medium = ({ medium, onClick, index = 0 }: Props) => {
+const Medium = ({ medium, onClick, index = 0, count = 1 }: Props) => {
   const { isMobile } = useDeviceContext();
   const src = isMobile ? medium.files.mobile : medium.files.desktop;
   const loaded = useImageLoaded(src);
@@ -70,6 +87,7 @@ const Medium = ({ medium, onClick, index = 0 }: Props) => {
           loaded ? "opacity-100" : "opacity-0"
         }`}
         style={{ backgroundImage: `url(${src})` }}
+        aria-label={mediumLabel(medium, index, count)}
         onClick={handleClick}
         onKeyDown={(e) => {
           if (e.key === "Enter") {
@@ -77,9 +95,11 @@ const Medium = ({ medium, onClick, index = 0 }: Props) => {
           }
         }}
       >
-        <img src={medium.files.lqip} alt={altFor(medium)} className="sr-only" />
         {medium.title && medium.title !== medium.filename && (
-          <div className="w-full bg-black/60 text-white py-1 rounded-md">
+          <div
+            aria-hidden="true"
+            className="w-full bg-black/60 text-white py-1 rounded-md"
+          >
             {medium.title}
           </div>
         )}

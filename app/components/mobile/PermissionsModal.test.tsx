@@ -149,3 +149,12 @@ describe("PermissionsModal — closing", () => {
     expect(setShowPermissionsModal).toHaveBeenCalledWith(false);
   });
 });
+
+describe("PermissionsModal — names", () => {
+  it("names every switch after its cookie", () => {
+    setup();
+    for (const control of screen.getAllByRole("switch")) {
+      expect(control).toHaveAccessibleName();
+    }
+  });
+});

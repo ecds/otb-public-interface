@@ -34,7 +34,7 @@ const MobileStopsList = () => {
                 stop.media[0]?.files.mobile ||
                 "/images/otblogo.png"
               }
-              alt={stop.title}
+              alt=""
               className="w-full h-full object-cover rounded"
             />
           </div>

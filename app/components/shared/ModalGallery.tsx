@@ -89,14 +89,14 @@ const EmblaCarousel = ({
             <button
               onClick={scrollPrev}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
-              aria-label="Previous"
+              aria-label="Previous image"
             >
               <FontAwesomeIcon icon={faCircleChevronLeft} />
             </button>
             <button
               onClick={scrollNext}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
-              aria-label="Next"
+              aria-label="Next image"
             >
               <FontAwesomeIcon icon={faCircleChevronRight} />
             </button>
@@ -110,7 +110,8 @@ const EmblaCarousel = ({
               key={i}
               onClick={() => emblaApi?.scrollTo(i)}
               className={`w-2 h-2 rounded-full transition-colors ${i === selectedIndex ? "bg-gray-200" : "bg-gray-600"}`}
-              aria-label={`Go to slide ${i + 1}`}
+              aria-label={`Show image ${i + 1} of ${media.length}`}
+              aria-current={i === selectedIndex ? "true" : undefined}
             />
           ))}
         </div>
@@ -151,7 +152,12 @@ const Gallery = ({ media, path }: Props) => {
         slideClassName="w-screen md:w-[50vw]"
       >
         {(medium, index) => (
-          <Medium medium={medium} index={index} onClick={openModal} />
+          <Medium
+            medium={medium}
+            index={index}
+            count={media.length}
+            onClick={openModal}
+          />
         )}
       </EmblaCarousel>
 
@@ -174,9 +180,13 @@ const Gallery = ({ media, path }: Props) => {
                   as="h2"
                   className="text-white/85 text-sm md:text-lg text-left grow"
                 >
-                  {currentMedium?.title}
+                  {currentMedium?.title ||
+                    `Image ${activeMedium + 1} of ${media.length}`}
                 </DialogTitle>
-                <CloseButton className="text-white/75 hover:text-white shrink-0 ms-4">
+                <CloseButton
+                  aria-label="Close image viewer"
+                  className="text-white/75 hover:text-white shrink-0 ms-4"
+                >
                   <FontAwesomeIcon icon={faCircleXmark} />
                 </CloseButton>
               </div>
@@ -194,7 +204,7 @@ const Gallery = ({ media, path }: Props) => {
                     ) : (
                       <img
                         className="w-full max-h-[60vh] object-contain"
-                        srcSet={medium.files.desktop}
+                        src={medium.files.desktop}
                         alt={altFor(medium)}
                       />
                     )}

@@ -1,6 +1,6 @@
 import { render, screen, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import Medium from "./Medium";
+import Medium, { mediumLabel } from "./Medium";
 import type { TTourMedium } from "~/types";
 
 vi.mock("~/hooks/deviceContext", () => ({
@@ -83,5 +83,25 @@ describe("Medium", () => {
     const placeholder = screen.getByTestId("medium-placeholder");
     expect(placeholder.innerHTML).toContain("data:image/jpeg;base64,AAAA");
     expect(placeholder.innerHTML).not.toContain("/lqip.jpg");
+  });
+});
+
+describe("mediumLabel", () => {
+  it("names the image, its place in the gallery, and what it shows", () => {
+    expect(
+      mediumLabel({ ...medium, alt_text: "Roses by the gate" }, 1, 5),
+    ).toBe("View image 2 of 5: Garden. Roses by the gate");
+  });
+
+  it("leaves out a title that's only the filename, and the count for one", () => {
+    expect(
+      mediumLabel({ ...medium, title: "garden.jpg", decorative: true }, 0, 1),
+    ).toBe("View image");
+  });
+
+  it("says video for videos", () => {
+    expect(mediumLabel({ ...medium, video: "/v.mp4" }, 0, 2)).toBe(
+      "View video 1 of 2: Garden",
+    );
   });
 });
