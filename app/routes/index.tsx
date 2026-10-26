@@ -59,7 +59,7 @@ export default function Index() {
             alt=""
             role="presentation"
           />
-          OpenTourBuilder
+          <h1>OpenTourBuilder</h1>
         </div>
         <ul className="flex space-x-8 flex-row">
           <li>
