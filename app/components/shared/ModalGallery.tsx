@@ -15,6 +15,7 @@ import {
 import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
+import { altFor } from "~/utils/altText";
 import CopyMediumLink from "./CopyMediumLink";
 import Embed from "./Embed";
 import Medium from "./Medium";
@@ -194,7 +195,7 @@ const Gallery = ({ media, path }: Props) => {
                       <img
                         className="w-full max-h-[60vh] object-contain"
                         srcSet={medium.files.desktop}
-                        alt={medium.caption ?? ""}
+                        alt={altFor(medium)}
                       />
                     )}
                     <figcaption className="text-xs text-white/75 md:text-base px-4 mt-2">

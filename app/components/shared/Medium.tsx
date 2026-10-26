@@ -2,6 +2,7 @@ import { faCirclePlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useDeviceContext } from "~/hooks/deviceContext";
+import { altFor } from "~/utils/altText";
 import type { TTourMedium } from "~/types";
 
 interface Props {
@@ -76,7 +77,7 @@ const Medium = ({ medium, onClick, index = 0 }: Props) => {
           }
         }}
       >
-        <img src={medium.files.lqip} alt={medium.caption} className="sr-only" />
+        <img src={medium.files.lqip} alt={altFor(medium)} className="sr-only" />
         {medium.title && medium.title !== medium.filename && (
           <div className="w-full bg-black/60 text-white py-1 rounded-md">
             {medium.title}
