@@ -16,11 +16,11 @@ const Embed = ({ medium }: Props) => {
             className="absolute inset-0 bg-cover bg-no-repeat bg-center opacity-40"
             style={{ backgroundImage: `url(${medium.files.tablet})` }}
           ></div>
-            <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/50"></div>
           <div className="absolute inset-0 text-white flex flex-col text-center">
             <p className="mt-8 mx-[25%] text-sm md:text-base">
-              This content is hosted by a third party. Loading it will connect you
-              to their servers and may set cookies.
+              This content is hosted by a third party. Loading it will connect
+              you to their servers and may set cookies.
             </p>
             <button
               className="bg-blue-400 rounded-md w-fit mx-auto p-2 mt-4"

@@ -9,7 +9,6 @@
   This helps maintain consistent styling with v3
 */
 @layer base {
-
   *,
   ::after,
   ::before,
@@ -92,7 +91,6 @@
   --color-hrcga-secondary: oklch(94% 0.02 67.4);
   --color-hrcga-accent-text: oklch(94% 0.02 67.4);
   --color-hrcga-accent: #58191b;
-
 }
 
 @source inline('bg-default-{primary,secondary,accent}');
@@ -172,7 +170,6 @@
 /* Mobile-specific styles to add to existing index.css */
 
 @layer utilities {
-
   /* Line clamp utility for text truncation */
   .line-clamp-2 {
     overflow: hidden;

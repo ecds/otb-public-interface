@@ -26,9 +26,9 @@ const TourCard = ({ tour, className }: Props) => {
 
         {/* Fixed height content container */}
         <div className="h-36 p-4 flex flex-col justify-between">
-          <h5 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight">
+          <h3 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight mt-0 mb-0">
             {tour.title}
-          </h5>
+          </h3>
           <div className="flex flex-col items-start justify-between w-full text-gray-200 text-xs mt-2 space-y-0.5">
             <div>
               <FontAwesomeIcon icon={faMapMarker} /> {tour.stop_count} Stops

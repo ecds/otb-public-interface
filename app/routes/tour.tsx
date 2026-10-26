@@ -1,6 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   useLoaderData,
+  useLocation,
   useNavigationType,
   Outlet,
   redirect,
@@ -21,12 +22,25 @@ import { getTour, isSignedIn } from "~/data";
 import { useDeviceContext } from "~/hooks/deviceContext";
 import { baseStyle, blank, hybrid, satellite } from "~/map_styles";
 import { hasSetPreferences } from "~/utils/cookies";
+import { pageTitle } from "~/utils/pageTitle";
 import type { StyleSpecification } from "maplibre-gl";
 import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
+  MetaFunction,
 } from "react-router";
-import type { TTourStop, TTourFlatPage } from "~/types";
+import type { TTour, TTourStop, TTourFlatPage } from "~/types";
+
+// Child routes give their own titles; this covers the desktop tour page.
+export const meta: MetaFunction = ({ matches }) => {
+  const data = matches.find((m) => m.id === "routes/tour")?.loaderData as
+    | { tour?: TTour; tour_set?: { name?: string } }
+    | undefined;
+  return [
+    { title: pageTitle(data?.tour?.title, data?.tour_set?.name) },
+    { name: "description", content: data?.tour?.sanitized_description ?? "" },
+  ];
+};
 
 export const loader = async ({
   context,
@@ -82,6 +96,18 @@ export default function Tour() {
   const stopParamRef = useRef<string | undefined>(stopParam);
   const navigationType = useNavigationType();
   const tourSlug = tour?.slug;
+  const { pathname } = useLocation();
+  const mainRef = useRef<HTMLElement>(null);
+  const firstPathname = useRef<string>(pathname);
+
+  // Mobile pages swap without a page load, so move focus to the new content
+  // the way a page load would. Not on the first page, or on desktop, where
+  // the URL changes while scrolling.
+  useEffect(() => {
+    if (!isMobile || pathname === firstPathname.current) return;
+    firstPathname.current = "";
+    mainRef.current?.focus({ preventScroll: true });
+  }, [pathname, isMobile]);
 
   // Desktop doesn't render <ScrollRestoration> (its post-hydration reset
   // fights the deep-link scroll to a stop), so reset scroll here when a
@@ -179,11 +205,17 @@ export default function Tour() {
       <Navbar tour_set={tour_set} />
       {isDesktop && tour.stops && (
         <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-16rem)] grid-flow-row auto-rows-max">
-          <StopList
-            className="text-black/80 leading-6"
-            intro={<MainContent content={tour} />}
-          />
-          <div className="fixed right-0 w-1/2 h-full mt-16 pb-16">
+          <main id="main">
+            <StopList
+              className="text-black/80 leading-6"
+              intro={<MainContent content={tour} />}
+            />
+          </main>
+          <div
+            role="region"
+            aria-label="Tour map"
+            className="fixed right-0 w-1/2 h-full mt-16 pb-16"
+          >
             <TourMap />
           </div>
           <TourFlatPages />
@@ -193,7 +225,9 @@ export default function Tour() {
       {isMobile && (
         <>
           <MobileNav />
-          <Outlet />
+          <main id="main" ref={mainRef} tabIndex={-1} className="outline-none">
+            <Outlet />
+          </main>
           <ConsentSheet
             open={showConsentSheet}
             onDone={() => setShowConsentSheet(false)}

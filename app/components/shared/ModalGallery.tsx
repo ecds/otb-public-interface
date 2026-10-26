@@ -171,7 +171,7 @@ const Gallery = ({ media, path }: Props) => {
             <DialogPanel className="w-screen md:w-[50vw] bg-gray-900 rounded-lg overflow-hidden">
               <div className="flex items-start justify-between px-4 py-2">
                 <DialogTitle
-                  as="h3"
+                  as="h2"
                   className="text-white/85 text-sm md:text-lg text-left grow"
                 >
                   {currentMedium?.title}

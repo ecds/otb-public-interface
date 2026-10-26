@@ -53,7 +53,7 @@ const TourMenu = () => {
           </button>
         </div>
 
-        <div className="p-4">
+        <nav aria-label="Menu" className="p-4">
           <ul className="space-y-2 md:space-y-4">
             <li>
               <Link
@@ -96,14 +96,16 @@ const TourMenu = () => {
                 ))}
               </>
             )}
-            <button
-              className="block w-full text-left text-gray-300 hover:text-white rounded hover:bg-gray-700"
-              onClick={() => setCurrentFlatPage("about")}
-            >
-              About OpenTour
-            </button>
+            <li>
+              <button
+                className="block w-full text-left text-gray-300 hover:text-white rounded hover:bg-gray-700"
+                onClick={() => setCurrentFlatPage("about")}
+              >
+                About OpenTour
+              </button>
+            </li>
           </ul>
-        </div>
+        </nav>
 
         <div className="p-4 border-t border-gray-700">
           <button

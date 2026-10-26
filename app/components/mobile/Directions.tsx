@@ -191,12 +191,24 @@ const Directions = () => {
           showPanel ? "translate-y-0" : "translate-y-full"
         }`}
       >
+        <div className="flex items-start justify-between px-2 pt-2">
+          <h2 className="text-lg">Directions to {currentStop?.title}</h2>
+          <button
+            className="text-black/80 text-lg"
+            onClick={() => setShowPanel(false)}
+            aria-label="Close directions"
+          >
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </button>
+        </div>
         {locationAllowed ? (
           <>
-            <div className="text-right m-2 text-lg"></div>
             {!realtimeLocation && (
               <div className="flex items-center justify-between gap-3 px-3 py-2 mx-2 mb-1 rounded-lg bg-blue-50 text-xs text-blue-800">
-                <span>Enable real-time location to keep directions current as you move.</span>
+                <span>
+                  Enable real-time location to keep directions current as you
+                  move.
+                </span>
                 <button
                   onClick={() => addPreference("realtimeLocation")}
                   className="shrink-0 bg-blue-500 text-white rounded-md px-3 py-1"
@@ -238,12 +250,6 @@ const Directions = () => {
                     )}
                   </Tab>
                 )}
-                <button
-                  className="text-right text-black/80 text-sm grow self-start"
-                  onClick={() => setShowPanel(false)}
-                >
-                  <FontAwesomeIcon icon={faCircleXmark} />
-                </button>
               </TabList>
               <TabPanels className="relative">
                 {(currentStop?.direction_intro ||

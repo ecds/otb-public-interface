@@ -64,7 +64,10 @@ const useAudioNarration = (url: string | undefined): Narration => {
 };
 
 // Falls back to the browser's speech synthesis ("robot voice") when no voice-over is available.
-const useSpeechNarration = (text: string, defaultLng: string | undefined): Narration => {
+const useSpeechNarration = (
+  text: string,
+  defaultLng: string | undefined,
+): Narration => {
   const [synthState, setSynthState] = useState<
     "reading" | "paused" | "stopped" | "resumed"
   >("stopped");
@@ -73,7 +76,7 @@ const useSpeechNarration = (text: string, defaultLng: string | undefined): Narra
     SpeechSynthesisUtterance | undefined
   >(undefined);
   const [isSupported] = useState(
-    () => typeof window !== "undefined" && "speechSynthesis" in window
+    () => typeof window !== "undefined" && "speechSynthesis" in window,
   );
 
   useEffect(() => {
@@ -168,7 +171,9 @@ const TextToSpeechButton = ({ text, voiceOverUrl }: Props) => {
   const speechNarration = useSpeechNarration(text, tour?.default_lng);
 
   // A recorded voice-over, when present, replaces the synthesized "robot voice" entirely.
-  const narration = audioNarration.isAvailable ? audioNarration : speechNarration;
+  const narration = audioNarration.isAvailable
+    ? audioNarration
+    : speechNarration;
 
   if (!narration.isAvailable || isDesktop) {
     return <></>;
@@ -181,12 +186,18 @@ const TextToSpeechButton = ({ text, voiceOverUrl }: Props) => {
         className={`inline text-gray-600 hover:text-gray-800 transition-colors duration-200 cursor-pointer ${
           narration.isReading ? "animate-pulse" : ""
         }`}
-        title={narration.isReading ? narration.readingLabel : narration.notReadingLabel}
-        aria-label={narration.isReading ? narration.readingLabel : narration.notReadingLabel}
+        title={
+          narration.isReading
+            ? narration.readingLabel
+            : narration.notReadingLabel
+        }
+        aria-label={
+          narration.isReading
+            ? narration.readingLabel
+            : narration.notReadingLabel
+        }
       >
-        <FontAwesomeIcon
-          icon={narration.isReading ? faPause : faHeadphones}
-        />
+        <FontAwesomeIcon icon={narration.isReading ? faPause : faHeadphones} />
       </button>
     </span>
   );

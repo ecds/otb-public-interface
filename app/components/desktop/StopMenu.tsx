@@ -23,14 +23,16 @@ const StopMenu = () => {
   return (
     <Menu as="div" className="relative ml-3">
       <div>
-        <MenuButton
-          onClick={() => setShow(!show)}
-          className="hidden md:flex space-x-2 text-white rounded-md px-1 py-2 text-sm font-medium w-full cursor-pointer"
-        >
-          <h1 className="text-lg">
-            {tour.title} <FontAwesomeIcon icon={faChevronDown} />
-          </h1>
-        </MenuButton>
+        <h1 className="text-lg">
+          <MenuButton
+            onClick={() => setShow(!show)}
+            className="hidden md:flex space-x-2 text-white rounded-md px-1 py-2 font-medium w-full cursor-pointer"
+          >
+            {tour.title}
+            <span className="sr-only">, stops</span>{" "}
+            <FontAwesomeIcon icon={faChevronDown} />
+          </MenuButton>
+        </h1>
         {/* Mobile */}
       </div>
       <div // Desktop
@@ -58,12 +60,9 @@ const StopMenu = () => {
                   ) : (
                     <ImagePlaceholder className="max-h-40 max-w-40 margin-auto text-black/50" />
                   )}
-                  <a
-                    href="/"
-                    className="block px-4 py-2 text-sm text-gray-700 text-center"
-                  >
+                  <span className="block px-4 py-2 text-sm text-gray-700 text-center">
                     {stop.title}
-                  </a>
+                  </span>
                 </button>
               </MenuItem>
             );

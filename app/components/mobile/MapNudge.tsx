@@ -15,7 +15,12 @@ const COPY: Record<string, string> = {
 const MapNudge = ({ gMaps, locationAllowed, addPreference }: Props) => {
   if (gMaps && locationAllowed) return null;
 
-  const key = !gMaps && !locationAllowed ? "both" : !locationAllowed ? "locationOnly" : "mapsOnly";
+  const key =
+    !gMaps && !locationAllowed
+      ? "both"
+      : !locationAllowed
+        ? "locationOnly"
+        : "mapsOnly";
 
   const handleEnable = () => {
     if (!gMaps) addPreference("gMaps");

@@ -16,7 +16,7 @@ const RenderFlatPage = ({ flatPage }: Props) => {
 
   return (
     <>
-      <h3 className="text-2xl">{flatPage.title}</h3>
+      <h2 className="text-2xl">{flatPage.title}</h2>
       <div
         className="prose prose-invert mb-12"
         dangerouslySetInnerHTML={{

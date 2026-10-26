@@ -4,6 +4,16 @@ import TourMap from "~/components/desktop/TourMap";
 import TourGoogleMap from "~/components/mobile/TourMap.client";
 import { TourContext } from "~/contexts/TourContext";
 import { usePreferences } from "~/hooks";
+import { pageTitle } from "~/utils/pageTitle";
+import type { MetaFunction } from "react-router";
+import type { TTour } from "~/types";
+
+export const meta: MetaFunction = ({ matches }) => {
+  const data = matches.find((m) => m.id === "routes/tour")?.loaderData as
+    | { tour?: TTour }
+    | undefined;
+  return [{ title: pageTitle("Map", data?.tour?.title) }];
+};
 
 const TourMapRoute = () => {
   const { tour } = useContext(TourContext);

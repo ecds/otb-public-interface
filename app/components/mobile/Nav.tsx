@@ -33,6 +33,7 @@ const MobileNav = () => {
   if (tour && !currentStop) {
     return (
       <nav
+        aria-label="Tour"
         className={`grid grid-rows-1 grid-cols-3 bg-${tour.theme}-primary text-${tour.theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
       >
         <NavLink
@@ -72,6 +73,7 @@ const MobileNav = () => {
   if (tour && currentStop) {
     return (
       <nav
+        aria-label="Stop"
         className={`grid grid-rows-1 grid-cols-4 bg-${tour.theme}-primary text-${tour.theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
       >
         <NavLink

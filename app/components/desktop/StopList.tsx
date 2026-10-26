@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router";
 import scrollama from "scrollama";
 import { TourContext } from "~/contexts/TourContext";
 import { useResizeObserver } from "~/hooks/deviceContext";
+import { pageTitle } from "~/utils/pageTitle";
 import MainContent from "../shared/MainContent";
 import Gallery from "../shared/ModalGallery";
 import type { ReactNode } from "react";
@@ -30,6 +31,7 @@ const StopList = ({ className, intro }: Props) => {
     if (!scrollerRef.current || !currentStop || !tour) return;
     const params = searchParams.size > 0 ? `?${searchParams.toString()}` : "";
     history.replaceState({}, "", `/${tour.slug}/${currentStop.slug}${params}`);
+    document.title = pageTitle(currentStop.title, tour.title);
   }, [currentStop, tour, searchParams]);
 
   useEffect(() => {

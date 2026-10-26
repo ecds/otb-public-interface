@@ -28,13 +28,19 @@ const ConsentSheet = ({ open, onDone, onManage }: Props) => {
           </p>
           <div className="flex flex-col space-y-2">
             <button
-              onClick={() => { acceptAll(); onDone(); }}
+              onClick={() => {
+                acceptAll();
+                onDone();
+              }}
               className="w-full bg-blue-500 text-white rounded-lg py-2.5 text-sm font-medium"
             >
               Accept all
             </button>
             <button
-              onClick={() => { denyAll(); onDone(); }}
+              onClick={() => {
+                denyAll();
+                onDone();
+              }}
               className="w-full border border-black/20 rounded-lg py-2.5 text-sm"
             >
               Essential only

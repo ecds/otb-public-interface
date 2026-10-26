@@ -14,7 +14,19 @@ import { StopMapContext } from "~/contexts/StopMapContext";
 import { TourContext } from "~/contexts/TourContext";
 import { usePreferences } from "~/hooks";
 import { useLocationPermission } from "~/hooks/locationPermission";
-import type { TTravelMode } from "~/types";
+import { pageTitle } from "~/utils/pageTitle";
+import type { MetaFunction } from "react-router";
+import type { TTour, TTravelMode } from "~/types";
+
+export const meta: MetaFunction = ({ matches, params }) => {
+  const data = matches.find((m) => m.id === "routes/tour")?.loaderData as
+    | { tour?: TTour }
+    | undefined;
+  const stop = data?.tour?.stops.find((s) =>
+    s.slugs.includes(params.stop ?? ""),
+  );
+  return [{ title: pageTitle("Map", stop?.title, data?.tour?.title) }];
+};
 
 const WALKING: TTravelMode = {
   title: "WALKING",

@@ -62,12 +62,11 @@ const Tours = () => {
 
   return (
     <div className="min-h-screen py-20 md:py-24 bg-gray-800/50">
-      {/* <Navbar /> */}
-      <nav className={`bg-default-primary h-16 fixed top-0 w-screen z-50`}>
+      <header className={`bg-default-primary h-16 fixed top-0 w-screen z-50`}>
         <div className="flex items-center justify-between mx-auto px-4">
           {/* Desktop */}
           <div className="flex shrink-0 items-center">
-            <Link className="" to="/">
+            <Link className="" to="/" aria-label="All sites">
               <img
                 className="h-16 w-auto p-2"
                 src={tour_set.logo_url ?? "/images/otblogo.png"}
@@ -79,9 +78,10 @@ const Tours = () => {
             </h1>
           </div>
         </div>
-      </nav>
+      </header>
 
-      <div className="w-full">
+      <main id="main" className="w-full">
+        <h2 className="sr-only">Tours</h2>
         <TabGroup>
           <TabList
             className={`flex gap-4 px-4 md:px-0 mb-4 md:mb-6 prose mx-auto`}
@@ -145,7 +145,7 @@ const Tours = () => {
             </TabPanel>
           </TabPanels>
         </TabGroup>
-      </div>
+      </main>
       <Analytics id={tour_set.matomo_id} />
     </div>
   );

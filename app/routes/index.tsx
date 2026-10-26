@@ -51,7 +51,7 @@ export default function Index() {
   const { tourSets, request } = useLoaderData<typeof loader>();
   return (
     <>
-      <nav className="bg-default-primary text-white/85 h-16 fixed top-0 w-screen px-6 flex justify-between items-center z-50 drop-shadow-md">
+      <header className="bg-default-primary text-white/85 h-16 fixed top-0 w-screen px-6 flex justify-between items-center z-50 drop-shadow-md">
         <div className="flex flex-row space-x-6 items-center ml-6">
           <img
             className="h-16 w-auto p-2"
@@ -61,25 +61,27 @@ export default function Index() {
           />
           <h1>OpenTourBuilder</h1>
         </div>
-        <ul className="flex space-x-8 flex-row">
-          <li>
-            <a
-              href="https://digitalscholarship.emory.edu/opentour-builder-proposal-process/"
-              className="hover:underline hover:text-white"
-            >
-              About
-            </a>
-          </li>
-          <li>
-            <a
-              href="https://github.com/ecds/OpenTourBuilder/wiki/How-to-Use-OpenTour-v.-3.0"
-              className="hover:underline hover:text-white"
-            >
-              Documentation
-            </a>
-          </li>
-        </ul>
-      </nav>
+        <nav aria-label="OpenTourBuilder">
+          <ul className="flex space-x-8 flex-row">
+            <li>
+              <a
+                href="https://digitalscholarship.emory.edu/opentour-builder-proposal-process/"
+                className="hover:underline hover:text-white"
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/ecds/OpenTourBuilder/wiki/How-to-Use-OpenTour-v.-3.0"
+                className="hover:underline hover:text-white"
+              >
+                Documentation
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </header>
       <ClientOnly>
         <AllToursMap
           tours={tourSets
@@ -92,18 +94,20 @@ export default function Index() {
           request={request}
         />
       </ClientOnly>
-      <main>
+      <main id="main">
+        <h2 className="sr-only">Sites</h2>
         <div className="m-8">
           <ul className="grid grid-cols-1 w-full md:px-16">
             {tourSets?.map((ts: TTourSet) => {
               return (
                 <li key={ts.subdir} className="grid mb-8">
-                  <a
-                    className="bg-gray-300 text-xl px-2 py-1"
-                    href={`${request.protocol}://${ts.subdir}.${request.host}`}
-                  >
-                    {ts.name}
-                  </a>
+                  <h3 className="bg-gray-300 text-xl px-2 py-1">
+                    <a
+                      href={`${request.protocol}://${ts.subdir}.${request.host}`}
+                    >
+                      {ts.name}
+                    </a>
+                  </h3>
                   <ul className="list-disc">
                     {ts.published_tours.map((tour) => {
                       if (tour) {
