@@ -9,9 +9,15 @@ const mockStorage = (() => {
   let store: Record<string, string> = {};
   return {
     getItem: (key: string) => store[key] ?? null,
-    setItem: (key: string, value: string) => { store[key] = value; },
-    removeItem: (key: string) => { delete store[key]; },
-    clear: () => { store = {}; },
+    setItem: (key: string, value: string) => {
+      store[key] = value;
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
   };
 })();
 
@@ -78,7 +84,7 @@ describe("Embed — thirdPartyEmbeds granted", () => {
 
   it("renders an iframe when embed url is present", () => {
     render(<Embed medium={medium(EMBED_SRC)} />);
-    const iframe = screen.getByTitle("desktop.jpg");
+    const iframe = screen.getByTitle("Test medium");
     expect(iframe).toBeInTheDocument();
     expect(iframe).toHaveAttribute("src", EMBED_SRC);
   });

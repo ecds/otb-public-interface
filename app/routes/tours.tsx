@@ -1,10 +1,11 @@
 import { faList, faMap, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useLoaderData, redirect, useNavigate } from "react-router";
 import Analytics from "~/components/shared/Analytics";
 import TourCard from "~/components/shared/TourCard";
+import TourSetIntro from "~/components/shared/TourSetIntro";
 import TourSetMap from "~/components/shared/TourSetMap";
 import { requestContext, tenantContext } from "~/context";
 import { getTours, isSignedIn } from "~/data";
@@ -50,7 +51,6 @@ clientLoader.hydrate = true as const;
 
 const Tours = () => {
   const { tour_set, tours } = useLoaderData<typeof loader>();
-  const [introExpanded, setIntroExpanded] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -62,12 +62,11 @@ const Tours = () => {
 
   return (
     <div className="min-h-screen py-20 md:py-24 bg-gray-800/50">
-      {/* <Navbar /> */}
-      <nav className={`bg-default-primary h-16 fixed top-0 w-screen z-50`}>
+      <header className={`bg-default-primary h-16 fixed top-0 w-screen z-50`}>
         <div className="flex items-center justify-between mx-auto px-4">
           {/* Desktop */}
           <div className="flex shrink-0 items-center">
-            <Link className="" to="/">
+            <Link className="" to="/" aria-label="All sites">
               <img
                 className="h-16 w-auto p-2"
                 src={tour_set.logo_url ?? "/images/otblogo.png"}
@@ -79,9 +78,10 @@ const Tours = () => {
             </h1>
           </div>
         </div>
-      </nav>
+      </header>
 
-      <div className="w-full">
+      <main id="main" className="w-full">
+        <h2 className="sr-only">Tours</h2>
         <TabGroup>
           <TabList
             className={`flex gap-4 px-4 md:px-0 mb-4 md:mb-6 prose mx-auto`}
@@ -105,22 +105,7 @@ const Tours = () => {
           <TabPanels className="px-4 md:px-16">
             {/* RESPONSIVE GRID WITH FIXED SIZE CARDS */}
             <TabPanel className={``}>
-              <div
-                className={`mx-auto bg-white rounded-md p-4 md:p-6 mb-4 md:mb-6 max-w-[65ch] ${!tour_set.description ? "hidden" : ""}`}
-              >
-                <div
-                  className={`prose ${introExpanded ? "max-h-full overflow-auto" : "max-h-[12ch] overflow-hidden"} md:max-h-full md:overflow-auto`}
-                  dangerouslySetInnerHTML={{
-                    __html: tour_set.description,
-                  }}
-                />
-                <button
-                  className={`block md:hidden bg-blue-500 px-1 text-white rounded-md`}
-                  onClick={() => setIntroExpanded(!introExpanded)}
-                >
-                  {introExpanded ? "Show Less" : "Show More"}
-                </button>
-              </div>
+              <TourSetIntro intro={tour_set.description} />
               <div
                 className={`prose grid gap-6 grid-cols-1 ${"sm:grid-cols-2"} ${tours.length >= 2 ? "md:grid-cols-2" : "md:grid-cols-1"} mx-auto content-center`}
               >
@@ -131,8 +116,8 @@ const Tours = () => {
 
               {/* Empty State */}
               {(!tours || tours.length === 0) && (
-                <div className="text-center py-12">
-                  <div className="text-gray-400 text-lg">
+                <div className="mx-auto max-w-[65ch] rounded-md bg-white text-center py-12">
+                  <div className="text-gray-700 text-lg">
                     No tours available at the moment.
                   </div>
                 </div>
@@ -145,7 +130,7 @@ const Tours = () => {
             </TabPanel>
           </TabPanels>
         </TabGroup>
-      </div>
+      </main>
       <Analytics id={tour_set.matomo_id} />
     </div>
   );

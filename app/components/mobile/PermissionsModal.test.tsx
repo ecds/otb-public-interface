@@ -14,9 +14,15 @@ const mockStorage = (() => {
   let store: Record<string, string> = {};
   return {
     getItem: (key: string) => store[key] ?? null,
-    setItem: (key: string, value: string) => { store[key] = value; },
-    removeItem: (key: string) => { delete store[key]; },
-    clear: () => { store = {}; },
+    setItem: (key: string, value: string) => {
+      store[key] = value;
+    },
+    removeItem: (key: string) => {
+      delete store[key];
+    },
+    clear: () => {
+      store = {};
+    },
   };
 })();
 
@@ -52,7 +58,9 @@ const tourContextValue = {
 };
 
 const wrapper = ({ children }: { children: ReactNode }) => (
-  <TourContext.Provider value={tourContextValue}>{children}</TourContext.Provider>
+  <TourContext.Provider value={tourContextValue}>
+    {children}
+  </TourContext.Provider>
 );
 
 const setup = () => render(<PermissionsModal />, { wrapper });
@@ -73,14 +81,18 @@ describe("PermissionsModal — individual toggles", () => {
   it("toggling analyticsAllowed on persists to storage", async () => {
     setup();
     await userEvent.click(screen.getAllByRole("switch")[1]);
-    expect(JSON.parse(mockStorage.getItem("OpenTour")!)).toContain("analyticsAllowed");
+    expect(JSON.parse(mockStorage.getItem("OpenTour")!)).toContain(
+      "analyticsAllowed",
+    );
   });
 
   it("toggling analyticsAllowed off removes it from storage", async () => {
     seed(["functional", "analyticsAllowed"]);
     setup();
     await userEvent.click(screen.getAllByRole("switch")[1]);
-    expect(JSON.parse(mockStorage.getItem("OpenTour")!)).not.toContain("analyticsAllowed");
+    expect(JSON.parse(mockStorage.getItem("OpenTour")!)).not.toContain(
+      "analyticsAllowed",
+    );
   });
 });
 
@@ -115,7 +127,9 @@ describe("PermissionsModal — bulk actions", () => {
     seed(["functional", "gMaps", "analyticsAllowed"]);
     setup();
     await userEvent.click(screen.getByText("Decline Optional"));
-    expect(JSON.parse(mockStorage.getItem("OpenTour")!)).toEqual(["functional"]);
+    expect(JSON.parse(mockStorage.getItem("OpenTour")!)).toEqual([
+      "functional",
+    ]);
     expect(setShowPermissionsModal).toHaveBeenCalledWith(false);
   });
 
@@ -125,5 +139,22 @@ describe("PermissionsModal — bulk actions", () => {
     await userEvent.click(screen.getByText("Save Choices"));
     expect(setShowPermissionsModal).toHaveBeenCalledWith(false);
     expect(JSON.parse(mockStorage.getItem("OpenTour")!)).toContain("gMaps");
+  });
+});
+
+describe("PermissionsModal — closing", () => {
+  it("closes on Escape", async () => {
+    setup();
+    await userEvent.keyboard("{Escape}");
+    expect(setShowPermissionsModal).toHaveBeenCalledWith(false);
+  });
+});
+
+describe("PermissionsModal — names", () => {
+  it("names every switch after its cookie", () => {
+    setup();
+    for (const control of screen.getAllByRole("switch")) {
+      expect(control).toHaveAccessibleName();
+    }
   });
 });

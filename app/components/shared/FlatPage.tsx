@@ -1,5 +1,6 @@
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { useContext } from "react";
 import { TourContext } from "~/contexts/TourContext";
 import AboutOTB from "./AboutOTB";
@@ -16,9 +17,11 @@ const RenderFlatPage = ({ flatPage }: Props) => {
 
   return (
     <>
-      <h3 className="text-2xl">{flatPage.title}</h3>
+      <DialogTitle as="h2" className="text-2xl">
+        {flatPage.title}
+      </DialogTitle>
       <div
-        className="prose prose-invert"
+        className="prose prose-invert mb-12"
         dangerouslySetInnerHTML={{
           __html: flatPage.body,
         }}
@@ -30,26 +33,31 @@ const RenderFlatPage = ({ flatPage }: Props) => {
 const FlatPage = ({ flatPage }: Props) => {
   const { currentFlatPage, setCurrentFlatPage } = useContext(TourContext);
 
+  // A dialog, so focus moves into the page, stays there, and returns to the
+  // link that opened it.
   return (
-    <div
-      className={`otb-flat-page fixed -top-16 z-50 md:top-auto left-0 md:left-auto md:right-0 w-full md:w-1/2 h-full mt-16 bg-black md:bg-black/85 text-gray-300 overflow-scroll transition-transform duration-700 ${
-        currentFlatPage === flatPage
-          ? "translate-x-0 md:-translate-x"
-          : "-translate-x-full md:translate-x-full"
-      }`}
+    <Dialog
+      open={currentFlatPage === flatPage}
+      onClose={() => setCurrentFlatPage(undefined)}
+      className="relative z-50"
     >
-      <div className="sticky top-0 w-full bg-black px-6">
-        <button
-          className="my-4 bg-white text-black rounded p-2 cursor-pointer"
-          onClick={() => setCurrentFlatPage(undefined)}
-        >
-          <FontAwesomeIcon icon={faClose} /> Close
-        </button>
-      </div>
-      <div className="px-6 md:p-6">
-        <RenderFlatPage flatPage={flatPage} />
-      </div>
-    </div>
+      <DialogPanel
+        transition
+        className="otb-flat-page fixed top-0 md:top-16 left-0 md:left-auto md:right-0 w-full md:w-1/2 h-full md:h-[calc(100dvh-4rem)] bg-black md:bg-black/85 text-gray-300 overflow-scroll transition-transform duration-700 data-closed:-translate-x-full md:data-closed:translate-x-full motion-reduce:transition-none"
+      >
+        <div className="sticky top-0 w-full bg-black px-6">
+          <button
+            className="my-4 bg-white text-black rounded p-2 cursor-pointer"
+            onClick={() => setCurrentFlatPage(undefined)}
+          >
+            <FontAwesomeIcon icon={faClose} aria-hidden="true" /> Close
+          </button>
+        </div>
+        <div className="px-6 md:p-6">
+          <RenderFlatPage flatPage={flatPage} />
+        </div>
+      </DialogPanel>
+    </Dialog>
   );
 };
 

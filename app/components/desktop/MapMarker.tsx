@@ -1,11 +1,14 @@
 import { faCircle, faLocationPin } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as maplibregl from "maplibre-gl";
-import { useCallback, useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
+import { useDetachedElement } from "~/hooks/useDetachedElement";
+import { activateOnKeys, connectPopup, labelMarker } from "~/utils/markerA11y";
 import PopUpContent from "../mobile/PopUpContent";
-import type { AddLayerObject, Map, SourceSpecification } from "maplibre-gl";
+import type { Map } from "maplibre-gl";
 import type { TTourStop } from "~/types";
 
 interface Props {
@@ -17,13 +20,22 @@ interface Props {
 const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
   const { currentStop, setCurrentStop, tour } = useContext(TourContext);
   const [isCurrent, setIsCurrent] = useState<boolean>(false);
-  const markerRef = useRef<HTMLDivElement>(null);
-  const popContainerRef = useRef<HTMLDivElement>(document.createElement("div"));
+  const markerElement = useDetachedElement(
+    "cursor-pointer rounded-sm focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-blue-700",
+  );
+  const popupElement = useDetachedElement("", `${stop.slug}-popup`);
   const { isMobile } = useDeviceContext();
+  // Custom icons show at half their natural size, as they always have.
+  const [iconWidth, setIconWidth] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     setIsCurrent(currentStop === stop);
   }, [currentStop, stop]);
+
+  useEffect(() => {
+    if (isCurrent) markerElement.setAttribute("aria-current", "true");
+    else markerElement.removeAttribute("aria-current");
+  }, [isCurrent, markerElement]);
 
   const navigateToStop = useCallback(() => {
     if (isMobile) return;
@@ -32,13 +44,14 @@ const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
   }, [stop, setCurrentStop, isMobile]);
 
   useEffect(() => {
-    if (!document || !map || !markerRef.current || stop.map_icon) return;
+    if (!map) return;
 
-    const popup = new maplibregl.Popup().setDOMContent(popContainerRef.current);
+    const popup = new maplibregl.Popup().setDOMContent(popupElement);
 
     const marker = new maplibregl.Marker({
-      element: markerRef.current,
-      anchor: "bottom",
+      element: markerElement,
+      // Pins point at the spot; custom icons are centered on it.
+      anchor: stop.map_icon ? "center" : "bottom",
     })
       .setLngLat([stop.lng, stop.lat])
       .addTo(map);
@@ -49,119 +62,92 @@ const MapMarker = ({ map, stop, fitBounds = true }: Props) => {
       });
     }
 
-    if (isMobile) marker.setPopup(popup);
+    labelMarker(
+      markerElement,
+      stop.position === 0 ? stop.title : `Stop ${stop.position}: ${stop.title}`,
+    );
+
+    // On mobile the popup links to the stop; on desktop the marker scrolls
+    // to it, and from the keyboard moves focus there too.
+    let cleanUpKeys = () => {};
+    if (isMobile) {
+      marker.setPopup(popup);
+      cleanUpKeys = connectPopup(popup, markerElement, popupElement);
+    } else {
+      cleanUpKeys = activateOnKeys(markerElement, () => {
+        navigateToStop();
+        const section = document.getElementById(stop.slug);
+        if (!section) return;
+        if (!section.hasAttribute("tabindex")) section.tabIndex = -1;
+        section.focus({ preventScroll: true });
+      });
+    }
 
     marker.on("click", navigateToStop);
 
     return () => {
+      cleanUpKeys();
       marker.off("click", navigateToStop);
       marker.remove();
     };
-  }, [stop, map, navigateToStop, isMobile, fitBounds]);
+  }, [
+    stop,
+    map,
+    navigateToStop,
+    isMobile,
+    fitBounds,
+    markerElement,
+    popupElement,
+  ]);
 
-  useEffect(() => {
-    if (!map || !stop.map_icon) return;
-
-    const handleMouseEnter = () => {
-      map.getCanvas().style.cursor = "pointer";
-    };
-
-    const handleMouseLeave = () => {
-      map.getCanvas().style.cursor = "";
-    };
-
-    map.on("load", async () => {
-      if (!stop.map_icon) return;
-      const image = await map.loadImage(stop.map_icon);
-
-      const id = `${stop.slug}-icon`;
-      const imageId = `${id}-image`;
-
-      const iconSource: SourceSpecification = {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          features: [
-            {
-              type: "Feature",
-              geometry: {
-                type: "Point",
-                coordinates: [stop.lng, stop.lat],
-              },
-              properties: {},
-            },
-          ],
-        },
-      };
-
-      const iconLayer: AddLayerObject = {
-        id,
-        type: "symbol",
-        source: id,
-        layout: {
-          "icon-image": imageId,
-          "icon-size": 0.5,
-        },
-      };
-
-      map.on("click", iconLayer.id, navigateToStop);
-      map.on("mousemove", iconLayer.id, handleMouseEnter);
-      map.on("mouseleave", iconLayer.id, handleMouseLeave);
-
-      if (!map.getImage(imageId)) map.addImage(imageId, image.data);
-
-      if (!map.getSource(id)) {
-        map.addSource(id, iconSource);
-        map.addLayer(iconLayer);
-      }
-
-      return () => {
-        map.off("click", iconLayer.id, navigateToStop);
-        map.off("mousemove", iconLayer.id, handleMouseEnter);
-        map.off("mouseleave", iconLayer.id, handleMouseLeave);
-        if (map.getLayer(id)) map.removeLayer(id);
-        if (map.getSource(id)) map.removeSource(id);
-      };
-    });
-  }, [map, stop, navigateToStop]);
-
-  if (!stop.map_icon) {
-    return (
-      <>
-        <div ref={markerRef} className="cursor-pointer">
-          <FontAwesomeIcon
-            icon={faLocationPin}
+  return (
+    <>
+      {createPortal(
+        stop.map_icon ? (
+          <img
+            src={stop.map_icon}
+            alt=""
+            onLoad={(event) =>
+              setIconWidth(event.currentTarget.naturalWidth / 2)
+            }
             style={{
-              color: stop.icon_color ?? tour?.icon_color ?? "#d32f2f",
-              width: isCurrent ? "48px" : "32px",
-              height: isCurrent ? "48px" : "32px",
-              cursor: "pointer",
-              filter: "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4))",
+              width: iconWidth && (isCurrent ? iconWidth * 1.5 : iconWidth),
+              visibility: iconWidth ? "visible" : "hidden",
             }}
           />
-          <span
-            className={`fa-stack-1x fa-inverse text-center ${
-              isCurrent ? "text-xl" : "text-base"
-            }`}
-          >
-            {stop.position === 0 ? (
-              <FontAwesomeIcon
-                icon={faCircle}
-                className="text-xs text-black/35"
-              />
-            ) : (
-              <>{stop.position}</>
-            )}
-          </span>
-        </div>
-        <div ref={popContainerRef} id={`${stop.slug}-popup`}>
-          <PopUpContent stop={stop} />
-        </div>
-      </>
-    );
-  }
-
-  return <></>;
+        ) : (
+          <>
+            <FontAwesomeIcon
+              icon={faLocationPin}
+              style={{
+                color: stop.icon_color ?? tour?.icon_color ?? "#d32f2f",
+                width: isCurrent ? "48px" : "32px",
+                height: isCurrent ? "48px" : "32px",
+                cursor: "pointer",
+                filter: "drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.4))",
+              }}
+            />
+            <span
+              className={`fa-stack-1x fa-inverse text-center ${
+                isCurrent ? "text-xl" : "text-base"
+              }`}
+            >
+              {stop.position === 0 ? (
+                <FontAwesomeIcon
+                  icon={faCircle}
+                  className="text-xs text-black/35"
+                />
+              ) : (
+                <>{stop.position}</>
+              )}
+            </span>
+          </>
+        ),
+        markerElement,
+      )}
+      {createPortal(<PopUpContent stop={stop} />, popupElement)}
+    </>
+  );
 };
 
 export default MapMarker;

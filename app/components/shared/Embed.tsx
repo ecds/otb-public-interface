@@ -16,14 +16,14 @@ const Embed = ({ medium }: Props) => {
             className="absolute inset-0 bg-cover bg-no-repeat bg-center opacity-40"
             style={{ backgroundImage: `url(${medium.files.tablet})` }}
           ></div>
-            <div className="absolute inset-0 bg-black/50"></div>
+          <div className="absolute inset-0 bg-black/50"></div>
           <div className="absolute inset-0 text-white flex flex-col text-center">
             <p className="mt-8 mx-[25%] text-sm md:text-base">
-              This content is hosted by a third party. Loading it will connect you
-              to their servers and may set cookies.
+              This content is hosted by a third party. Loading it will connect
+              you to their servers and may set cookies.
             </p>
             <button
-              className="bg-blue-400 rounded-md w-fit mx-auto p-2 mt-4"
+              className="bg-blue-600 text-white rounded-md w-fit mx-auto p-2 mt-4"
               onClick={() => addPreference("thirdPartyEmbeds")}
             >
               View Embedded Content
@@ -41,8 +41,12 @@ const Embed = ({ medium }: Props) => {
           className="m-auto absolute top-0 left-0 border-0"
           width="100%"
           height="100%"
-          title={medium.files.desktop}
+          title={
+            medium.title ||
+            (medium.provider ? `${medium.provider} video` : "Embedded media")
+          }
           src={medium.embed}
+          loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
           allowFullScreen
         ></iframe>

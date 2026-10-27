@@ -2,6 +2,7 @@ import { useContext } from "react";
 import MainContent from "~/components/shared/MainContent";
 import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
+import { pageTitle } from "~/utils/pageTitle";
 import type { MetaFunction } from "react-router";
 import type { TTour } from "~/types";
 
@@ -13,7 +14,7 @@ export const meta: MetaFunction = ({ matches, params }) => {
     s.slugs.includes(params.stop ?? ""),
   );
   return [
-    { title: stop?.title ?? data?.tour?.title ?? "Stop" },
+    { title: pageTitle(stop?.title ?? "Stop", data?.tour?.title) },
     { name: "description", content: stop?.meta_description ?? "" },
     {
       property: "og:image",

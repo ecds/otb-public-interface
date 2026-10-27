@@ -18,9 +18,13 @@ const ConsentSheet = ({ open, onDone, onManage }: Props) => {
           animate={{ y: 0 }}
           exit={{ y: "100%" }}
           transition={{ type: "spring", stiffness: 300, damping: 35 }}
+          role="region"
+          aria-labelledby="consent-sheet-title"
           className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-black/10 shadow-xl rounded-t-2xl p-5 pb-8 space-y-4"
         >
-          <h2 className="font-semibold text-base">Cookie preferences</h2>
+          <h2 id="consent-sheet-title" className="font-semibold text-base">
+            Cookie preferences
+          </h2>
           <p className="text-xs text-black/60 leading-relaxed">
             This site uses self-hosted analytics (Matomo) and optional Google
             Maps. Google Maps enables directions and your live location on the
@@ -28,20 +32,26 @@ const ConsentSheet = ({ open, onDone, onManage }: Props) => {
           </p>
           <div className="flex flex-col space-y-2">
             <button
-              onClick={() => { acceptAll(); onDone(); }}
-              className="w-full bg-blue-500 text-white rounded-lg py-2.5 text-sm font-medium"
+              onClick={() => {
+                acceptAll();
+                onDone();
+              }}
+              className="w-full bg-blue-600 text-white rounded-lg py-2.5 text-sm font-medium"
             >
               Accept all
             </button>
             <button
-              onClick={() => { denyAll(); onDone(); }}
+              onClick={() => {
+                denyAll();
+                onDone();
+              }}
               className="w-full border border-black/20 rounded-lg py-2.5 text-sm"
             >
               Essential only
             </button>
             <button
               onClick={onManage}
-              className="w-full text-xs text-black/50 py-1 underline"
+              className="w-full text-xs text-black/70 py-1 underline"
             >
               Manage preferences
             </button>

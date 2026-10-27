@@ -18,17 +18,17 @@ const TourCard = ({ tour, className }: Props) => {
         {/* Fixed height image container */}
         <div className="h-48 w-full overflow-hidden rounded-t-lg shrink-0">
           <img
-            className="mt-0 w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+            className="mt-0 w-full h-full object-cover motion-safe:hover:scale-105 motion-safe:transition-transform duration-300"
             src={tour.splash?.url ?? "/images/otblogo.png"}
-            alt={tour.title}
+            alt=""
           />
         </div>
 
         {/* Fixed height content container */}
         <div className="h-36 p-4 flex flex-col justify-between">
-          <h5 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight">
+          <h3 className="text-lg font-bold tracking-tight text-white line-clamp-2 leading-tight mt-0 mb-0">
             {tour.title}
-          </h5>
+          </h3>
           <div className="flex flex-col items-start justify-between w-full text-gray-200 text-xs mt-2 space-y-0.5">
             <div>
               <FontAwesomeIcon icon={faMapMarker} /> {tour.stop_count} Stops
@@ -37,10 +37,15 @@ const TourCard = ({ tour, className }: Props) => {
               <>
                 <div>
                   <FontAwesomeIcon icon={modeIcon(tour.mode.title)} />{" "}
+                  <span className="sr-only">
+                    {tour.mode.title.toLowerCase()} time:{" "}
+                  </span>
                   {tour.travel_duration}
                 </div>
                 <div>
-                  <FontAwesomeIcon icon={faBookOpen} /> {tour.read_duration}
+                  <FontAwesomeIcon icon={faBookOpen} />{" "}
+                  <span className="sr-only">Reading time: </span>
+                  {tour.read_duration}
                 </div>
               </>
             ) : (

@@ -176,7 +176,15 @@ const latOffset = (meters: number) => meters / 111_320;
 
 const positionAt = (lat: number, lng: number, accuracy = 5) =>
   ({
-    coords: { latitude: lat, longitude: lng, accuracy, altitude: null, altitudeAccuracy: null, heading: null, speed: null },
+    coords: {
+      latitude: lat,
+      longitude: lng,
+      accuracy,
+      altitude: null,
+      altitudeAccuracy: null,
+      heading: null,
+      speed: null,
+    },
     timestamp: Date.now(),
   }) as unknown as GeolocationPosition;
 
@@ -275,7 +283,10 @@ describe("useDeviceLocation — distance throttling", () => {
 
     // accuracy=150 (e.g. DevTools override) should not block the first fix
     act(() => watchPositionCallback!(positionAt(BASE_LAT, BASE_LNG, 150)));
-    expect(result.current.deviceLocation).toEqual({ lat: BASE_LAT, lng: BASE_LNG });
+    expect(result.current.deviceLocation).toEqual({
+      lat: BASE_LAT,
+      lng: BASE_LNG,
+    });
   });
 
   it("accepts large movement regardless of GPS accuracy", () => {

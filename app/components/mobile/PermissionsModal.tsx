@@ -40,13 +40,16 @@ const PermissionsModal = () => {
     return (
       <Dialog
         open={showPermissionsModal}
-        onClose={() => setShowMenu(false)}
+        onClose={() => {
+          setShowPermissionsModal(false);
+          setShowMenu(false);
+        }}
         className="relative z-50"
       >
         <DialogBackdrop className="fixed inset-0 bg-black/80" />{" "}
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
           <DialogPanel className="max-w-lg space-y-4 border bg-white p-6 rounded-lg max-h-[80vh] overflow-y-scroll">
-            <DialogTitle>Cookie Notice</DialogTitle>
+            <DialogTitle as="h2">Cookie Notice</DialogTitle>
             <p className="text-xs">
               This site uses self-hosted analytics (Matomo) and Google Maps.
               Matomo tracks only anonymous visit counts and broad geographic
@@ -55,7 +58,7 @@ const PermissionsModal = () => {
               sold. No advertising.{" "}
             </p>
             <div className="">
-              <h1>Cookie Settings</h1>
+              <h3>Cookie Settings</h3>
               {cookies.map((cookie) => {
                 return (
                   <div key={cookie.id} className="flex flex-row w-full mb-2">
@@ -68,7 +71,7 @@ const PermissionsModal = () => {
                                 icon={faChevronDown}
                                 className="transition duration-300 group-data-open:rotate-180 text-xs justify-self-center self-center me-1"
                               />
-                              <h2 className="text-sm">{cookie.label}</h2>
+                              <span className="text-sm">{cookie.label}</span>
                             </DisclosureButton>
                             <AnimatePresence initial={false}>
                               {open && (
@@ -96,6 +99,7 @@ const PermissionsModal = () => {
                     </div>
                     <div className="grow-0 justify-self-end">
                       <Switch
+                        aria-label={cookie.label}
                         checked={preferences.includes(cookie.id)}
                         disabled={
                           cookie.required ||
@@ -128,7 +132,7 @@ const PermissionsModal = () => {
                   setShowMenu(false);
                   acceptAll();
                 }}
-                className="bg-blue-500 rounded-md text-white px-1 py-0.5"
+                className="bg-blue-600 rounded-md text-white px-1 py-0.5"
               >
                 Accept All
               </button>

@@ -19,6 +19,7 @@ const MobileStopsList = () => {
 
   return (
     <div className="bg-white pt-16">
+      <h2 className="sr-only">Stops</h2>
       {tour.stops.map((stop) => (
         <button
           key={stop.slug}
@@ -33,7 +34,7 @@ const MobileStopsList = () => {
                 stop.media[0]?.files.mobile ||
                 "/images/otblogo.png"
               }
-              alt={stop.title}
+              alt=""
               className="w-full h-full object-cover rounded"
             />
           </div>

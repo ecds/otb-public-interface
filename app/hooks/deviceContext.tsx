@@ -21,7 +21,7 @@ const calcDocumentHeight = () => {
     bodyEl.offsetHeight,
     htmlEl.clientHeight,
     htmlEl.scrollHeight,
-    htmlEl.offsetHeight
+    htmlEl.offsetHeight,
   );
 };
 
@@ -34,7 +34,7 @@ const calcDocumentWidth = () => {
     bodyEl.offsetWidth,
     htmlEl.clientWidth,
     htmlEl.scrollWidth,
-    htmlEl.offsetWidth
+    htmlEl.offsetWidth,
   );
 };
 
@@ -42,7 +42,11 @@ export function useResizeObserver() {
   const [viewportSize, setViewportSize] = useState<TViewportSize>({
     windowSize: { width: undefined, height: undefined },
     documentSize: { width: undefined, height: undefined },
-    mainContentSize: { width: undefined, height: undefined, topOffset: undefined },
+    mainContentSize: {
+      width: undefined,
+      height: undefined,
+      topOffset: undefined,
+    },
   });
 
   useEffect(() => {

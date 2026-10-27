@@ -71,7 +71,12 @@ export const useDeviceLocation = (tourSlug?: string) => {
 
         const last = lastPositionRef.current;
         if (last) {
-          const moved = haversineMeters(last.lat, last.lng, latitude, longitude);
+          const moved = haversineMeters(
+            last.lat,
+            last.lng,
+            latitude,
+            longitude,
+          );
           if (moved < threshold) return;
         }
 

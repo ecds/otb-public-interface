@@ -67,7 +67,7 @@ const FlatPageLinks = () => {
                 tabIndex={0}
                 className={`text-${
                   tour?.theme.title ?? "default"
-                }-secondary md:text-gray-200 cursor-pointer hover:underline`}
+                }-secondary cursor-pointer hover:underline`}
                 onClick={() => setCurrentFlatPage(flatPage)}
                 onKeyDown={({ key }: { key: string }) => {
                   if (key === "Enter") setCurrentFlatPage(flatPage);
@@ -83,7 +83,7 @@ const FlatPageLinks = () => {
             tabIndex={0}
             className={`text-${
               tour?.theme.title ?? "default"
-            }-secondary md:text-gray-200 cursor-pointer hover:underline`}
+            }-secondary cursor-pointer hover:underline`}
             onClick={() => setCurrentFlatPage("about")}
             onKeyDown={({ key }: { key: string }) => {
               if (key === "Enter") setCurrentFlatPage("about");

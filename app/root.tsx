@@ -5,6 +5,7 @@ import "@fortawesome/fontawesome-svg-core/styles.css";
 // Prevent fontawesome from adding its CSS since we did it manually above:
 import { config } from "@fortawesome/fontawesome-svg-core";
 config.autoAddCss = false;
+import { MotionConfig } from "framer-motion";
 import { useMemo } from "react";
 import {
   Links,
@@ -13,12 +14,14 @@ import {
   Scripts,
   ScrollRestoration,
   useLoaderData,
+  useMatches,
 } from "react-router";
 import { requestContext, tenantContext } from "./context";
 import TourSiteContext from "./contexts/tourSiteContext";
 import { getTourSet } from "./data";
 import { DeviceContextProvider, useDeviceContext } from "./hooks/deviceContext";
 import styles from "./index.css?url";
+import type { TTour } from "./types";
 import type {
   MetaFunction,
   LinksFunction,
@@ -28,11 +31,7 @@ import type {
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
 export const meta: MetaFunction = () => {
-  return [
-    { charset: "utf-8" },
-    { title: "OpenTourBuilder" },
-    { name: "viewport", content: "width=device-width,initial-scale=1" },
-  ];
+  return [{ title: "OpenTourBuilder" }];
 };
 
 export const loader = async ({ context }: LoaderFunctionArgs) => {
@@ -50,6 +49,13 @@ function AppShell() {
 
   return (
     <body className="">
+      {/* Each page's <main> has this id. */}
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:rounded-md focus:bg-white focus:px-4 focus:py-2 focus:text-black focus:underline"
+      >
+        Skip to content
+      </a>
       <Outlet />
       {isMobile && <ScrollRestoration />}
       <Scripts />
@@ -59,6 +65,13 @@ function AppShell() {
 
 export default function App() {
   const { tourSet } = useLoaderData<typeof loader>();
+  // Tours are written in their own language, which screen readers need to
+  // pronounce them.
+  const tour = (
+    useMatches().find((match) => match.id === "routes/tour")?.loaderData as
+      | { tour?: TTour }
+      | undefined
+  )?.tour;
 
   const tourSiteContextValue = useMemo(
     () => ({ currentSite: tourSet, tenant: tourSet?.attributes.subdir }),
@@ -66,21 +79,24 @@ export default function App() {
   );
 
   return (
-    <DeviceContextProvider>
-      <TourSiteContext.Provider value={tourSiteContextValue}>
-        <html lang="en">
-          <head>
-            <Links />
-            <meta charSet="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1"
-            />
-            <Meta />
-          </head>
-          <AppShell />
-        </html>
-      </TourSiteContext.Provider>
-    </DeviceContextProvider>
+    // Framer Motion animations follow the device's reduced motion setting.
+    <MotionConfig reducedMotion="user">
+      <DeviceContextProvider>
+        <TourSiteContext.Provider value={tourSiteContextValue}>
+          <html lang={tour?.default_lng ?? "en"}>
+            <head>
+              <Links />
+              <meta charSet="utf-8" />
+              <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1"
+              />
+              <Meta />
+            </head>
+            <AppShell />
+          </html>
+        </TourSiteContext.Provider>
+      </DeviceContextProvider>
+    </MotionConfig>
   );
 }

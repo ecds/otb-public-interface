@@ -1,9 +1,12 @@
+import { DialogTitle } from "@headlessui/react";
 import { mapAttributions } from "~/map_styles";
 
 const AboutOTB = () => {
   return (
     <div className="prose prose-invert">
-      <h3 className="text-lg font-semibold">About OpenTour</h3>
+      <DialogTitle as="h2" className="text-lg font-semibold">
+        About OpenTour
+      </DialogTitle>
       <p>
         OpenTour Builder is an open source software platform for building
         geospatial tours that are optimized for mobile devices. OpenTour Builder
@@ -37,7 +40,7 @@ const AboutOTB = () => {
         </a>
         .
       </p>
-      <h4 className="font-semibold">Map Providers</h4>
+      <h3 className="font-semibold">Map Providers</h3>
       <p>Maps are provided by various sources</p>
       <ul>
         {mapAttributions.map((attr) => {

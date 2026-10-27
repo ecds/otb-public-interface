@@ -10,7 +10,7 @@ interface Props {
 
 const CopyMediumLink = ({
   filename,
-  className = "text-blue-500 hover:text-blue-800",
+  className = "text-blue-700 hover:text-blue-900",
   path,
 }: Props) => {
   const [directLink, setDirectLink] = useState<string>();
@@ -42,19 +42,24 @@ const CopyMediumLink = ({
 
   if (directLink) {
     return (
-      <button
-        onClick={handleClick}
-        disabled={isCopied}
-        className={`ps-4 pt-2 underline ${className}`}
-      >
-        {isCopied ? (
-          "Copied"
-        ) : (
-          <>
-            Copy Link <FontAwesomeIcon icon={faCopy} />
-          </>
-        )}
-      </button>
+      <>
+        {/* Not disabled while "Copied" shows, so keyboard focus stays put. */}
+        <button
+          onClick={handleClick}
+          className={`ps-4 pt-2 underline ${className}`}
+        >
+          {isCopied ? (
+            "Copied"
+          ) : (
+            <>
+              Copy Link <FontAwesomeIcon icon={faCopy} />
+            </>
+          )}
+        </button>
+        <span role="status" className="sr-only">
+          {isCopied ? "Link copied" : ""}
+        </span>
+      </>
     );
   }
   return <></>;

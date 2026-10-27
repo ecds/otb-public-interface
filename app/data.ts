@@ -45,18 +45,3 @@ export const getTour = async (tenant: string, tour: number | string) => {
   );
   return response;
 };
-
-export const getRelatedData = async ({
-  tenant,
-  id,
-  relationship,
-}: {
-  tenant: string;
-  id: string;
-  relationship: string;
-}) => {
-  const response = await fetchData(
-    `https://api.opentour.site/${tenant}/v4/public/${relationship}/${id}`,
-  );
-  return response;
-};

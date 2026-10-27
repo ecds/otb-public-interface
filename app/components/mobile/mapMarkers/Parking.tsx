@@ -1,4 +1,4 @@
-import { faSquareParking } from "@fortawesome/free-solid-svg-icons";
+import { faSquare, faSquareParking } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useContext } from "react";
@@ -10,10 +10,18 @@ const ParkingMarker = () => {
   if (parkingLocation && travelMode.title === "DRIVING") {
     return (
       <AdvancedMarker position={parkingLocation}>
-        <FontAwesomeIcon
-          icon={faSquareParking}
-          className="text-blue-700 text-2xl"
-        ></FontAwesomeIcon>
+        <span className="cursor-pointer fa-layers">
+          <FontAwesomeIcon
+            icon={faSquare}
+            className="text-white"
+            style={{ width: "32px", height: "32px" }}
+          />
+          <FontAwesomeIcon
+            icon={faSquareParking}
+            className="text-blue-600"
+            style={{ width: "32px", height: "32px" }}
+          />
+        </span>
       </AdvancedMarker>
     );
   }

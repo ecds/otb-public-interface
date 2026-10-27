@@ -11,7 +11,7 @@ export default function handleRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  reactRouterContext: EntryContext
+  reactRouterContext: EntryContext,
 ) {
   const prohibitOutOfOrderStreaming =
     isBotRequest(request.headers.get("user-agent")) ||
@@ -22,13 +22,13 @@ export default function handleRequest(
         request,
         responseStatusCode,
         responseHeaders,
-        reactRouterContext
+        reactRouterContext,
       )
     : handleBrowserRequest(
         request,
         responseStatusCode,
         responseHeaders,
-        reactRouterContext
+        reactRouterContext,
       );
 }
 
@@ -57,7 +57,7 @@ function handleBotRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  reactRouterContext: EntryContext
+  reactRouterContext: EntryContext,
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
@@ -75,7 +75,7 @@ function handleBotRequest(
             new Response(stream, {
               headers: responseHeaders,
               status: responseStatusCode,
-            })
+            }),
           );
 
           pipe(body);
@@ -92,7 +92,7 @@ function handleBotRequest(
             console.error(error);
           }
         },
-      }
+      },
     );
   });
 }
@@ -101,7 +101,7 @@ function handleBrowserRequest(
   request: Request,
   responseStatusCode: number,
   responseHeaders: Headers,
-  reactRouterContext: EntryContext
+  reactRouterContext: EntryContext,
 ) {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
@@ -119,7 +119,7 @@ function handleBrowserRequest(
             new Response(stream, {
               headers: responseHeaders,
               status: responseStatusCode,
-            })
+            }),
           );
 
           pipe(body);
@@ -136,7 +136,7 @@ function handleBrowserRequest(
             console.error(error);
           }
         },
-      }
+      },
     );
   });
 }

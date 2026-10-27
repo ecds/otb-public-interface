@@ -17,16 +17,16 @@ const Navbar = ({
   const { tour } = useContext(TourContext);
 
   return (
-    <nav
+    <header
       className={`bg-${
         tour?.theme.title ?? "default"
-      }-primary md:bg-default-primary h-16 fixed top-0 w-screen z-50`}
+      }-primary h-16 fixed top-0 w-screen z-50`}
     >
       <>
         <div className="h-full flex items-center justify-between mx-auto px-4">
           {/* Desktop */}
           <div className="flex shrink-0 items-center w-screen md:w-auto">
-            <Link className="hidden md:block" to="/">
+            <Link className="hidden md:block" to="/" aria-label="All tours">
               <img
                 className="h-16 w-auto p-2"
                 src={tour_set?.logo_url ?? "/images/otblogo.png"}
@@ -43,7 +43,7 @@ const Navbar = ({
                     src={tour_set?.logo_url ?? "/images/otblogo.png"}
                     alt=""
                   /> */}
-                  <h1 className="block md:hidden text-white text-sm m-auto text-wrap text-left grow">
+                  <h1 className={`block md:hidden text-${tour.theme.title}-secondary text-sm m-auto text-wrap text-left grow`}>
                     {tour.title}
                   </h1>
                 </Link>
@@ -52,9 +52,9 @@ const Navbar = ({
               </>
             )}
           </div>{" "}
-          <div className="hidden md:inline-flex me-4">
+          <nav aria-label="Tour pages" className="hidden md:inline-flex me-4">
             <FlatPageLinks />
-          </div>
+          </nav>
           {!tour && (
             <h1 className="ml-2 md:ml-6 sm:block text-white text-lg font-medium">
               {tour_set?.name}
@@ -67,7 +67,7 @@ const Navbar = ({
         {/* </div>
         </div> */}
       </>
-    </nav>
+    </header>
   );
 };
 

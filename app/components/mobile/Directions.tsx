@@ -3,7 +3,16 @@ import {
   faDiamondTurnRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  Tab,
+  TabGroup,
+  TabList,
+  TabPanel,
+  TabPanels,
+} from "@headlessui/react";
 import { useMap, useMapsLibrary } from "@vis.gl/react-google-maps";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { StopMapContext } from "~/contexts/StopMapContext";
@@ -164,7 +173,7 @@ const Directions = () => {
     if (!currentStop) return;
     try {
       await navigator.clipboard.writeText(currentStop.address);
-      setCopyMessage("Stop addressed copied!");
+      setCopyMessage("Stop address copied");
       setCopySuccess(true);
     } catch {
       setCopyMessage("Address failed to copy");
@@ -183,142 +192,166 @@ const Directions = () => {
       <button
         className={`${locationAllowed ? "m-6 p-2" : "m-4 p-1 text-sm"} bg-black/45 rounded-md text-white text-lg uppercase`}
         onClick={() => setShowPanel(true)}
+        aria-haspopup="dialog"
+        aria-expanded={showPanel}
       >
         <FontAwesomeIcon icon={faDiamondTurnRight} /> directions
       </button>
-      <div
-        className={`fixed z-10000000 h-screen w-screen bg-white top-16 left-0 overflow-hidden transition-transform duration-700 ${
-          showPanel ? "translate-y-0" : "translate-y-full"
-        }`}
+      {/* Kept mounted when closed: Google Maps writes the turn-by-turn steps
+          into the panel. */}
+      <Dialog
+        open={showPanel}
+        onClose={() => setShowPanel(false)}
+        unmount={false}
+        className="relative z-50"
       >
-        {locationAllowed ? (
-          <>
-            <div className="text-right m-2 text-lg"></div>
-            {!realtimeLocation && (
-              <div className="flex items-center justify-between gap-3 px-3 py-2 mx-2 mb-1 rounded-lg bg-blue-50 text-xs text-blue-800">
-                <span>Enable real-time location to keep directions current as you move.</span>
-                <button
-                  onClick={() => addPreference("realtimeLocation")}
-                  className="shrink-0 bg-blue-500 text-white rounded-md px-3 py-1"
-                >
-                  Enable
-                </button>
-              </div>
-            )}
-            <TabGroup className="p-2 sticky">
-              <TabList className="flex mb-2 text-lg space-x-4">
-                {(currentStop?.direction_intro ||
-                  currentStop?.direction_notes) && (
-                  <Tab as={Fragment}>
-                    {({ selected }) => (
-                      <span
-                        className={`py-1 px-2 rounded-lg border block drop-shadow-xl ${
-                          selected
-                            ? `text-${tour.theme}-accent-text underline bg-${tour.theme}-accent`
-                            : `text-${tour.theme}-secondary bg-${tour.theme}-primary`
-                        }`}
-                      >
-                        Notes
-                      </span>
-                    )}
-                  </Tab>
-                )}
-                {locationAllowed && (
-                  <Tab>
-                    {({ selected }) => (
-                      <span
-                        className={`py-1 px-2 rounded-lg border drop-shadow-xl ${
-                          selected
-                            ? `text-${tour.theme}-accent-text underline bg-${tour.theme}-accent`
-                            : `text-${tour.theme}-secondary bg-${tour.theme}-primary`
-                        }`}
-                      >
-                        Turn by Turn
-                      </span>
-                    )}
-                  </Tab>
-                )}
-                <button
-                  className="text-right text-black/80 text-sm grow self-start"
-                  onClick={() => setShowPanel(false)}
-                >
-                  <FontAwesomeIcon icon={faCircleXmark} />
-                </button>
-              </TabList>
-              <TabPanels className="relative">
-                {(currentStop?.direction_intro ||
-                  currentStop?.direction_notes) && (
-                  <TabPanel className="text-base pt-2 overflow-y-scroll h-[calc(100vh-12rem)]">
-                    <div
-                      className="text-gray-700 leading-relaxed mb-8"
-                      dangerouslySetInnerHTML={{
-                        __html: currentStop.direction_intro ?? "",
-                      }}
-                    />
-                    <div
-                      className="text-gray-700 leading-relaxed mb-8"
-                      dangerouslySetInnerHTML={{
-                        __html: currentStop.direction_notes ?? "",
-                      }}
-                    />
-                  </TabPanel>
-                )}
-                {locationAllowed && (
-                  <TabPanel unmount={false}>
-                    <div className="overflow-y-scroll h-[calc(100vh-12rem)]">
-                      {parkingLocation && (
-                        <h3 className="text-lg text-red-500">
-                          Driving Directions to Parking
-                        </h3>
-                      )}
-                      <div ref={parkingDirectionsContainerRef}></div>
-                      {parkingLocation && (
-                        <h3 className="text-lg mt-2 text-green-600">
-                          Walking Directions from Parking
-                        </h3>
-                      )}
-                      <div
-                        className="text-base"
-                        ref={directionsContainerRef}
-                      ></div>
-                    </div>
-                  </TabPanel>
-                )}
-              </TabPanels>
-            </TabGroup>
-          </>
-        ) : (
-          <div className="flex flex-col items-center justify-center text-lg h-56 mt-36 space-y-8">
+        <DialogPanel
+          transition
+          className="fixed h-screen w-screen bg-white top-16 left-0 overflow-hidden transition-transform duration-700 data-closed:translate-y-full motion-reduce:transition-none"
+        >
+          <div className="flex items-start justify-between px-2 pt-2">
+            <DialogTitle as="h2" className="text-lg">
+              Directions to {currentStop?.title}
+            </DialogTitle>
             <button
-              className="text-blue-500 underline"
-              onClick={() => {
-                addPreference("locationAllowed");
-                setShowPanel(false);
-              }}
+              className="text-black/80 text-lg"
+              onClick={() => setShowPanel(false)}
+              aria-label="Close directions"
             >
-              Share your location to get directions.
+              <FontAwesomeIcon icon={faCircleXmark} />
             </button>
-            <p className="text-sm">
-              Or{" "}
-              <button className="text-blue-500 underline" onClick={handleCopy}>
-                Copy Address to Clipboard.
+          </div>
+          {locationAllowed ? (
+            <>
+              {!realtimeLocation && (
+                <div className="flex items-center justify-between gap-3 px-3 py-2 mx-2 mb-1 rounded-lg bg-blue-50 text-xs text-blue-800">
+                  <span>
+                    Enable real-time location to keep directions current as you
+                    move.
+                  </span>
+                  <button
+                    onClick={() => addPreference("realtimeLocation")}
+                    className="shrink-0 bg-blue-600 text-white rounded-md px-3 py-1"
+                  >
+                    Enable
+                  </button>
+                </div>
+              )}
+              <TabGroup className="p-2 sticky">
+                <TabList className="flex mb-2 text-lg space-x-4">
+                  {(currentStop?.direction_intro ||
+                    currentStop?.direction_notes) && (
+                    <Tab as={Fragment}>
+                      {({ selected }) => (
+                        <span
+                          className={`py-1 px-2 rounded-lg border block drop-shadow-xl ${
+                            selected
+                              ? `text-${tour.theme.title}-accent-text underline bg-${tour.theme.title}-accent`
+                              : `text-${tour.theme.title}-secondary bg-${tour.theme.title}-primary`
+                          }`}
+                        >
+                          Notes
+                        </span>
+                      )}
+                    </Tab>
+                  )}
+                  {locationAllowed && (
+                    <Tab>
+                      {({ selected }) => (
+                        <span
+                          className={`py-1 px-2 rounded-lg border drop-shadow-xl ${
+                            selected
+                              ? `text-${tour.theme.title}-accent-text underline bg-${tour.theme.title}-accent`
+                              : `text-${tour.theme.title}-secondary bg-${tour.theme.title}-primary`
+                          }`}
+                        >
+                          Turn by Turn
+                        </span>
+                      )}
+                    </Tab>
+                  )}
+                </TabList>
+                <TabPanels className="relative">
+                  {(currentStop?.direction_intro ||
+                    currentStop?.direction_notes) && (
+                    <TabPanel className="text-base pt-2 overflow-y-scroll h-[calc(100vh-12rem)]">
+                      <div
+                        className="text-gray-700 leading-relaxed mb-8"
+                        dangerouslySetInnerHTML={{
+                          __html: currentStop.direction_intro ?? "",
+                        }}
+                      />
+                      <div
+                        className="text-gray-700 leading-relaxed mb-8"
+                        dangerouslySetInnerHTML={{
+                          __html: currentStop.direction_notes ?? "",
+                        }}
+                      />
+                    </TabPanel>
+                  )}
+                  {locationAllowed && (
+                    <TabPanel unmount={false}>
+                      <div className="overflow-y-scroll h-[calc(100vh-12rem)]">
+                        {parkingLocation && travelMode.title === "DRIVING" && (
+                          <h3 className="text-lg text-red-500">
+                            Driving Directions to Parking
+                          </h3>
+                        )}
+                        <div ref={parkingDirectionsContainerRef}></div>
+                        {parkingLocation && travelMode.title === "DRIVING" && (
+                          <h3 className="text-lg mt-2 text-green-600">
+                            Walking Directions from Parking
+                          </h3>
+                        )}
+                        <div
+                          className="text-base"
+                          ref={directionsContainerRef}
+                        ></div>
+                      </div>
+                    </TabPanel>
+                  )}
+                </TabPanels>
+              </TabGroup>
+            </>
+          ) : (
+            <div className="flex flex-col items-center justify-center text-lg h-56 mt-36 space-y-8">
+              <button
+                className="text-blue-700 underline"
+                onClick={() => {
+                  addPreference("locationAllowed");
+                  setShowPanel(false);
+                }}
+              >
+                Share your location to get directions.
               </button>
-            </p>
-            {copyMessage ? (
-              <p className={copySuccess ? "text-green-500" : "text-red-400"}>
+              <p className="text-sm">
+                Or{" "}
+                <button
+                  className="text-blue-700 underline"
+                  onClick={handleCopy}
+                >
+                  Copy Address to Clipboard.
+                </button>
+              </p>
+              {/* Always present, so screen readers announce the message. */}
+              <p
+                role="status"
+                className={copySuccess ? "text-green-700" : "text-red-700"}
+              >
                 {copyMessage}
               </p>
-            ) : (
-              <button
-                className="text-sm text-black/75 bg-black/10 rounded-sm p-2"
-                onClick={() => removePreference("locationAllowed")}
-              >
-                No Thanks
-              </button>
-            )}
-          </div>
-        )}
-      </div>
+              {!copyMessage && (
+                <button
+                  className="text-sm text-black/75 bg-black/10 rounded-sm p-2"
+                  onClick={() => removePreference("locationAllowed")}
+                >
+                  No Thanks
+                </button>
+              )}
+            </div>
+          )}
+        </DialogPanel>
+      </Dialog>
     </>
   );
 };

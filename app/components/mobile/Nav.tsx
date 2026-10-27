@@ -20,20 +20,22 @@ const MobileNav = () => {
     setIsLast(!currentStop?.next);
   }, [currentStop]);
 
+  // The current tab uses the accent colors; the others use the bar's own
+  // text color, since some themes' accent text is dark.
   const classNames = (isActive: boolean, disabled = false) => {
-    return `w-full text-center flex flex-col m-auto text-${
-      tour?.theme.title ?? "default"
-    }-accent-text aria-disabled:text-${
-      tour?.theme.title ?? "default"
-    }-accent-text/45 bg-${tour?.theme.title ?? "default"}-${
-      isActive ? "accent" : "primary"
-    } h-full py-1 ${disabled ? "pointer-events-none" : ""}`;
+    const theme = tour?.theme.title ?? "default";
+    return `w-full text-center flex flex-col m-auto ${
+      isActive
+        ? `text-${theme}-accent-text bg-${theme}-accent`
+        : `text-${theme}-secondary bg-${theme}-primary`
+    } aria-disabled:text-${theme}-secondary/45 h-full py-1 ${disabled ? "pointer-events-none" : ""}`;
   };
 
   if (tour && !currentStop) {
     return (
       <nav
-        className={`grid grid-rows-1 grid-cols-3 bg-${tour.theme}-primary text-${tour.theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
+        aria-label="Tour"
+        className={`grid grid-rows-1 grid-cols-3 bg-${tour.theme.title}-primary text-${tour.theme.title}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
       >
         <NavLink
           to={`/${tour.slug}/intro`}
@@ -72,19 +74,29 @@ const MobileNav = () => {
   if (tour && currentStop) {
     return (
       <nav
-        className={`grid grid-rows-1 grid-cols-4 bg-${tour.theme}-primary text-${tour.theme}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
+        aria-label="Stop"
+        className={`grid grid-rows-1 grid-cols-4 bg-${tour.theme.title}-primary text-${tour.theme.title}-secondary text-xl z-10 fixed bottom-0 h-16 w-screen`}
       >
-        <NavLink
-          to={`/${tour.slug}/${currentStop.previous?.slug}/intro`}
-          viewTransition
-          className={classNames(false, isFirst)}
-          aria-disabled={isFirst}
-        >
-          <div>
-            <FontAwesomeIcon icon={faAngleLeft} />
-          </div>
-          <div>Prev</div>
-        </NavLink>
+        {/* No link at the first or last stop, so it can't be followed. */}
+        {currentStop.previous ? (
+          <NavLink
+            to={`/${tour.slug}/${currentStop.previous.slug}/intro`}
+            viewTransition
+            className={classNames(false)}
+          >
+            <div>
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </div>
+            <div>Prev</div>
+          </NavLink>
+        ) : (
+          <span aria-disabled="true" className={classNames(false, true)}>
+            <div>
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </div>
+            <div>Prev</div>
+          </span>
+        )}
         <NavLink
           to={`/${tour.slug}/${currentStop.slug}/intro`}
           viewTransition
@@ -105,17 +117,26 @@ const MobileNav = () => {
           </div>
           <div>map</div>
         </NavLink>
-        <NavLink
-          to={`/${tour.slug}/${currentStop.next?.slug}/intro`}
-          viewTransition
-          className={classNames(false, isLast)}
-          aria-disabled={isLast}
-        >
-          <div>
-            <FontAwesomeIcon icon={faAngleRight} />
-          </div>
-          <div>next</div>
-        </NavLink>
+        {/* No link at the first or last stop, so it can't be followed. */}
+        {currentStop.next ? (
+          <NavLink
+            to={`/${tour.slug}/${currentStop.next.slug}/intro`}
+            viewTransition
+            className={classNames(false)}
+          >
+            <div>
+              <FontAwesomeIcon icon={faAngleRight} />
+            </div>
+            <div>next</div>
+          </NavLink>
+        ) : (
+          <span aria-disabled="true" className={classNames(false, true)}>
+            <div>
+              <FontAwesomeIcon icon={faAngleRight} />
+            </div>
+            <div>next</div>
+          </span>
+        )}
       </nav>
     );
   }

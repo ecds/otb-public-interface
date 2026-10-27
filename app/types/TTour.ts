@@ -12,6 +12,9 @@ export type TVoiceOver = {
 };
 
 export type TTourMedium = {
+  // Describes the image for screen readers; empty for decorative images.
+  alt_text?: string | null;
+  decorative?: boolean;
   caption: string;
   desktop_width: number;
   embed: string | undefined;

@@ -24,7 +24,9 @@ const TravelModeSelector = () => {
   return (
     <div className="m-6 p-2 bg-black/45 rounded-md text-white text-lg">
       <Listbox value={travelMode} onChange={setTravelMode}>
-        <ListboxButton>
+        <ListboxButton
+          aria-label={`Travel mode: ${travelMode.title.toLowerCase()}`}
+        >
           <FontAwesomeIcon icon={modeIcon(travelMode.title)} />{" "}
           {travelMode.title}
         </ListboxButton>
