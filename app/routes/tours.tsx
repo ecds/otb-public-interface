@@ -1,10 +1,11 @@
 import { faList, faMap, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link, useLoaderData, redirect, useNavigate } from "react-router";
 import Analytics from "~/components/shared/Analytics";
 import TourCard from "~/components/shared/TourCard";
+import TourSetIntro from "~/components/shared/TourSetIntro";
 import TourSetMap from "~/components/shared/TourSetMap";
 import { requestContext, tenantContext } from "~/context";
 import { getTours, isSignedIn } from "~/data";
@@ -50,7 +51,6 @@ clientLoader.hydrate = true as const;
 
 const Tours = () => {
   const { tour_set, tours } = useLoaderData<typeof loader>();
-  const [introExpanded, setIntroExpanded] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -105,25 +105,7 @@ const Tours = () => {
           <TabPanels className="px-4 md:px-16">
             {/* RESPONSIVE GRID WITH FIXED SIZE CARDS */}
             <TabPanel className={``}>
-              <div
-                className={`mx-auto bg-white rounded-md p-4 md:p-6 mb-4 md:mb-6 max-w-[65ch] ${!tour_set.description ? "hidden" : ""}`}
-              >
-                <div
-                  id="tour-set-intro"
-                  className={`prose ${introExpanded ? "max-h-full overflow-auto" : "max-h-[12ch] overflow-hidden"} md:max-h-full md:overflow-auto`}
-                  dangerouslySetInnerHTML={{
-                    __html: tour_set.description,
-                  }}
-                />
-                <button
-                  className={`block md:hidden bg-blue-600 px-1 text-white rounded-md`}
-                  onClick={() => setIntroExpanded(!introExpanded)}
-                  aria-expanded={introExpanded}
-                  aria-controls="tour-set-intro"
-                >
-                  {introExpanded ? "Show Less" : "Show More"}
-                </button>
-              </div>
+              <TourSetIntro intro={tour_set.description} />
               <div
                 className={`prose grid gap-6 grid-cols-1 ${"sm:grid-cols-2"} ${tours.length >= 2 ? "md:grid-cols-2" : "md:grid-cols-1"} mx-auto content-center`}
               >

@@ -26,7 +26,7 @@ const StopMenu = () => {
         <h1 className="text-lg">
           <MenuButton
             onClick={() => setShow(!show)}
-            className="hidden md:flex space-x-2 text-white rounded-md px-1 py-2 font-medium w-full cursor-pointer"
+            className={`hidden md:flex space-x-2 text-${tour.theme.title}-secondary rounded-md px-1 py-2 font-medium w-full cursor-pointer`}
           >
             {tour.title}
             <span className="sr-only">, stops</span>{" "}

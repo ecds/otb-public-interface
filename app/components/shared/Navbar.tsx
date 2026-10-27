@@ -20,7 +20,7 @@ const Navbar = ({
     <header
       className={`bg-${
         tour?.theme.title ?? "default"
-      }-primary md:bg-default-primary h-16 fixed top-0 w-screen z-50`}
+      }-primary h-16 fixed top-0 w-screen z-50`}
     >
       <>
         <div className="h-full flex items-center justify-between mx-auto px-4">
@@ -43,7 +43,7 @@ const Navbar = ({
                     src={tour_set?.logo_url ?? "/images/otblogo.png"}
                     alt=""
                   /> */}
-                  <h1 className="block md:hidden text-white text-sm m-auto text-wrap text-left grow">
+                  <h1 className={`block md:hidden text-${tour.theme.title}-secondary text-sm m-auto text-wrap text-left grow`}>
                     {tour.title}
                   </h1>
                 </Link>

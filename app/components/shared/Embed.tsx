@@ -46,6 +46,7 @@ const Embed = ({ medium }: Props) => {
             (medium.provider ? `${medium.provider} video` : "Embedded media")
           }
           src={medium.embed}
+          loading="lazy"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; xr-spatial-tracking"
           allowFullScreen
         ></iframe>
