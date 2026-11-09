@@ -1,3 +1,5 @@
+import { API_URL } from "~/utils/apiUrl";
+
 const fetchData = async (url: string) => {
   const response = await fetch(url, {
     referrerPolicy: "strict-origin-when-cross-origin",
@@ -13,35 +15,35 @@ const fetchData = async (url: string) => {
 
 export const getTourSets = async () => {
   const response = await fetchData(
-    "https://api.opentour.site/public/v4/public/tour-sets",
+    `${API_URL}/public/v4/public/tour-sets`,
   );
   return await response;
 };
 
 export const getTourSet = async (tenant: string) => {
   const response = await fetchData(
-    `https://api.opentour.site/public/tour-sets?subdir=${tenant}`,
+    `${API_URL}/public/tour-sets?subdir=${tenant}`,
   );
   return response.data[0];
 };
 
 export const getTours = async (tenant: string) => {
   const response = await fetchData(
-    `https://api.opentour.site/${tenant}/v4/public/tours`,
+    `${API_URL}/${tenant}/v4/public/tours`,
   );
   return response;
 };
 
 export const isSignedIn = async () => {
   const response = await fetchData(
-    "https://api.opentour.site/public/users?me=true",
+    `${API_URL}/public/users?me=true`,
   );
   return Boolean(response.data.id);
 };
 
 export const getTour = async (tenant: string, tour: number | string) => {
   const response = await fetchData(
-    `https://api.opentour.site/${tenant}/v4/public/tours/${tour}`,
+    `${API_URL}/${tenant}/v4/public/tours/${tour}`,
   );
   return response;
 };

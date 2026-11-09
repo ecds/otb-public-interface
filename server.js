@@ -78,7 +78,7 @@ app.get("/sitemap.xml", async (req, res) => {
 
   try {
     const response = await fetch(
-      `https://api.opentour.site/${tenant}/v4/public/tours`,
+      `${process.env.VITE_API_URL || "https://api.opentour.site"}/${tenant}/v4/public/tours`,
       {
         referrerPolicy: "strict-origin-when-cross-origin",
         method: "GET",
