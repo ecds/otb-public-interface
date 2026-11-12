@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import ClientOnly from "~/components/ClientOnly";
 import TextToSpeechButton from "~/components/shared/TextToSpeechButton";
+import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
 import Gallery from "../shared/ModalGallery";
 import type { TTour, TTourStop } from "~/types";
@@ -10,22 +12,21 @@ interface Props {
 
 const MainContent = ({ content }: Props) => {
   const { isDesktop, isMobile } = useDeviceContext();
+  const { tour } = useContext(TourContext);
 
   return (
     <div
       key={content.slug}
-      className={`mb-12 ${content.type !== "stop" ? "mt-12" : ""}`}
+      className={`mb-12 ${content.type !== "stop" ? "mt-12" : ""} outline-none`}
       id={content.slug}
     >
-      <div className="md:relative w-full mt-16 md:mt-0">
+      <div className={`md:relative w-full mt-16 md:mt-0`}>
         <div className="flex flex-col ">
           {isDesktop && (
             <div
-              className={
-                "sticky top-14 bg-white z-10 w-full h-fit pt-4 mb-4 drop-shadow-sm px-6 py-2 "
-              }
+              className={`sticky top-14 z-10 w-full h-fit pt-4 mb-4 drop-shadow-sm px-6 py-2  bg-${tour?.theme.title}-content`}
             >
-              <h2 className="text-xl md:text-2xl">
+              <h2 className={`text-xl md:text-2xl`}>
                 {content.type === "stop" && <>{content.position}: </>}
                 {content.title}
               </h2>
@@ -39,12 +40,10 @@ const MainContent = ({ content }: Props) => {
           )}
           {isMobile && (
             <div
-              className={
-                "sticky top-14 bg-white z-10 w-full h-fit pt-4 mb-4 shadow-sm"
-              }
+              className={`sticky top-14 z-10 w-full h-fit pt-4 mb-4 shadow-sm bg-${tour?.theme.title}-content`}
             >
-              <div className="px-6 py-2 flex items-center justify-between">
-                <h2 className="text-xl md:text-2xl">
+              <div className={`px-6 py-2 flex items-center justify-between `}>
+                <h2 className={`text-xl md:text-2xl outline-none`}>
                   {content.type === "stop" && <>{content.position}: </>}
                   {content.title}
                 </h2>
@@ -57,7 +56,7 @@ const MainContent = ({ content }: Props) => {
               voiceOverUrl={content.voice_overs?.[0]?.source_url}
             />
             <div
-              className="prose mx-auto break-words"
+              className="prose mx-auto wrap-break-words"
               dangerouslySetInnerHTML={{
                 __html: content.description,
               }}

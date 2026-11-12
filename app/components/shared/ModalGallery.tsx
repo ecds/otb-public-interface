@@ -175,7 +175,7 @@ const Gallery = ({ media, path }: Props) => {
       <EmblaCarousel
         media={media}
         initialIndex={activeMedium}
-        slideClassName="w-screen md:w-[50vw]"
+        slideClassName={`w-screen md:w-[50vw]`}
       >
         {(medium, index) => (
           <Medium

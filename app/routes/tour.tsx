@@ -207,7 +207,7 @@ export default function Tour() {
         <div className="grid grid-cols-2 grid-rows-1 h-[calc(100vh-16rem)] grid-flow-row auto-rows-max">
           <main id="main">
             <StopList
-              className="text-black/80 leading-6"
+              className={`text-black/80 leading-6 bg-${tour?.theme.title}-content`}
               intro={<MainContent content={tour} />}
             />
           </main>
@@ -225,7 +225,12 @@ export default function Tour() {
       {isMobile && (
         <>
           <MobileNav />
-          <main id="main" ref={mainRef} tabIndex={-1} className="outline-none">
+          <main
+            id="main"
+            ref={mainRef}
+            tabIndex={-1}
+            className={`bg-${tour.theme.title}-content outline-none`}
+          >
             <Outlet />
           </main>
           <ConsentSheet
