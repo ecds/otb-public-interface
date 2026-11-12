@@ -10,7 +10,9 @@ const MobileStopsList = () => {
 
   if (!tour || !tour.stops || tour.stops.length === 0) {
     return (
-      <div className="p-4 text-center text-gray-500">
+      <div
+        className={`p-4 text-center text-gray-500 bg-${tour?.theme.title}-content`}
+      >
         <FontAwesomeIcon icon={faList} className="text-3xl mb-2" />
         <p>No stops available</p>
       </div>
@@ -18,7 +20,7 @@ const MobileStopsList = () => {
   }
 
   return (
-    <div className="bg-white pt-16">
+    <div className={`bg-${tour?.theme.title}-content pt-16`}>
       <h2 className="sr-only">Stops</h2>
       {tour.stops.map((stop) => (
         <button

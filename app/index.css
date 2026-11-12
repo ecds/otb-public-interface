@@ -9,6 +9,7 @@
   This helps maintain consistent styling with v3
 */
 @layer base {
+
   *,
   ::after,
   ::before,
@@ -23,128 +24,146 @@
   --color-default-secondary: #ffffff;
   --color-default-accent-text: #ffffff;
   --color-default-accent: #d63031;
+  --color-default-content: #ffffff;
   --color-blue-primary: #007ab0;
   --color-blue-accent-text: #ffffff;
   --color-blue-secondary: #ffffff;
   --color-blue-accent: #d32730;
+  --color-blue-content: #ffffff;
   --color-bright-blue-primary: #0700ff;
   --color-bright-blue-accent-text: #ffffff;
   --color-bright-blue-secondary: #ffffff;
   --color-bright-blue-accent: #d63031;
+  --color-bright-blue-content: #ffffff;
   --color-atl-primary: #003f75;
   --color-atl-secondary: #ffffff;
   --color-atl-accent-text: #ffffff;
   --color-atl-accent: #cd3648;
+  --color-atl-content: #ffffff;
   --color-red-primary: #d91f3d;
   --color-red-secondary: #ffffff;
   --color-red-accent-text: #ffffff;
   --color-red-accent: #23307e;
+  --color-red-content: #ffffff;
   --color-dark-blue-primary: #2a3f74;
   --color-dark-blue-secondary: #ffffff;
   --color-dark-blue-accent-text: #ffffff;
   --color-dark-blue-accent: #4a6dc9;
+  --color-dark-blue-content: #ffffff;
   --color-purple-primary: #5a23b4;
   --color-purple-secondary: #ffffff;
   --color-purple-accent-text: #ffffff;
   --color-purple-accent: #c400b3;
+  --color-purple-content: #ffffff;
   --color-green-primary: #4a8230;
   --color-green-secondary: #ffffff;
   --color-green-accent-text: #000000;
   --color-green-accent: #f38c03;
+  --color-green-content: #ffffff;
   --color-orange-primary: #d13800;
   --color-orange-secondary: #ffffff;
   --color-orange-accent-text: #ffffff;
   --color-orange-accent: #0700ff;
+  --color-orange-content: #ffffff;
   --color-dark-green-primary: #227b39;
   --color-dark-green-secondary: #ffffff;
   --color-dark-green-accent-text: #ffffff;
   --color-dark-green-accent: #d13d3b;
+  --color-dark-green-content: #ffffff;
   --color-dark-mode-primary: #4a4a4a;
   --color-dark-mode-secondary: #ffffff;
   --color-dark-mode-accent-text: #ffffff;
   --color-dark-mode-accent: #e30000;
+  --color-dark-mode-content: #ffffff;
   --color-austrian-primary: #e41e2f;
   --color-austrian-secondary: #ffffff;
   --color-austrian-accent-text: #000000;
   --color-austrian-accent: #fae205;
+  --color-austrian-content: #ffffff;
   --color-emory-primary: #012169;
   --color-emory-secondary: #ffffff;
   --color-emory-accent-text: #000000;
   --color-emory-accent: #f2a900;
+  --color-emory-content: #ffffff;
   --color-gsu-primary: #0239a6;
   --color-gsu-secondary: #ffffff;
   --color-gsu-accent-text: #ffffff;
   --color-gsu-accent: #c60d30;
+  --color-gsu-content: #ffffff;
   --color-gatech-primary: #003057;
   --color-gatech-secondary: #ffffff;
   --color-gatech-accent-text: #000000;
   --color-gatech-accent: #b3a369;
+  --color-gatech-content: #ffffff;
   --color-uga-primary: #ba0d2f;
   --color-uga-secondary: #ffffff;
   --color-uga-accent-text: #ffffff;
   --color-uga-accent: #000000;
+  --color-uga-content: #ffffff;
   --color-ksu-primary: #000000;
   --color-ksu-secondary: #ffffff;
   --color-ksu-accent-text: #000000;
   --color-ksu-accent: #febc13;
+  --color-ksu-content: #ffffff;
   --color-hrcga-primary: oklch(28% 0.05 150.93);
   --color-hrcga-secondary: oklch(94% 0.02 67.4);
   --color-hrcga-accent-text: oklch(94% 0.02 67.4);
   --color-hrcga-accent: #58191b;
+  --color-hrcga-content: #f5e9de;
 }
 
-@source inline('bg-default-{primary,secondary,accent}');
+@source inline('bg-default-{primary,secondary,accent,content}');
 @source inline('text-default-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-default-{secondary/45}');
-@source inline('bg-blue-{primary,secondary,accent}');
+@source inline('bg-blue-{primary,secondary,accent,content}');
 @source inline('text-blue-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-blue-{secondary/45}');
-@source inline('bg-bright-blue-{primary,secondary,accent}');
+@source inline('bg-bright-blue-{primary,secondary,accent,content}');
 @source inline('text-bright-blue-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-bright-blue-{secondary/45}');
-@source inline('bg-atl-{primary,secondary,accent}');
+@source inline('bg-atl-{primary,secondary,accent,content}');
 @source inline('text-atl-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-atl-{secondary/45}');
-@source inline('bg-red-{primary,secondary,accent}');
+@source inline('bg-red-{primary,secondary,accent,content}');
 @source inline('text-red-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-red-{secondary/45}');
-@source inline('bg-dark-blue-{primary,secondary,accent}');
+@source inline('bg-dark-blue-{primary,secondary,accent,content}');
 @source inline('text-dark-blue-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-dark-blue-{secondary/45}');
-@source inline('bg-purple-{primary,secondary,accent}');
+@source inline('bg-purple-{primary,secondary,accent,content}');
 @source inline('text-purple-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-purple-{secondary/45}');
-@source inline('bg-green-{primary,secondary,accent}');
+@source inline('bg-green-{primary,secondary,accent,content}');
 @source inline('text-green-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-green-{secondary/45}');
-@source inline('bg-orange-{primary,secondary,accent}');
+@source inline('bg-orange-{primary,secondary,accent,content}');
 @source inline('text-orange-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-orange-{secondary/45}');
-@source inline('bg-dark-green-{primary,secondary,accent}');
+@source inline('bg-dark-green-{primary,secondary,accent,content}');
 @source inline('text-dark-green-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-dark-green-{secondary/45}');
-@source inline('bg-dark-mode-{primary,secondary,accent}');
+@source inline('bg-dark-mode-{primary,secondary,accent,content}');
 @source inline('text-dark-mode-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-dark-mode-{secondary/45}');
-@source inline('bg-austrian-{primary,secondary,accent}');
+@source inline('bg-austrian-{primary,secondary,accent,content}');
 @source inline('text-austrian-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-austrian-{secondary/45}');
-@source inline('bg-emory-{primary,secondary,accent}');
+@source inline('bg-emory-{primary,secondary,accent,content}');
 @source inline('text-emory-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-emory-{secondary/45}');
 
-@source inline('bg-gsu-{primary,secondary,accent}');
+@source inline('bg-gsu-{primary,secondary,accent,content}');
 @source inline('text-gsu-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-gsu-{secondary/45}');
-@source inline('bg-gatech-{primary,secondary,accent}');
+@source inline('bg-gatech-{primary,secondary,accent,content}');
 @source inline('text-gatech-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-gatech-{secondary/45}');
-@source inline('bg-uga-{primary,secondary,accent}');
+@source inline('bg-uga-{primary,secondary,accent,content}');
 @source inline('text-uga-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-uga-{secondary/45}');
-@source inline('bg-ksu-{primary,secondary,accent}');
+@source inline('bg-ksu-{primary,secondary,accent,content}');
 @source inline('text-ksu-{accent-text,primary,secondary}');
-@source inline('bg-hrcga-{primary,secondary,accent}');
+@source inline('bg-hrcga-{primary,secondary,accent,content}');
 @source inline('text-hrcga-{accent-text,primary,secondary}');
 @source inline('aria-disabled:text-ksu-{secondary/45}');
 
@@ -162,6 +181,7 @@
 /* Cuts animations and transitions short for people who've asked their
    device for less motion. */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
