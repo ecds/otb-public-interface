@@ -15,7 +15,7 @@ interface Props {
   children: ReactNode;
 }
 
-const TourMarker = ({ map, tour, children }: Props) => {
+const TourMarkerMapLibre = ({ map, tour, children }: Props) => {
   const markerElement = useDetachedElement(
     "cursor-pointer rounded-sm focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-blue-700",
   );
@@ -75,4 +75,4 @@ const TourMarker = ({ map, tour, children }: Props) => {
   return <></>;
 };
 
-export default TourMarker;
+export default TourMarkerMapLibre;

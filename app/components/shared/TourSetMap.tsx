@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { baseStyle } from "~/map_styles";
 import TourCard from "./TourCard";
-import TourMarker from "./TourMarker";
+import TourMarkerMapLibre from "./TourMarkerMapLibre";
 import type { TTour } from "~/types";
 
 interface Props {
@@ -69,7 +69,7 @@ const TourSetMap = ({ tours }: Props) => {
       {tours.map((tour) => {
         if (map) {
           return (
-            <TourMarker
+            <TourMarkerMapLibre
               key={tour.slug}
               map={map}
               tour={{
@@ -87,7 +87,7 @@ const TourSetMap = ({ tours }: Props) => {
               >
                 {tour.title}
               </Link>
-            </TourMarker>
+            </TourMarkerMapLibre>
           );
         }
       })}

@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import TourMarker from "./TourMarker";
+import TourMarkerMapLibre from "./TourMarkerMapLibre";
 import type { Map } from "maplibre-gl";
 import type { TTourSetTour } from "~/types";
 
@@ -56,16 +56,16 @@ describe("TourMarker", () => {
   it("re-renders and unmounts after the map has moved its elements", () => {
     const map = {} as Map;
     const { rerender, unmount } = render(
-      <TourMarker map={map} tour={tour}>
+      <TourMarkerMapLibre map={map} tour={tour}>
         <a href="/town">Town Tour</a>
-      </TourMarker>,
+      </TourMarkerMapLibre>,
     );
     expect(mapContainer).toContainElement(screen.getByText("Town Tour"));
 
     rerender(
-      <TourMarker map={map} tour={tour}>
+      <TourMarkerMapLibre map={map} tour={tour}>
         <a href="/town">Town Tour, updated</a>
-      </TourMarker>,
+      </TourMarkerMapLibre>,
     );
     expect(screen.getByText("Town Tour, updated")).toBeInTheDocument();
     expect(() => unmount()).not.toThrow();
@@ -75,9 +75,12 @@ describe("TourMarker", () => {
 describe("TourMarker keyboard access", () => {
   it("is a button named after the tour", () => {
     render(
-      <TourMarker map={{} as Map} tour={{ ...tour, title: "Town Tour" }}>
+      <TourMarkerMapLibre
+        map={{} as Map}
+        tour={{ ...tour, title: "Town Tour" }}
+      >
         <a href="/town">Go to tour</a>
-      </TourMarker>,
+      </TourMarkerMapLibre>,
     );
     const marker = screen.getByRole("button", { name: "Town Tour" });
     expect(marker).toHaveAttribute("aria-expanded", "false");
@@ -85,9 +88,12 @@ describe("TourMarker keyboard access", () => {
 
   it("closes the popup with Escape and returns focus to the marker", async () => {
     render(
-      <TourMarker map={{} as Map} tour={{ ...tour, title: "Town Tour" }}>
+      <TourMarkerMapLibre
+        map={{} as Map}
+        tour={{ ...tour, title: "Town Tour" }}
+      >
         <a href="/town">Go to tour</a>
-      </TourMarker>,
+      </TourMarkerMapLibre>,
     );
     const link = screen.getByRole("link", { name: "Go to tour" });
     link.focus();

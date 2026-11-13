@@ -1,8 +1,13 @@
-import * as maplibregl from "maplibre-gl";
-import { useEffect, useRef, useState } from "react";
-import { baseStyle } from "~/map_styles";
-import TourMarker from "../shared/TourMarker";
+import { useEffect, useState } from "react";
+import { canUseWebGL } from "~/utils/webgl_check";
+import ClientOnly from "../ClientOnly";
+import TourMarkerLeaflet from "../shared/TourMarkerLeaflet.client";
+import TourMarkerMapLibre from "../shared/TourMarkerMapLibre";
 import "maplibre-gl/dist/maplibre-gl.css";
+import AllToursLeaflet from "./AllToursLeaflet.client";
+import AllToursMapLibre from "./AllToursMapLibre";
+import type L from "leaflet";
+import type { Map } from "maplibre-gl";
 import type { TTourSetTour, TContextRequest } from "~/types";
 
 interface Props {
@@ -11,53 +16,59 @@ interface Props {
 }
 
 const AllToursMap = ({ tours, request }: Props) => {
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<maplibregl.Map | undefined>(undefined);
+  const [webglSupported, setWebglSupported] = useState<boolean | undefined>(
+    undefined,
+  );
+  const [mapLibreMap, setMapLibreMap] = useState<Map | undefined>(undefined);
+  const [leafletMap, setLeafletMap] = useState<L.Map | undefined>(undefined);
 
   useEffect(() => {
-    if (!tours || !mapContainerRef.current) return;
-    const _map = new maplibregl.Map({
-      container: mapContainerRef.current,
-      style: baseStyle,
-      center: new maplibregl.LngLat(-83.4375901, 32.6620411),
-      zoom: 5,
-      renderWorldCopies: false,
-    });
+    setWebglSupported(canUseWebGL());
+  }, []);
 
-    _map.addControl(
-      new maplibregl.FullscreenControl({ container: mapContainerRef.current }),
-    );
-
-    setMap(_map);
-
-    return () => {
-      _map.remove();
-      setMap(undefined);
-    };
-  }, [tours]);
-
-  return (
-    <div
-      id="all-tour-maps"
-      ref={mapContainerRef}
-      className="w-full max-w-screen h-[50vh] mt-16"
-    >
-      {tours.map((tour) => {
-        if (map) {
+  if (webglSupported) {
+    return (
+      <AllToursMapLibre
+        setWebglSupported={setWebglSupported}
+        map={mapLibreMap}
+        setMap={setMapLibreMap}
+      >
+        {tours.map((tour) => {
           return (
-            <TourMarker key={tour.slug} map={map} tour={tour}>
+            <TourMarkerMapLibre key={tour.slug} tour={tour} map={mapLibreMap}>
               <a
                 className="text-lg text-blue-700 hover:text-blue-900 underline"
                 href={`${request.protocol}://${tour.tenant}.${request.host}/${tour.slug}`}
               >
                 {tour.title}
               </a>
-            </TourMarker>
+            </TourMarkerMapLibre>
           );
-        }
-      })}
-    </div>
-  );
+        })}
+      </AllToursMapLibre>
+    );
+  } else if (webglSupported !== undefined && webglSupported === false) {
+    return (
+      <ClientOnly>
+        <AllToursLeaflet setMap={setLeafletMap}>
+          {tours.map((tour) => {
+            return (
+              <TourMarkerLeaflet key={tour.slug} map={leafletMap} tour={tour}>
+                <a
+                  className="text-lg text-blue-700 hover:text-blue-900 underline"
+                  href={`${request.protocol}://${tour.tenant}.${request.host}/${tour.slug}`}
+                >
+                  {tour.title}
+                </a>
+              </TourMarkerLeaflet>
+            );
+          })}
+        </AllToursLeaflet>
+      </ClientOnly>
+    );
+  }
+
+  return <></>;
 };
 
 export default AllToursMap;
