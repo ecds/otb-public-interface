@@ -46,6 +46,7 @@ const medium = (embed?: string): TTourMedium => ({
     mobile: "mobile.jpg",
     tablet: "tablet.jpg",
     desktop: "desktop.jpg",
+    original: "original.jpg",
   },
   lqip_width: undefined,
   mobile_width: 375,
