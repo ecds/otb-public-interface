@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import { TourContext } from "~/contexts/TourContext";
-import MapMarker from "./MapMarker";
+import MapMarker from "./StopMarker";
 import type { Map } from "maplibre-gl";
 import type { TTourStop } from "~/types";
 

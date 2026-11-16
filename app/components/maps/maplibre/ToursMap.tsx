@@ -1,9 +1,9 @@
 import * as maplibregl from "maplibre-gl";
 import { useEffect, useRef, useState } from "react";
 import { baseStyle } from "~/map_styles";
-import TourMarkerMapLibre from "./TourMarkerMapLibre";
+import TourMarkerMapLibre from "./TourMarker";
 import "maplibre-gl/dist/maplibre-gl.css";
-import type { TMapMarker, TMapView } from "./types";
+import type { TMapMarker, TMapView } from "~/types";
 
 interface Props {
   markers: TMapMarker[];

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import TourMarkerLeaflet from "./TourMarkerLeaflet";
-import type { TMapMarker, TMapView } from "./types";
+import TourMarkerLeaflet from "./TourMarker";
 import type Leaflet from "leaflet";
+import type { TMapMarker, TMapView } from "~/types";
 
 interface Props {
   markers: TMapMarker[];

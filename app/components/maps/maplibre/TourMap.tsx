@@ -1,8 +1,8 @@
 import * as maplibregl from "maplibre-gl";
 import { useContext, useEffect, useRef, useState } from "react";
 import { TourContext } from "~/contexts/TourContext";
-import MapMarker from "./MapMarker";
-import MapOverlay from "./MapOverlay";
+import MapOverlay from "./Overlay";
+import MapMarker from "./StopMarker";
 import "maplibre-gl/dist/maplibre-gl.css";
 
 const TourMap = () => {

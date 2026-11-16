@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import TourMarkerMapLibre from "./TourMarkerMapLibre";
-import type { TMapMarker } from "./types";
+import TourMarkerMapLibre from "./TourMarker";
 import type { Map } from "maplibre-gl";
+import type { TMapMarker } from "~/types";
 
 // Like MapLibre, moves the marker and popup elements into the map's own
 // container.

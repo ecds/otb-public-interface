@@ -16,8 +16,7 @@ import type {
   LoaderFunctionArgs,
   MetaFunction,
 } from "react-router";
-import type { TMapMarker } from "~/components/maps/types";
-import type { TTour, TTourSetPreview } from "~/types";
+import type { TMapMarker , TTour, TTourSetPreview } from "~/types";
 
 export const meta: MetaFunction = ({ matches }) => {
   const data = matches.find((m) => m.id === "routes/tours")?.loaderData as

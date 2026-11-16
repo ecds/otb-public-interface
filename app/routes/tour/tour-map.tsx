@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import ClientOnly from "~/components/ClientOnly";
-import TourMap from "~/components/desktop/TourMap";
-import TourGoogleMap from "~/components/mobile/TourMap.client";
+import TourGoogleMap from "~/components/maps/google/TourMap.client";
+import TourMap from "~/components/maps/maplibre/TourMap";
 import { TourContext } from "~/contexts/TourContext";
 import { usePreferences } from "~/hooks";
 import { pageTitle } from "~/utils/pageTitle";

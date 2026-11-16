@@ -3,9 +3,9 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useDetachedElement } from "~/hooks/useDetachedElement";
 import { connectPopup, labelMarker } from "~/utils/markerA11y";
-import MarkerPin from "./MarkerPin";
-import type { TMapMarker } from "./types";
+import MarkerPin from "../common/MarkerPin";
 import type { Map } from "maplibre-gl";
+import type { TMapMarker } from "~/types";
 
 interface Props {
   map: Map;

@@ -2,7 +2,7 @@ import * as maplibregl from "maplibre-gl";
 import { useContext, useEffect, useRef, useState } from "react";
 import "maplibre-gl/dist/maplibre-gl.css";
 import { TourContext } from "~/contexts/TourContext";
-import MapMarker from "../desktop/MapMarker";
+import MapMarker from "./StopMarker";
 
 const StopMap = () => {
   const mapContainerRef = useRef<HTMLDivElement>(null);

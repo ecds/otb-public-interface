@@ -7,7 +7,7 @@ import { TourContext } from "~/contexts/TourContext";
 import { useDeviceContext } from "~/hooks/deviceContext";
 import { useDetachedElement } from "~/hooks/useDetachedElement";
 import { activateOnKeys, connectPopup, labelMarker } from "~/utils/markerA11y";
-import PopUpContent from "../mobile/PopUpContent";
+import PopUpContent from "../common/PopUpContent";
 import type { Map } from "maplibre-gl";
 import type { TTourStop } from "~/types";
 

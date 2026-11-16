@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
-import TourMarkerLeaflet from "./TourMarkerLeaflet";
-import type { TMapMarker } from "./types";
+import TourMarkerLeaflet from "./TourMarker";
 import type Leaflet from "leaflet";
+import type { TMapMarker } from "~/types";
 
 // Like Leaflet, moves the icon and popup content into the map's own
 // container, and reports the popup through the marker's events.

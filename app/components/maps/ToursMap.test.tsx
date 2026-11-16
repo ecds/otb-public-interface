@@ -8,7 +8,7 @@ vi.mock("~/utils/webgl_check", () => ({
   markWebGLUnavailable: vi.fn(),
 }));
 
-vi.mock("./ToursLeaflet", () => ({
+vi.mock("./leaflet/ToursMap", () => ({
   default: () => <div>Leaflet map</div>,
 }));
 

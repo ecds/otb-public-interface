@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { canUseWebGL, markWebGLUnavailable } from "~/utils/webgl_check";
-import ToursLeaflet from "./ToursLeaflet";
-import ToursMapLibre from "./ToursMapLibre";
-import type { TMapMarker, TMapView } from "./types";
+import ToursLeaflet from "./leaflet/ToursMap";
+import ToursMapLibre from "./maplibre/ToursMap";
+import type { TMapMarker, TMapView } from "~/types";
 
 interface Props {
   markers: TMapMarker[];

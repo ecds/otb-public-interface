@@ -17,7 +17,7 @@ import {
 } from "react-router";
 import StopList from "~/components/desktop/StopList";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
-import TourMap from "~/components/desktop/TourMap";
+import TourMap from "~/components/maps/maplibre/TourMap";
 import ConsentSheet from "~/components/mobile/ConsentSheet";
 import MobileNav from "~/components/mobile/Nav";
 import PermissionsModal from "~/components/mobile/PermissionsModal";
