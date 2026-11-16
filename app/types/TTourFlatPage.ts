@@ -3,4 +3,5 @@ export type TTourFlatPage = {
   position: number;
   slug: string;
   body: string;
+  id: number;
 };

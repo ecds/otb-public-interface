@@ -6,6 +6,7 @@ export default [
   route("tours", "./routes/tours.tsx"),
   route(":tour", "./routes/tour.tsx", [
     index("./routes/tour/tour-index.tsx"),
+    route("page/:id", "./routes/tour/page.tsx"),
     route("intro", "./routes/tour/tour-intro.tsx"),
     route("map", "./routes/tour/tour-map.tsx"),
     route("stops", "./routes/tour/tour-stops.tsx"),

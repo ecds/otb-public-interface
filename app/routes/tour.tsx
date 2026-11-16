@@ -1,7 +1,16 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   useLoaderData,
   useLocation,
+  useMatch,
+  useNavigate,
   useNavigationType,
   Outlet,
   redirect,
@@ -80,9 +89,10 @@ export async function clientLoader({ serverLoader }: ClientLoaderFunctionArgs) {
 clientLoader.hydrate = true as const;
 
 export default function Tour() {
-  const { tour_set, tour, stopParam } = useLoaderData<typeof loader>();
+  const { tour_set, tour, stopParam, tourParam } =
+    useLoaderData<typeof loader>();
   const { isMobile, isDesktop } = useDeviceContext();
-  const [currentFlatPage, setCurrentFlatPage] = useState<
+  const [currentFlatPage, setFlatPage] = useState<
     TTourFlatPage | string | undefined
   >(undefined);
   const [currentStop, setCurrentStop] = useState<TTourStop | undefined>(
@@ -97,6 +107,9 @@ export default function Tour() {
   const navigationType = useNavigationType();
   const tourSlug = tour?.slug;
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+  // The parent can't see a child route's params, so match the URL itself.
+  const pageId = useMatch("/:tour/page/:id")?.params.id;
   const mainRef = useRef<HTMLElement>(null);
   const firstPathname = useRef<string>(pathname);
 
@@ -114,8 +127,27 @@ export default function Tour() {
   // link leads to the tour itself. "POP" (fresh load, back/forward) and
   // stop URLs are left alone.
   useLayoutEffect(() => {
-    if (navigationType === "PUSH" && !stopParam) window.scrollTo(0, 0);
-  }, [navigationType, stopParam, tourSlug]);
+    if (navigationType === "PUSH" && !stopParam && !pageId)
+      window.scrollTo(0, 0);
+  }, [navigationType, stopParam, pageId, tourSlug]);
+
+  // A direct link to one of the tour's pages opens it.
+  useEffect(() => {
+    if (!pageId || !tour) return;
+    setFlatPage(
+      tour.flat_pages.find((page: TTourFlatPage) => page.id === Number(pageId)),
+    );
+  }, [pageId, tour]);
+
+  // Pages open and close without navigating. Closing one that came from a
+  // direct link swaps the page's URL for the tour's.
+  const setCurrentFlatPage = useCallback(
+    (flatPage: TTourFlatPage | string | undefined) => {
+      setFlatPage(flatPage);
+      if (!flatPage && pageId) navigate(`/${tourParam}`, { replace: true });
+    },
+    [navigate, tourParam, pageId],
+  );
 
   const tourContextValue = useMemo(
     () => ({
@@ -132,6 +164,7 @@ export default function Tour() {
     }),
     [
       currentFlatPage,
+      setCurrentFlatPage,
       currentStop,
       showMenu,
       tour,
