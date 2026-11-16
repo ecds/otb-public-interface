@@ -1,9 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import TourMarker from "./TourMarker";
+import TourMarkerMapLibre from "./TourMarkerMapLibre";
+import type { TMapMarker } from "./types";
 import type { Map } from "maplibre-gl";
-import type { TTourSetTour } from "~/types";
 
 // Like MapLibre, moves the marker and popup elements into the map's own
 // container.
@@ -47,47 +47,42 @@ vi.mock("maplibre-gl", () => ({
   },
 }));
 
-const tour = {
-  slug: "town",
-  center: { lat: 33.7, lng: -84.4 },
-} as unknown as TTourSetTour;
+const marker = (popup: string): TMapMarker => ({
+  id: "town",
+  title: "Town Tour",
+  lat: 33.7,
+  lng: -84.4,
+  popup: <a href="/town">{popup}</a>,
+});
 
-describe("TourMarker", () => {
+describe("TourMarkerMapLibre", () => {
   it("re-renders and unmounts after the map has moved its elements", () => {
     const map = {} as Map;
     const { rerender, unmount } = render(
-      <TourMarker map={map} tour={tour}>
-        <a href="/town">Town Tour</a>
-      </TourMarker>,
+      <TourMarkerMapLibre map={map} marker={marker("Town Tour")} />,
     );
     expect(mapContainer).toContainElement(screen.getByText("Town Tour"));
 
     rerender(
-      <TourMarker map={map} tour={tour}>
-        <a href="/town">Town Tour, updated</a>
-      </TourMarker>,
+      <TourMarkerMapLibre map={map} marker={marker("Town Tour, updated")} />,
     );
     expect(screen.getByText("Town Tour, updated")).toBeInTheDocument();
     expect(() => unmount()).not.toThrow();
   });
 });
 
-describe("TourMarker keyboard access", () => {
+describe("TourMarkerMapLibre keyboard access", () => {
   it("is a button named after the tour", () => {
     render(
-      <TourMarker map={{} as Map} tour={{ ...tour, title: "Town Tour" }}>
-        <a href="/town">Go to tour</a>
-      </TourMarker>,
+      <TourMarkerMapLibre map={{} as Map} marker={marker("Go to tour")} />,
     );
-    const marker = screen.getByRole("button", { name: "Town Tour" });
-    expect(marker).toHaveAttribute("aria-expanded", "false");
+    const button = screen.getByRole("button", { name: "Town Tour" });
+    expect(button).toHaveAttribute("aria-expanded", "false");
   });
 
   it("closes the popup with Escape and returns focus to the marker", async () => {
     render(
-      <TourMarker map={{} as Map} tour={{ ...tour, title: "Town Tour" }}>
-        <a href="/town">Go to tour</a>
-      </TourMarker>,
+      <TourMarkerMapLibre map={{} as Map} marker={marker("Go to tour")} />,
     );
     const link = screen.getByRole("link", { name: "Go to tour" });
     link.focus();

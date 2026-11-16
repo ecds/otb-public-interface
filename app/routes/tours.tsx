@@ -1,19 +1,22 @@
 import { faList, faMap, faTable } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { Link, useLoaderData, redirect, useNavigate } from "react-router";
+import ClientOnly from "~/components/ClientOnly";
+import ToursMap from "~/components/maps/ToursMap";
 import Analytics from "~/components/shared/Analytics";
 import TourCard from "~/components/shared/TourCard";
 import TourSetIntro from "~/components/shared/TourSetIntro";
-import TourSetMap from "~/components/shared/TourSetMap";
 import { requestContext, tenantContext } from "~/context";
 import { getTours, isSignedIn } from "~/data";
+import { toursBounds } from "~/utils/bounds";
 import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
   MetaFunction,
 } from "react-router";
+import type { TMapMarker } from "~/components/maps/types";
 import type { TTour, TTourSetPreview } from "~/types";
 
 export const meta: MetaFunction = ({ matches }) => {
@@ -57,6 +60,33 @@ const Tours = () => {
   useEffect(() => {
     if (tours && tours.length === 1) navigate(`/${tours[0].slug}`);
   }, [tours, navigate]);
+
+  const mappedTours = useMemo(
+    () => (tours ?? []).filter((tour) => tour.bounds),
+    [tours],
+  );
+  const bounds = useMemo(() => toursBounds(mappedTours), [mappedTours]);
+  const markers: TMapMarker[] = useMemo(
+    () =>
+      mappedTours.map((tour) => ({
+        id: tour.slug,
+        title: tour.title,
+        lat: tour.bounds.centerLat,
+        lng: tour.bounds.centerLng,
+        popup: (
+          <>
+            <TourCard tour={tour} className="hidden md:block" />
+            <Link
+              className="md:hidden text-lg text-blue-700 hover:text-blue-900 underline"
+              to={`/${tour.slug}`}
+            >
+              {tour.title}
+            </Link>
+          </>
+        ),
+      })),
+    [mappedTours],
+  );
 
   if (!tour_set) return <></>;
 
@@ -124,8 +154,14 @@ const Tours = () => {
               )}
             </TabPanel>
             <TabPanel>
-              {tours && (
-                <TourSetMap tours={tours.filter((tour) => tour.bounds)} />
+              {bounds && (
+                <ClientOnly>
+                  <ToursMap
+                    markers={markers}
+                    view={{ bounds }}
+                    className="w-full h-[50vh] rounded-md"
+                  />
+                </ClientOnly>
               )}
             </TabPanel>
           </TabPanels>

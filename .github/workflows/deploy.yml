@@ -28,6 +28,8 @@ jobs:
 
       - run: npm ci
 
+      - run: npm run typecheck
+
       - run: npx vitest run
 
   deploy:

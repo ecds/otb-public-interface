@@ -9,9 +9,9 @@ type Context = {
   currentStop: TTourStop | undefined;
   setCurrentStop: Dispatch<SetStateAction<TTourStop | undefined>>;
   currentFlatPage: TTourFlatPage | string | undefined;
-  setCurrentFlatPage: Dispatch<
-    SetStateAction<TTourFlatPage | string | undefined>
-  >;
+  // A tour's own pages open at their URL (/:tour/page/:id); "about" isn't
+  // in the URL.
+  setCurrentFlatPage: (flatPage: TTourFlatPage | string | undefined) => void;
   showMenu: boolean;
   setShowMenu: Dispatch<SetStateAction<boolean>>;
   mapStyle: StyleSpecification;
@@ -36,11 +36,9 @@ export const TourContext = createContext<Context>({
     console.error("setShowMenu not implemented. Did you pass it to context?");
   },
   currentFlatPage: undefined,
-  setCurrentFlatPage: (
-    _: SetStateAction<TTourFlatPage | string | undefined>,
-  ) => {
+  setCurrentFlatPage: (_: TTourFlatPage | string | undefined) => {
     console.error(
-      "setCurrentStop not implemented. Did you pass it to context?",
+      "setCurrentFlatPage not implemented. Did you pass it to context?",
     );
   },
   mapStyle: baseStyle,

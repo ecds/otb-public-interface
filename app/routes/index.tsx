@@ -1,6 +1,7 @@
+import { useMemo } from "react";
 import { redirect, useLoaderData } from "react-router";
 import ClientOnly from "~/components/ClientOnly";
-import AllToursMap from "~/components/index/AllToursMap";
+import ToursMap from "~/components/maps/ToursMap";
 import Analytics from "~/components/shared/Analytics";
 import { requestContext, tenantContext } from "~/context";
 import { getTourSets, isSignedIn } from "~/data";
@@ -9,6 +10,7 @@ import type {
   LoaderFunctionArgs,
   ClientLoaderFunctionArgs,
 } from "react-router";
+import type { TMapMarker } from "~/components/maps/types";
 import type { TTourSet } from "~/types";
 
 export const meta: MetaFunction = () => {
@@ -49,6 +51,28 @@ clientLoader.hydrate = true as const;
 
 export default function Index() {
   const { tourSets, request } = useLoaderData<typeof loader>();
+
+  const markers: TMapMarker[] = useMemo(
+    () =>
+      tourSets.flatMap((ts: TTourSet) =>
+        ts.mapable_tours.map((tour) => ({
+          id: `${ts.subdir}-${tour.slug}`,
+          title: tour.title,
+          lat: tour.center.lat,
+          lng: tour.center.lng,
+          popup: (
+            <a
+              className="text-lg text-blue-700 hover:text-blue-900 underline"
+              href={`${request.protocol}://${ts.subdir}.${request.host}/${tour.slug}`}
+            >
+              {tour.title}
+            </a>
+          ),
+        })),
+      ),
+    [tourSets, request],
+  );
+
   return (
     <>
       <header className="bg-default-primary text-white/85 h-16 fixed top-0 w-screen px-6 flex justify-between items-center z-50 drop-shadow-md">
@@ -83,15 +107,11 @@ export default function Index() {
         </nav>
       </header>
       <ClientOnly>
-        <AllToursMap
-          tours={tourSets
-            .map((ts: TTourSet) =>
-              ts.mapable_tours.map((tour) => {
-                return { ...tour, tenant: ts.subdir };
-              }),
-            )
-            .flat()}
-          request={request}
+        <ToursMap
+          markers={markers}
+          view={{ center: { lat: 32.6620411, lng: -83.4375901 }, zoom: 5 }}
+          className="w-full max-w-screen h-[50vh] mt-16"
+          fullscreen
         />
       </ClientOnly>
       <main id="main">

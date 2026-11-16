@@ -1,6 +1,12 @@
-import type { Popup } from "maplibre-gl";
+// The parts of a map library's popup that connectPopup uses. MapLibre's
+// Popup fits as is; Leaflet's is adapted from its marker's popup events.
+export interface PopupEvents {
+  on(type: "open" | "close", handler: () => void): unknown;
+  off(type: "open" | "close", handler: () => void): unknown;
+  remove(): unknown;
+}
 
-// Names a custom MapLibre marker and makes it a button. MapLibre gives a
+// Names a custom map marker and makes it a button. MapLibre gives a
 // marker with a popup a tabindex and opens the popup on Enter or Space, but
 // leaves custom marker elements without a role or name.
 export const labelMarker = (element: HTMLElement, label: string) => {
@@ -12,7 +18,7 @@ export const labelMarker = (element: HTMLElement, label: string) => {
 // puts focus back on the marker when the popup closes from inside (Escape
 // or its close button), not when someone clicks elsewhere on the map.
 export const connectPopup = (
-  popup: Popup,
+  popup: PopupEvents,
   markerElement: HTMLElement,
   popupElement: HTMLElement,
 ) => {
