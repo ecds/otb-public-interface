@@ -5,3 +5,4 @@ export * from "./TStop";
 export * from "./TTour";
 export * from "./TTourSet";
 export * from "./TTravelMode";
+export * from "./TMap";

@@ -1,6 +1,4 @@
 import { createContext } from "react";
-import { baseStyle } from "~/map_styles";
-import type { StyleSpecification } from "maplibre-gl";
 import type { Dispatch, SetStateAction } from "react";
 import type { TTour, TTourFlatPage, TTourStop } from "~/types";
 
@@ -14,7 +12,6 @@ type Context = {
   setCurrentFlatPage: (flatPage: TTourFlatPage | string | undefined) => void;
   showMenu: boolean;
   setShowMenu: Dispatch<SetStateAction<boolean>>;
-  mapStyle: StyleSpecification;
   showPermissionsModal: boolean;
   setShowPermissionsModal: Dispatch<SetStateAction<boolean>>;
 };
@@ -41,5 +38,4 @@ export const TourContext = createContext<Context>({
       "setCurrentFlatPage not implemented. Did you pass it to context?",
     );
   },
-  mapStyle: baseStyle,
 });

@@ -1,8 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { resetPreferencesStore } from "~/hooks/usePreferences";
 import { TourContext } from "~/contexts/TourContext";
+import { resetPreferencesStore } from "~/hooks/usePreferences";
 import PermissionsModal from "./PermissionsModal";
 import type { ReactNode } from "react";
 
@@ -53,7 +53,6 @@ const tourContextValue = {
   setCurrentStop: vi.fn(),
   setCurrentFlatPage: vi.fn(),
   showMenu: false,
-  mapStyle: {} as never,
 };
 
 const wrapper = ({ children }: { children: ReactNode }) => (

@@ -10,8 +10,7 @@ import type {
   LoaderFunctionArgs,
   ClientLoaderFunctionArgs,
 } from "react-router";
-import type { TMapMarker } from "~/components/maps/types";
-import type { TTourSet } from "~/types";
+import type { TMapMarker , TTourSet } from "~/types";
 
 export const meta: MetaFunction = () => {
   return [

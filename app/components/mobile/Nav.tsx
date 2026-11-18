@@ -6,19 +6,12 @@ import {
   faMap,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { NavLink } from "react-router";
 import { TourContext } from "~/contexts/TourContext";
 
 const MobileNav = () => {
   const { tour, currentStop } = useContext(TourContext);
-  const [isFirst, setIsFirst] = useState<boolean>(false);
-  const [isLast, setIsLast] = useState<boolean>(false);
-
-  useEffect(() => {
-    setIsFirst(!currentStop?.previous);
-    setIsLast(!currentStop?.next);
-  }, [currentStop]);
 
   // The current tab uses the accent colors; the others use the bar's own
   // text color, since some themes' accent text is dark.

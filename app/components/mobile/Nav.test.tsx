@@ -20,7 +20,6 @@ const renderNav = (currentStop: Partial<TTourStop>) =>
           setShowPermissionsModal: vi.fn(),
           currentFlatPage: undefined,
           setCurrentStop: vi.fn(),
-          mapStyle: {} as never,
           showPermissionsModal: false,
         }}
       >

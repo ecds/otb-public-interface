@@ -27,7 +27,6 @@ const Harness = () => {
           currentStop: undefined,
           currentFlatPage: undefined,
           setCurrentStop: vi.fn(),
-          mapStyle: {} as never,
           showPermissionsModal: false,
         }}
       >

@@ -23,7 +23,6 @@ const renderPage = (open: boolean, setCurrentFlatPage = vi.fn()) =>
         currentStop: undefined,
         currentFlatPage: open ? page : undefined,
         setCurrentStop: vi.fn(),
-        mapStyle: {} as never,
         showPermissionsModal: false,
       }}
     >

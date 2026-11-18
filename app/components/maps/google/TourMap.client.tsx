@@ -1,8 +1,8 @@
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 import { useContext } from "react";
 import { TourContext } from "~/contexts/TourContext";
-import MapMarker from "../shared/MapMarker";
-import MapOverlay from "../shared/MapOverlay";
+import MapOverlay from "./Overlay";
+import MapMarker from "./StopMarker";
 
 const TourGoogleMap = () => {
   const { currentStop, tour } = useContext(TourContext);
@@ -39,7 +39,6 @@ const TourGoogleMap = () => {
               key={stop.slug}
               stop={stop}
               zIndex={stop === currentStop ? tour.stops.length + 1 : index}
-              hasIcon={Boolean(stop.map_icon)}
             />
           );
         })}
