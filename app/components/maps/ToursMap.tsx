@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
-import { canUseWebGL, markWebGLUnavailable } from "~/utils/webgl_check";
+import { useMapLibrary } from "~/hooks/useMapLibrary";
 import ToursLeaflet from "./leaflet/ToursMap";
 import ToursMapLibre from "./maplibre/ToursMap";
 import type { TMapMarker, TMapView } from "~/types";
@@ -14,16 +13,7 @@ interface Props {
 // A map of tours: MapLibre where WebGL works, Leaflet where it doesn't.
 // Which one is decided in the browser, after the first render.
 const ToursMap = ({ markers, view, className, fullscreen }: Props) => {
-  const [library, setLibrary] = useState<"maplibre" | "leaflet">();
-
-  useEffect(() => {
-    setLibrary(canUseWebGL() ? "maplibre" : "leaflet");
-  }, []);
-
-  const fallBack = useCallback(() => {
-    markWebGLUnavailable();
-    setLibrary("leaflet");
-  }, []);
+  const [library, fallBack] = useMapLibrary();
 
   if (library === "maplibre") {
     return (

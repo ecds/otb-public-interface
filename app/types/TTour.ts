@@ -44,6 +44,16 @@ export type TTourStop = TStop & {
   previous: { id: number; slug: string; title: string } | undefined;
 };
 
+export type TMapOverlay = {
+  east: number;
+  image_url: string;
+  north: number;
+  south: number;
+  west: number;
+  // Degrees clockwise about the center of the north/south/east/west box.
+  rotation?: number | null;
+};
+
 export type TTour = {
   blank_map: boolean;
   bounds: {
@@ -61,17 +71,8 @@ export type TTour = {
   is_geo: boolean;
   link_address: string | undefined;
   link_text: string | undefined;
-  map_overlay:
-    | {
-        east: number;
-        image_url: string;
-        north: number;
-        south: number;
-        west: number;
-        // Degrees clockwise about the center of the north/south/east/west box.
-        rotation?: number | null;
-      }
-    | undefined;
+  map_icon?: string;
+  map_overlay: TMapOverlay | undefined;
   map_type: "satellite" | "road" | "hybrid";
   media: TTourMedium[];
   mode: TTravelMode;

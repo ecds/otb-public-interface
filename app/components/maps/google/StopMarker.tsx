@@ -10,14 +10,7 @@ import { useDeviceContext } from "~/hooks/deviceContext";
 import PopUpContent from "../common/PopUpContent";
 import type { TTourStop } from "~/types";
 
-const MapMarker = ({
-  stop,
-  zIndex,
-}: {
-  stop: TTourStop;
-  zIndex: number;
-  hasIcon: boolean;
-}) => {
+const MapMarker = ({ stop, zIndex }: { stop: TTourStop; zIndex: number }) => {
   const { currentStop, setCurrentStop } = useContext(TourContext);
   const { isMobile } = useDeviceContext();
   const [infoWindowShown, setInfoWindowShown] = useState<boolean>(false);
@@ -32,11 +25,9 @@ const MapMarker = ({
       setInfoWindowShown(true);
     } else {
       setCurrentStop(stop);
-
       document
         .getElementById(stop.slug)
         ?.scrollIntoView({ behavior: "instant" });
-      setCurrentStop(stop);
     }
   };
 

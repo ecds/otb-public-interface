@@ -17,7 +17,7 @@ import {
 } from "react-router";
 import StopList from "~/components/desktop/StopList";
 import TourFlatPages from "~/components/desktop/TourFlatPages";
-import TourMap from "~/components/maps/maplibre/TourMap";
+import TourMap from "~/components/maps/TourMap";
 import ConsentSheet from "~/components/mobile/ConsentSheet";
 import MobileNav from "~/components/mobile/Nav";
 import PermissionsModal from "~/components/mobile/PermissionsModal";
@@ -29,10 +29,8 @@ import { requestContext, tenantContext } from "~/context";
 import { TourContext } from "~/contexts/TourContext";
 import { getTour, isSignedIn } from "~/data";
 import { useDeviceContext } from "~/hooks/deviceContext";
-import { baseStyle, blank, hybrid, satellite } from "~/map_styles";
 import { hasSetPreferences } from "~/utils/cookies";
 import { pageTitle } from "~/utils/pageTitle";
-import type { StyleSpecification } from "maplibre-gl";
 import type {
   ClientLoaderFunctionArgs,
   LoaderFunctionArgs,
@@ -99,7 +97,6 @@ export default function Tour() {
     undefined,
   );
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const [mapStyle, setMapStyle] = useState<StyleSpecification>(baseStyle);
   const [showPermissionsModal, setShowPermissionsModal] =
     useState<boolean>(false);
   const [showConsentSheet, setShowConsentSheet] = useState<boolean>(false);
@@ -158,7 +155,6 @@ export default function Tour() {
       setShowMenu,
       showMenu,
       tour,
-      mapStyle,
       showPermissionsModal,
       setShowPermissionsModal,
     }),
@@ -168,7 +164,6 @@ export default function Tour() {
       currentStop,
       showMenu,
       tour,
-      mapStyle,
       showPermissionsModal,
     ],
   );
@@ -211,25 +206,6 @@ export default function Tour() {
       };
     }
   }, [currentStop, isDesktop]);
-
-  useEffect(() => {
-    if (!tour) return;
-    switch (tour.map_type) {
-      case "satellite":
-        setMapStyle(satellite);
-        break;
-      case "hybrid":
-        setMapStyle(hybrid);
-        break;
-      default:
-        setMapStyle(baseStyle);
-        break;
-    }
-
-    if (tour.blank_map) {
-      setMapStyle(blank);
-    }
-  }, [tour]);
 
   if (!tour) return <></>;
 

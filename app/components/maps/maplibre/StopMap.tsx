@@ -1,43 +1,46 @@
-import * as maplibregl from "maplibre-gl";
-import { useContext, useEffect, useRef, useState } from "react";
-import "maplibre-gl/dist/maplibre-gl.css";
-import { TourContext } from "~/contexts/TourContext";
+import { useEffect, useRef } from "react";
+import { useMapLibreMap } from "~/hooks/useMapLibreMap";
+import { styleFor } from "~/map_styles/forTour";
+import MapLibreOverlay from "./Overlay";
 import MapMarker from "./StopMarker";
+import "maplibre-gl/dist/maplibre-gl.css";
+import type { TTour, TTourStop } from "~/types";
 
-const StopMap = () => {
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<maplibregl.Map | undefined>(undefined);
-  const { mapStyle, currentStop } = useContext(TourContext);
+interface Props {
+  tour: TTour;
+  stop: TTourStop;
+  onWebGLFailure: () => void;
+}
 
-  useEffect(() => {
-    if (!mapContainerRef.current || !currentStop) return;
-
-    const stopMap = new maplibregl.Map({
-      container: mapContainerRef.current,
-      center: [currentStop.lng, currentStop.lat],
+const StopMap = ({ tour, stop, onWebGLFailure }: Props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const map = useMapLibreMap(
+    containerRef,
+    {
+      style: styleFor(tour),
+      center: [stop.lng, stop.lat],
       zoom: 15,
-      style: mapStyle,
       attributionControl: false,
-    });
+    },
+    onWebGLFailure,
+  );
 
-    setMap(stopMap);
+  // Follows the current stop, rather than rebuilding the map.
+  useEffect(() => {
+    map?.jumpTo({ center: [stop.lng, stop.lat] });
+  }, [map, stop.lng, stop.lat]);
 
-    return () => {
-      stopMap.remove();
-      setMap(undefined);
-    };
-  }, [currentStop, mapStyle]);
-
-  if (currentStop) {
-    return (
-      <>
-        <div className="h-full w-full" ref={mapContainerRef}></div>
-        {map && <MapMarker stop={currentStop} map={map} />}
-      </>
-    );
-  }
-
-  return <></>;
+  return (
+    <>
+      <div className="h-full w-full" ref={containerRef} />
+      {map && (
+        <>
+          <MapLibreOverlay map={map} />
+          <MapMarker stop={stop} map={map} />
+        </>
+      )}
+    </>
+  );
 };
 
 export default StopMap;

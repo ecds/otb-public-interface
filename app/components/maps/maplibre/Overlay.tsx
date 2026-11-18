@@ -1,29 +1,38 @@
 import { useContext, useEffect } from "react";
 import { TourContext } from "~/contexts/TourContext";
-import type { AddLayerObject, Map, SourceSpecification } from "maplibre-gl";
+import { overlayCorners } from "~/utils/overlayGeometry";
+import type {
+  AddLayerObject,
+  Coordinates,
+  Map,
+  SourceSpecification,
+} from "maplibre-gl";
+import type { TMapOverlay } from "~/types";
 
 interface Props {
   map: Map | undefined;
 }
 
-const MapOverlay = ({ map }: Props) => {
-  const { tour } = useContext(TourContext);
+const corners = (overlay: TMapOverlay) =>
+  overlayCorners(overlay) as Coordinates;
 
+const MapLibreOverlay = ({ map }: Props) => {
+  const { tour } = useContext(TourContext);
+  const overlay = tour?.map_overlay;
+  const slug = tour?.slug;
+
+  // Keyed on the overlay rather than the tour, so editing stops doesn't
+  // rebuild it.
   useEffect(() => {
-    if (!tour?.map_overlay || !map) return;
+    if (!overlay || !map) return;
+    const id = `${slug}-overlay`;
+    if (map.getSource(id)) return;
 
     const overlaySource: SourceSpecification = {
       type: "image",
-      url: tour.map_overlay.image_url,
-      coordinates: [
-        [tour.map_overlay.west, tour.map_overlay.north],
-        [tour.map_overlay.east, tour.map_overlay.north],
-        [tour.map_overlay.east, tour.map_overlay.south],
-        [tour.map_overlay.west, tour.map_overlay.south],
-      ],
+      url: overlay.image_url,
+      coordinates: corners(overlay),
     };
-
-    const id = `${tour.slug}-overlay`;
 
     const overlayLayer: AddLayerObject = {
       id,
@@ -31,23 +40,20 @@ const MapOverlay = ({ map }: Props) => {
       source: id,
     };
 
-    map.on("load", () => {
-      if (map.getSource(id)) return;
-      map.addSource(id, overlaySource);
-      map.addLayer(overlayLayer);
-    });
+    map.addSource(id, overlaySource);
+    map.addLayer(overlayLayer);
 
     return () => {
       try {
-        if (map && map.getLayer(id)) map.removeLayer(id);
-        if (map && map.getSource(id)) map.removeSource(id);
-      } catch (_) {
-        // map already destroyed
+        if (map.getLayer(id)) map.removeLayer(id);
+        if (map.getSource(id)) map.removeSource(id);
+      } catch {
+        // The map was already removed.
       }
     };
-  }, [map, tour]);
+  }, [map, overlay, slug]);
 
   return <></>;
 };
 
-export default MapOverlay;
+export default MapLibreOverlay;

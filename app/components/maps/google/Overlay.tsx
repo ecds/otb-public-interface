@@ -12,19 +12,6 @@ const MapOverlay = () => {
   useEffect(() => {
     if (!map || !tour || !tour.map_overlay) return;
 
-    const worldBounds = new google.maps.LatLngBounds(
-      new google.maps.LatLng(-85, -180),
-      new google.maps.LatLng(85, 180),
-    );
-
-    const mask = new google.maps.GroundOverlay(
-      "/images/blank.jpg",
-      worldBounds,
-    );
-    if (tour.blank_map) {
-      mask.setMap(map);
-    }
-
     const bounds = new google.maps.LatLngBounds(
       new google.maps.LatLng(tour.map_overlay.south, tour.map_overlay.west),
       new google.maps.LatLng(tour.map_overlay.north, tour.map_overlay.east),
@@ -34,12 +21,14 @@ const MapOverlay = () => {
       bounds,
       imageUrl: tour.map_overlay.image_url,
       rotation: tour.map_overlay.rotation,
+      // A blank map hides the base map behind the overlay. Same gray as the
+      // MapLibre blank style.
+      background: tour.blank_map ? "#9a9a9a" : undefined,
     });
 
     overlay.setMap(map);
 
     return () => {
-      mask.setMap(null);
       overlay.setMap(null);
     };
   }, [tour, tenant, map]);

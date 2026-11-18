@@ -39,7 +39,6 @@ const TourGoogleMap = () => {
               key={stop.slug}
               stop={stop}
               zIndex={stop === currentStop ? tour.stops.length + 1 : index}
-              hasIcon={Boolean(stop.map_icon)}
             />
           );
         })}

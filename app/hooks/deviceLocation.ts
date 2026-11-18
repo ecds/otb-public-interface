@@ -62,7 +62,7 @@ export const useDeviceLocation = (tourSlug?: string) => {
 
     const watcherId = navigator.geolocation.watchPosition(
       (position) => {
-        const { latitude, longitude, accuracy } = position.coords;
+        const { latitude, longitude } = position.coords;
 
         const modeTitle = tourSlug
           ? (localStorage.getItem(tourSlug) ?? "").toLowerCase()

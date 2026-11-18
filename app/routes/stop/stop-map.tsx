@@ -6,7 +6,7 @@ import ParkingMarker from "~/components/maps/google/markers/Parking";
 import StopMarker from "~/components/maps/google/markers/Stop";
 import MapOverlay from "~/components/maps/google/Overlay";
 import StopGMap from "~/components/maps/google/StopMap";
-import StopMap from "~/components/maps/maplibre/StopMap";
+import StopMap from "~/components/maps/StopMap";
 import GrantLocationAccess from "~/components/mobile/location/LocationServices";
 import MapNudge from "~/components/mobile/MapNudge";
 import TravelModeSelector from "~/components/mobile/TravelModeSelector";

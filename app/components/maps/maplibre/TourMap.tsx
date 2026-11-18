@@ -1,48 +1,52 @@
-import * as maplibregl from "maplibre-gl";
-import { useContext, useEffect, useRef, useState } from "react";
-import { TourContext } from "~/contexts/TourContext";
-import MapOverlay from "./Overlay";
+import { useEffect, useRef } from "react";
+import { useMapLibreMap } from "~/hooks/useMapLibreMap";
+import { styleFor } from "~/map_styles/forTour";
+import MapLibreOverlay from "./Overlay";
 import MapMarker from "./StopMarker";
 import "maplibre-gl/dist/maplibre-gl.css";
+import type { TTour } from "~/types";
 
-const TourMap = () => {
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const [map, setMap] = useState<maplibregl.Map | undefined>(undefined);
-  const { tour, mapStyle } = useContext(TourContext);
+interface Props {
+  tour: TTour;
+  onWebGLFailure: () => void;
+}
 
+const TourMap = ({ tour, onWebGLFailure }: Props) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const { north, south, east, west } = tour.bounds;
+  const map = useMapLibreMap(
+    containerRef,
+    {
+      style: styleFor(tour),
+      bounds: [
+        [west, south],
+        [east, north],
+      ],
+      fitBoundsOptions: { padding: 50 },
+    },
+    onWebGLFailure,
+  );
+
+  // Refits when the tour's bounds change, rather than rebuilding the map.
   useEffect(() => {
-    if (!tour || !mapContainerRef.current) return;
-
-    const bounds = new maplibregl.LngLatBounds(
-      new maplibregl.LngLat(tour.bounds.west, tour.bounds.south),
-      new maplibregl.LngLat(tour.bounds.east, tour.bounds.north),
+    map?.fitBounds(
+      [
+        [west, south],
+        [east, north],
+      ],
+      { padding: 50 },
     );
-
-    const tourMap = new maplibregl.Map({
-      container: mapContainerRef.current,
-      style: mapStyle,
-      bounds,
-    });
-
-    setMap(tourMap);
-
-    return () => {
-      tourMap.remove();
-      setMap(undefined);
-    };
-  }, [tour, mapStyle]);
+  }, [map, north, south, east, west]);
 
   return (
     <>
-      <div className="h-full w-full" ref={mapContainerRef}></div>
+      <div className="h-full w-full" ref={containerRef} />
       {map && (
         <>
-          {tour?.stops.map((stop) => {
-            return (
-              <MapMarker key={`desktop-map-${stop.id}`} stop={stop} map={map} />
-            );
-          })}
-          <MapOverlay map={map} />
+          <MapLibreOverlay map={map} />
+          {tour.stops.map((stop) => (
+            <MapMarker key={stop.id} stop={stop} map={map} />
+          ))}
         </>
       )}
     </>
