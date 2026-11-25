@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { useDeviceContext } from "~/hooks/deviceContext";
 import { altFor } from "~/utils/altText";
+import AudioMedium from "./AudioMedium";
 import type { TTourMedium } from "~/types";
 
 interface Props {
@@ -20,7 +21,11 @@ export const mediumLabel = (
   index: number,
   count: number,
 ) => {
-  const kind = medium.video || medium.embed ? "video" : "image";
+  const kind = medium.audio
+    ? "audio"
+    : medium.video || medium.embed
+      ? "video"
+      : "image";
   const position = count > 1 ? ` ${index + 1} of ${count}` : "";
   const title =
     medium.title && medium.title !== medium.filename ? medium.title : "";
@@ -29,12 +34,13 @@ export const mediumLabel = (
 };
 
 // Tracks whether a (CSS background) image has finished loading. Errors count
-// as "done" so a broken image doesn't leave the placeholder pulsing forever.
+// as "done" so a broken image doesn't leave the placeholder pulsing forever,
+// and so does having no image at all.
 const useImageLoaded = (src: string | undefined) => {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(!src);
 
   useEffect(() => {
-    setLoaded(false);
+    setLoaded(!src);
     if (!src) return;
 
     const img = new Image();
@@ -82,32 +88,40 @@ const Medium = ({ medium, onClick, index = 0, count = 1 }: Props) => {
           )}
         </div>
       )}
-      <button
-        className={`relative m-auto h-full w-full bg-contain bg-center bg-no-repeat flex flex-col-reverse cursor-pointer motion-safe:transition-opacity motion-safe:duration-500 ${
-          loaded ? "opacity-100" : "opacity-0"
-        }`}
-        style={{ backgroundImage: `url(${src})` }}
-        aria-label={mediumLabel(medium, index, count)}
-        onClick={handleClick}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") {
-            handleClick();
-          }
-        }}
-      >
-        {medium.title && medium.title !== medium.filename && (
-          <div
-            aria-hidden="true"
-            className="w-full bg-black/60 text-white py-1 rounded-md"
-          >
-            {medium.title}
-          </div>
-        )}
-      </button>
-      {medium.video && (
-        <div className="absolute left-1/2 -translate-x-12 top-1/2 -translate-y-12 text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex pointer-events-none">
-          <FontAwesomeIcon className="" icon={faCirclePlay} />
+      {medium.audio ? (
+        <div className="relative h-full w-full mx-20">
+          <AudioMedium medium={medium} picture={src} />
         </div>
+      ) : (
+        <>
+          <button
+            className={`relative m-auto h-full w-full bg-contain bg-center bg-no-repeat flex flex-col-reverse cursor-pointer motion-safe:transition-opacity motion-safe:duration-500 ${
+              loaded ? "opacity-100" : "opacity-0"
+            }`}
+            style={{ backgroundImage: `url(${src})` }}
+            aria-label={mediumLabel(medium, index, count)}
+            onClick={handleClick}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleClick();
+              }
+            }}
+          >
+            {medium.title && medium.title !== medium.filename && (
+              <div
+                aria-hidden="true"
+                className="w-full bg-black/60 text-white py-1 rounded-md"
+              >
+                {medium.title}
+              </div>
+            )}
+          </button>
+          {medium.video && (
+            <div className="absolute left-1/2 -translate-x-12 top-1/2 -translate-y-12 text-center text-[6rem] text-black bg-white/75 rounded-full mx-auto flex pointer-events-none">
+              <FontAwesomeIcon className="" icon={faCirclePlay} />
+            </div>
+          )}
+        </>
       )}
     </div>
   );
