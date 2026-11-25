@@ -43,7 +43,9 @@ const Navbar = ({
                     src={tour_set?.logo_url ?? "/images/otblogo.png"}
                     alt=""
                   /> */}
-                  <h1 className={`block md:hidden text-${tour.theme.title}-secondary text-sm m-auto text-wrap text-left grow`}>
+                  <h1
+                    className={`block md:hidden text-${tour.theme.title}-secondary text-sm m-auto text-wrap text-left grow`}
+                  >
                     {tour.title}
                   </h1>
                 </Link>

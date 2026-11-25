@@ -16,6 +16,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { altFor } from "~/utils/altText";
+import AudioMedium from "./AudioMedium";
 import CopyMediumLink from "./CopyMediumLink";
 import Embed from "./Embed";
 import Medium from "./Medium";
@@ -52,6 +53,9 @@ const EmblaCarousel = ({
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     startIndex: initialIndex,
+    // Dragging an audio player's scrubber shouldn't swipe the carousel.
+    watchDrag: (_api, event) =>
+      !(event.target instanceof Element && event.target.closest("audio")),
   });
   const [selectedIndex, setSelectedIndex] = useState(initialIndex);
 
@@ -61,6 +65,11 @@ const EmblaCarousel = ({
       const i = emblaApi.selectedScrollSnap();
       setSelectedIndex(i);
       onSelect?.(i);
+      // Nothing keeps playing on a slide that's out of view.
+      emblaApi.slideNodes().forEach((slide, index) => {
+        if (index === i) return;
+        slide.querySelectorAll("audio").forEach((audio) => audio.pause());
+      });
     };
     emblaApi.on("select", handler);
     return () => {
@@ -84,14 +93,14 @@ const EmblaCarousel = ({
   const showControls = media.length > 1;
 
   return (
-    <div role="region" aria-roledescription="carousel" aria-label="Images">
+    <div role="region" aria-roledescription="carousel" aria-label="Media">
       <div className="relative">
         <div ref={emblaRef} className="overflow-hidden">
           <div className="flex">
             {media.map((medium, index) => (
               <div
                 className={`shrink-0 ${slideClassName}`}
-                key={medium.files.desktop}
+                key={medium.audio ?? medium.files.desktop ?? index}
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${media.length}`}
@@ -108,14 +117,14 @@ const EmblaCarousel = ({
             <button
               onClick={scrollPrev}
               className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
-              aria-label="Previous image"
+              aria-label="Previous slide"
             >
               <FontAwesomeIcon icon={faCircleChevronLeft} />
             </button>
             <button
               onClick={scrollNext}
               className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white rounded-full w-8 h-8 flex items-center justify-center z-10"
-              aria-label="Next image"
+              aria-label="Next slide"
             >
               <FontAwesomeIcon icon={faCircleChevronRight} />
             </button>
@@ -131,7 +140,7 @@ const EmblaCarousel = ({
               key={i}
               onClick={() => emblaApi?.scrollTo(i, prefersReducedMotion())}
               className="size-6 flex items-center justify-center cursor-pointer"
-              aria-label={`Show image ${i + 1} of ${media.length}`}
+              aria-label={`Show slide ${i + 1} of ${media.length}`}
               aria-current={i === selectedIndex ? "true" : undefined}
             >
               <span
@@ -207,7 +216,7 @@ const Gallery = ({ media, path }: Props) => {
                   className="text-white/85 text-sm md:text-lg text-left grow"
                 >
                   {currentMedium?.title ||
-                    `Image ${activeMedium + 1} of ${media.length}`}
+                    `Item ${activeMedium + 1} of ${media.length}`}
                 </DialogTitle>
                 <CloseButton
                   aria-label="Close image viewer"
@@ -226,7 +235,16 @@ const Gallery = ({ media, path }: Props) => {
               >
                 {(medium) => (
                   <figure>
-                    {medium?.embed ? (
+                    {medium.audio ? (
+                      <div className="h-[40vh]">
+                        <AudioMedium
+                          medium={medium}
+                          picture={medium.files.desktop}
+                          className="text-white/85"
+                          linkClassName="text-blue-400 hover:text-blue-300"
+                        />
+                      </div>
+                    ) : medium?.embed ? (
                       <Embed medium={medium} />
                     ) : (
                       <img
@@ -239,7 +257,7 @@ const Gallery = ({ media, path }: Props) => {
                       {medium.caption}
                     </figcaption>
                     <div className="flex flex-row text-xs px-4 pb-2">
-                      {!medium?.embed && (
+                      {!medium?.embed && !medium.audio && (
                         <a
                           className="pt-2 text-blue-400 hover:text-blue-300 underline"
                           href={medium.files.original}

@@ -104,4 +104,24 @@ describe("mediumLabel", () => {
       "View video 1 of 2: Garden",
     );
   });
+
+  it("says audio for audio", () => {
+    expect(
+      mediumLabel({ ...medium, audio: "/a.mp3" } as TTourMedium, 0, 1),
+    ).toMatch(/^View audio/);
+  });
+
+  it("shows an audio player, with no loading placeholder when there's no picture", () => {
+    const audio = {
+      ...medium,
+      audio: "/a.mp3",
+      files: {},
+    } as unknown as TTourMedium;
+    const { container } = render(<Medium medium={audio} />);
+    expect(container.querySelector("audio")).toHaveAttribute("src", "/a.mp3");
+    expect(screen.queryByTestId("medium-placeholder")).not.toBeInTheDocument();
+    expect(container.firstElementChild).toHaveAttribute("aria-busy", "false");
+    // Not a button: audio doesn't open the image viewer.
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+  });
 });

@@ -14,6 +14,12 @@ export type TVoiceOver = {
 export type TTourMedium = {
   // Describes the image for screen readers; empty for decorative images.
   alt_text?: string | null;
+  // Plays from here; set only for audio media.
+  audio?: string;
+  // The recording's WebVTT transcript, when the API knows it.
+  transcript?: string;
+  // IIIF manifest; an audio transcript is looked up here when not given.
+  manifest?: string;
   decorative?: boolean;
   caption: string;
   desktop_width: number;
